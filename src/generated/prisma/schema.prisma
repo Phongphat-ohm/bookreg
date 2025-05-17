@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id        Int      @id @default(autoincrement())
+  name      String
+  username  String   @unique
+  password  String
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+
+  advisingClasses    Class[]             @relation("Advisors")
+  subjectAssignments SubjectAssignment[]
+  teachingClasses    TeachingClass[]
+}
+
+model Class {
+  id    Int    @id @default(autoincrement())
+  grade String
+  name  String
+
+  advisors         Teacher[]       @relation("Advisors")
+  students         Student[]
+  subjectClasses   SubjectClass[]
+  teachingTeachers TeachingClass[]
+}
+
+model Student {
+  id       Int    @id @default(autoincrement())
+  name     String
+  stu_code String @unique
+  password String
+
+  class_id Int
+  class    Class @relation(fields: [class_id], references: [id])
+
+  registrations BookRegistration[]
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model Subject {
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  grade       String
+  name        String
+  description String?
+
+  books              Book[]
+  subjectAssignments SubjectAssignment[]
+  subjectClasses     SubjectClass[]
+  registrations      BookRegistration[]
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model Book {
+  id          Int     @id @default(autoincrement())
+  barcode     String  @unique
+  name        String
+  description String?
+
+  subject_id Int
+  subject    Subject @relation(fields: [subject_id], references: [id])
+
+  registrations BookRegistration[]
+
+  academic_year_id Int
+  AcademicYear     AcademicYear @relation(fields: [academic_year_id], references: [id])
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model SubjectAssignment {
+  id         Int     @id @default(autoincrement())
+  teacher    Teacher @relation(fields: [teacher_id], references: [id])
+  teacher_id Int
+
+  subject    Subject @relation(fields: [subject_id], references: [id])
+  subject_id Int
+}
+
+model SubjectClass {
+  id         Int     @id @default(autoincrement())
+  subject    Subject @relation(fields: [subject_id], references: [id])
+  subject_id Int
+
+  class    Class @relation(fields: [class_id], references: [id])
+  class_id Int
+}
+
+model TeachingClass {
+  id         Int     @id @default(autoincrement())
+  teacher    Teacher @relation(fields: [teacher_id], references: [id])
+  teacher_id Int
+
+  class    Class @relation(fields: [class_id], references: [id])
+  class_id Int
+}
+
+model BookRegistration {
+  id         Int     @id @default(autoincrement())
+  student    Student @relation(fields: [student_id], references: [id])
+  student_id Int
+
+  book    Book @relation(fields: [book_id], references: [id])
+  book_id Int
+
+  subject    Subject @relation(fields: [subject_id], references: [id])
+  subject_id Int
+
+  register_code String?
+
+  registered_at DateTime @default(now())
+}
+
+model AcademicYear {
+  id   Int    @id @unique @default(autoincrement())
+  year String @unique
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+  Book      Book[]
+}
