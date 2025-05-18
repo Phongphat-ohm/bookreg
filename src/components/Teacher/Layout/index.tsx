@@ -62,7 +62,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
                 <Sidebar />
                 <div className="w-full relative">
                     <Navbar />
-                    <div className="p-5">
+                    <div className="p-5 pt-3">
                         {children}
                     </div>
                 </div>

@@ -45,8 +45,13 @@ export default function Signin() {
                     timeout: 3000,
                     shouldShowTimeoutProgress: true
                 });
+
                 setTimeout(() => {
-                    router.push("/teacher/home");
+                    if (req_data.role === "admin") {
+                        router.push("/teacher/admin");
+                    } else {
+                        router.push("/teacher/home");
+                    }
                 }, 2500);
             } else {
                 addToast({
@@ -76,7 +81,7 @@ export default function Signin() {
                     เข้าสู่ระบบ
                 </h1>
                 <div className="mt-3 flex flex-col gap-3 p-2">
-                    <Input isRequired type="text" label="ชื่อผู้ใช้" variant="bordered" labelPlacement="outside" startContent={<FaUser className="text-gray-500" />} name="username" id="username" size="lg" placeholder="กรอกชื่อผู้ใช้" color="primary" />
+                    <Input isRequired autoComplete="off" type="text" label="ชื่อผู้ใช้" variant="bordered" labelPlacement="outside" startContent={<FaUser className="text-gray-500" />} name="username" id="username" size="lg" placeholder="กรอกชื่อผู้ใช้" color="primary" />
                     <Input isRequired type="password" label="รหัสผ่าน" variant="bordered" labelPlacement="outside" startContent={<FaLock className="text-gray-500" />} name="password" id="password" size="lg" placeholder="กรอกรหัสผ่าน" color="primary" />
                 </div>
                 <div className="mt-2 flex justify-center">

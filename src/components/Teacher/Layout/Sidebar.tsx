@@ -3,7 +3,8 @@ import { useTeacher } from "@/context/Teacher/TeacherDataContext";
 import { Button, Image } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaArrowRightFromBracket, FaBook, FaChalkboard, FaHouse, FaUsers } from "react-icons/fa6";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { FaArrowRightFromBracket, FaBook, FaCalendar, FaChalkboard, FaGraduationCap, FaHouse, FaUsers } from "react-icons/fa6";
 
 export default function Sidebar() {
     const { teacher } = useTeacher();
@@ -16,19 +17,29 @@ export default function Sidebar() {
             link: "/teacher/home"
         },
         {
-            icon: <FaUsers />,
-            name: "ข้อมูลนักเรียนที่ปรึกษา",
-            link: "/teacher/advisors"
-        },
-        {
-            icon: <FaBook />,
-            name: "รายการหนังสือ",
-            link: "/teacher/book"
+            icon: <FaChalkboardTeacher />,
+            name: "วิชาที่สอน",
+            link: "/teacher/subject-assignment"
         },
         {
             icon: <FaChalkboard />,
-            name: "ห้องเรียน",
-            link: "/teacher/assignment"
+            name: "ชั้นเรียนที่สอน",
+            link: "/teacher/teaching-class"
+        },
+        {
+            icon: <FaBook />,
+            name: "หนังสือและการลงทะเบียน",
+            link: "/teacher/book"
+        },
+        {
+            icon: <FaGraduationCap />,
+            name: "ห้องเรียนที่ปรึกษา",
+            link: "/teacher/advisors"
+        },
+        {
+            icon: <FaCalendar />,
+            name: "ปีการศึกษา",
+            link: "/teacher/academic-year"
         }
     ]
 
