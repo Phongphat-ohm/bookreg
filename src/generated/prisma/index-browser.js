@@ -122,6 +122,7 @@ exports.Prisma.TeacherScalarFieldEnum = {
   name: 'name',
   username: 'username',
   password: 'password',
+  role: 'role',
   create_at: 'create_at',
   update_at: 'update_at'
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useLoading } from "@/context/Student/LoadindContext";
+import { useLoading } from "@/context/LoadindContext";
 import { useUser } from "@/context/Student/UserDataContext";
 import { Spinner } from "@heroui/react";
 import axios from "axios";

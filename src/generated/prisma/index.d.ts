@@ -1970,6 +1970,7 @@ export namespace Prisma {
     name: string | null
     username: string | null
     password: string | null
+    role: string | null
     create_at: Date | null
     update_at: Date | null
   }
@@ -1979,6 +1980,7 @@ export namespace Prisma {
     name: string | null
     username: string | null
     password: string | null
+    role: string | null
     create_at: Date | null
     update_at: Date | null
   }
@@ -1988,6 +1990,7 @@ export namespace Prisma {
     name: number
     username: number
     password: number
+    role: number
     create_at: number
     update_at: number
     _all: number
@@ -2007,6 +2010,7 @@ export namespace Prisma {
     name?: true
     username?: true
     password?: true
+    role?: true
     create_at?: true
     update_at?: true
   }
@@ -2016,6 +2020,7 @@ export namespace Prisma {
     name?: true
     username?: true
     password?: true
+    role?: true
     create_at?: true
     update_at?: true
   }
@@ -2025,6 +2030,7 @@ export namespace Prisma {
     name?: true
     username?: true
     password?: true
+    role?: true
     create_at?: true
     update_at?: true
     _all?: true
@@ -2121,6 +2127,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role: string
     create_at: Date
     update_at: Date
     _count: TeacherCountAggregateOutputType | null
@@ -2149,6 +2156,7 @@ export namespace Prisma {
     name?: boolean
     username?: boolean
     password?: boolean
+    role?: boolean
     create_at?: boolean
     update_at?: boolean
     advisingClasses?: boolean | Teacher$advisingClassesArgs<ExtArgs>
@@ -2162,6 +2170,7 @@ export namespace Prisma {
     name?: boolean
     username?: boolean
     password?: boolean
+    role?: boolean
     create_at?: boolean
     update_at?: boolean
   }, ExtArgs["result"]["teacher"]>
@@ -2171,6 +2180,7 @@ export namespace Prisma {
     name?: boolean
     username?: boolean
     password?: boolean
+    role?: boolean
     create_at?: boolean
     update_at?: boolean
   }, ExtArgs["result"]["teacher"]>
@@ -2180,11 +2190,12 @@ export namespace Prisma {
     name?: boolean
     username?: boolean
     password?: boolean
+    role?: boolean
     create_at?: boolean
     update_at?: boolean
   }
 
-  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "password" | "create_at" | "update_at", ExtArgs["result"]["teacher"]>
+  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "password" | "role" | "create_at" | "update_at", ExtArgs["result"]["teacher"]>
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     advisingClasses?: boolean | Teacher$advisingClassesArgs<ExtArgs>
     subjectAssignments?: boolean | Teacher$subjectAssignmentsArgs<ExtArgs>
@@ -2206,6 +2217,7 @@ export namespace Prisma {
       name: string
       username: string
       password: string
+      role: string
       create_at: Date
       update_at: Date
     }, ExtArgs["result"]["teacher"]>
@@ -2638,6 +2650,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Teacher", 'String'>
     readonly username: FieldRef<"Teacher", 'String'>
     readonly password: FieldRef<"Teacher", 'String'>
+    readonly role: FieldRef<"Teacher", 'String'>
     readonly create_at: FieldRef<"Teacher", 'DateTime'>
     readonly update_at: FieldRef<"Teacher", 'DateTime'>
   }
@@ -13312,6 +13325,7 @@ export namespace Prisma {
     name: 'name',
     username: 'username',
     password: 'password',
+    role: 'role',
     create_at: 'create_at',
     update_at: 'update_at'
   };
@@ -13513,6 +13527,7 @@ export namespace Prisma {
     name?: StringFilter<"Teacher"> | string
     username?: StringFilter<"Teacher"> | string
     password?: StringFilter<"Teacher"> | string
+    role?: StringFilter<"Teacher"> | string
     create_at?: DateTimeFilter<"Teacher"> | Date | string
     update_at?: DateTimeFilter<"Teacher"> | Date | string
     advisingClasses?: ClassListRelationFilter
@@ -13525,6 +13540,7 @@ export namespace Prisma {
     name?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     create_at?: SortOrder
     update_at?: SortOrder
     advisingClasses?: ClassOrderByRelationAggregateInput
@@ -13540,6 +13556,7 @@ export namespace Prisma {
     NOT?: TeacherWhereInput | TeacherWhereInput[]
     name?: StringFilter<"Teacher"> | string
     password?: StringFilter<"Teacher"> | string
+    role?: StringFilter<"Teacher"> | string
     create_at?: DateTimeFilter<"Teacher"> | Date | string
     update_at?: DateTimeFilter<"Teacher"> | Date | string
     advisingClasses?: ClassListRelationFilter
@@ -13552,6 +13569,7 @@ export namespace Prisma {
     name?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     create_at?: SortOrder
     update_at?: SortOrder
     _count?: TeacherCountOrderByAggregateInput
@@ -13569,6 +13587,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Teacher"> | string
     username?: StringWithAggregatesFilter<"Teacher"> | string
     password?: StringWithAggregatesFilter<"Teacher"> | string
+    role?: StringWithAggregatesFilter<"Teacher"> | string
     create_at?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
     update_at?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
   }
@@ -14127,6 +14146,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
@@ -14139,6 +14159,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
@@ -14150,6 +14171,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUpdateManyWithoutAdvisorsNestedInput
@@ -14162,6 +14184,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUncheckedUpdateManyWithoutAdvisorsNestedInput
@@ -14174,6 +14197,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
   }
@@ -14182,6 +14206,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14191,6 +14216,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14772,6 +14798,7 @@ export namespace Prisma {
     name?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     create_at?: SortOrder
     update_at?: SortOrder
   }
@@ -14785,6 +14812,7 @@ export namespace Prisma {
     name?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     create_at?: SortOrder
     update_at?: SortOrder
   }
@@ -14794,6 +14822,7 @@ export namespace Prisma {
     name?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     create_at?: SortOrder
     update_at?: SortOrder
   }
@@ -16320,6 +16349,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     subjectAssignments?: SubjectAssignmentCreateNestedManyWithoutTeacherInput
@@ -16331,6 +16361,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     subjectAssignments?: SubjectAssignmentUncheckedCreateNestedManyWithoutTeacherInput
@@ -16433,6 +16464,7 @@ export namespace Prisma {
     name?: StringFilter<"Teacher"> | string
     username?: StringFilter<"Teacher"> | string
     password?: StringFilter<"Teacher"> | string
+    role?: StringFilter<"Teacher"> | string
     create_at?: DateTimeFilter<"Teacher"> | Date | string
     update_at?: DateTimeFilter<"Teacher"> | Date | string
   }
@@ -16935,6 +16967,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
@@ -16946,6 +16979,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
@@ -17002,6 +17036,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUpdateManyWithoutAdvisorsNestedInput
@@ -17013,6 +17048,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUncheckedUpdateManyWithoutAdvisorsNestedInput
@@ -17175,6 +17211,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
@@ -17186,6 +17223,7 @@ export namespace Prisma {
     name: string
     username: string
     password: string
+    role?: string
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
@@ -17234,6 +17272,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUpdateManyWithoutAdvisorsNestedInput
@@ -17245,6 +17284,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUncheckedUpdateManyWithoutAdvisorsNestedInput
@@ -17588,6 +17628,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subjectAssignments?: SubjectAssignmentUpdateManyWithoutTeacherNestedInput
@@ -17599,6 +17640,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subjectAssignments?: SubjectAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
@@ -17610,6 +17652,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }

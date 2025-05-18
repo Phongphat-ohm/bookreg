@@ -13,6 +13,7 @@ model Teacher {
   name      String
   username  String   @unique
   password  String
+  role      String   @default("teacher")
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
 
