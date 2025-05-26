@@ -17,9 +17,8 @@ model Teacher {
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
 
-  advisingClasses    Class[]             @relation("Advisors")
-  subjectAssignments SubjectAssignment[]
-  teachingClasses    TeachingClass[]
+  advisingClasses     Class[]              @relation("Advisors")
+  teachingAssignments TeachingAssignment[]
 }
 
 model Class {
@@ -27,10 +26,42 @@ model Class {
   grade String
   name  String
 
-  advisors         Teacher[]       @relation("Advisors")
-  students         Student[]
-  subjectClasses   SubjectClass[]
-  teachingTeachers TeachingClass[]
+  advisors            Teacher[]            @relation("Advisors")
+  students            Student[]
+  subjectClasses      SubjectClass[]
+  teachingAssignments TeachingAssignment[]
+}
+
+model Subject {
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  grade       String
+  name        String
+  description String?
+
+  books               Book[]
+  subjectClasses      SubjectClass[]
+  registrations       BookRegistration[]
+  teachingAssignments TeachingAssignment[]
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model TeachingAssignment {
+  id Int @id @default(autoincrement())
+
+  teacher    Teacher @relation(fields: [teacher_id], references: [id])
+  teacher_id Int
+
+  subject    Subject @relation(fields: [subject_id], references: [id])
+  subject_id Int
+
+  class    Class @relation(fields: [class_id], references: [id])
+  class_id Int
+
+  // ป้องกันไม่ให้มีครูหลายคนสอนวิชาเดียวกันในห้องเดียวกัน
+  @@unique([subject_id, class_id])
 }
 
 model Student {
@@ -43,22 +74,6 @@ model Student {
   class    Class @relation(fields: [class_id], references: [id])
 
   registrations BookRegistration[]
-
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
-}
-
-model Subject {
-  id          Int     @id @default(autoincrement())
-  code        String  @unique
-  grade       String
-  name        String
-  description String?
-
-  books              Book[]
-  subjectAssignments SubjectAssignment[]
-  subjectClasses     SubjectClass[]
-  registrations      BookRegistration[]
 
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
@@ -82,33 +97,6 @@ model Book {
   update_at DateTime @updatedAt
 }
 
-model SubjectAssignment {
-  id         Int     @id @default(autoincrement())
-  teacher    Teacher @relation(fields: [teacher_id], references: [id])
-  teacher_id Int
-
-  subject    Subject @relation(fields: [subject_id], references: [id])
-  subject_id Int
-}
-
-model SubjectClass {
-  id         Int     @id @default(autoincrement())
-  subject    Subject @relation(fields: [subject_id], references: [id])
-  subject_id Int
-
-  class    Class @relation(fields: [class_id], references: [id])
-  class_id Int
-}
-
-model TeachingClass {
-  id         Int     @id @default(autoincrement())
-  teacher    Teacher @relation(fields: [teacher_id], references: [id])
-  teacher_id Int
-
-  class    Class @relation(fields: [class_id], references: [id])
-  class_id Int
-}
-
 model BookRegistration {
   id         Int     @id @default(autoincrement())
   student    Student @relation(fields: [student_id], references: [id])
@@ -125,9 +113,19 @@ model BookRegistration {
   registered_at DateTime @default(now())
 }
 
+model SubjectClass {
+  id         Int     @id @default(autoincrement())
+  subject    Subject @relation(fields: [subject_id], references: [id])
+  subject_id Int
+
+  class    Class @relation(fields: [class_id], references: [id])
+  class_id Int
+}
+
 model AcademicYear {
-  id   Int    @id @unique @default(autoincrement())
-  year String @unique
+  id     Int     @id @unique @default(autoincrement())
+  year   String  @unique
+  is_now Boolean @default(true)
 
   create_at DateTime @default(now())
   update_at DateTime @updatedAt

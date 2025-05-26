@@ -46,10 +46,9 @@ export async function GET(req: Request) {
                 username: true,
                 role: true,
                 advisingClasses: true,
-                subjectAssignments: true,
-                teachingClasses: true,
+                teachingAssignments: true,
                 create_at: true,
-                update_at: true
+                update_at: true,
             }
         })
 

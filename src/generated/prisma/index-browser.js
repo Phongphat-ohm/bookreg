@@ -133,22 +133,29 @@ exports.Prisma.ClassScalarFieldEnum = {
   name: 'name'
 };
 
-exports.Prisma.StudentScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  stu_code: 'stu_code',
-  password: 'password',
-  class_id: 'class_id',
-  create_at: 'create_at',
-  update_at: 'update_at'
-};
-
 exports.Prisma.SubjectScalarFieldEnum = {
   id: 'id',
   code: 'code',
   grade: 'grade',
   name: 'name',
   description: 'description',
+  create_at: 'create_at',
+  update_at: 'update_at'
+};
+
+exports.Prisma.TeachingAssignmentScalarFieldEnum = {
+  id: 'id',
+  teacher_id: 'teacher_id',
+  subject_id: 'subject_id',
+  class_id: 'class_id'
+};
+
+exports.Prisma.StudentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  stu_code: 'stu_code',
+  password: 'password',
+  class_id: 'class_id',
   create_at: 'create_at',
   update_at: 'update_at'
 };
@@ -164,24 +171,6 @@ exports.Prisma.BookScalarFieldEnum = {
   update_at: 'update_at'
 };
 
-exports.Prisma.SubjectAssignmentScalarFieldEnum = {
-  id: 'id',
-  teacher_id: 'teacher_id',
-  subject_id: 'subject_id'
-};
-
-exports.Prisma.SubjectClassScalarFieldEnum = {
-  id: 'id',
-  subject_id: 'subject_id',
-  class_id: 'class_id'
-};
-
-exports.Prisma.TeachingClassScalarFieldEnum = {
-  id: 'id',
-  teacher_id: 'teacher_id',
-  class_id: 'class_id'
-};
-
 exports.Prisma.BookRegistrationScalarFieldEnum = {
   id: 'id',
   student_id: 'student_id',
@@ -191,9 +180,16 @@ exports.Prisma.BookRegistrationScalarFieldEnum = {
   registered_at: 'registered_at'
 };
 
+exports.Prisma.SubjectClassScalarFieldEnum = {
+  id: 'id',
+  subject_id: 'subject_id',
+  class_id: 'class_id'
+};
+
 exports.Prisma.AcademicYearScalarFieldEnum = {
   id: 'id',
   year: 'year',
+  is_now: 'is_now',
   create_at: 'create_at',
   update_at: 'update_at'
 };
@@ -217,13 +213,12 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Teacher: 'Teacher',
   Class: 'Class',
-  Student: 'Student',
   Subject: 'Subject',
+  TeachingAssignment: 'TeachingAssignment',
+  Student: 'Student',
   Book: 'Book',
-  SubjectAssignment: 'SubjectAssignment',
-  SubjectClass: 'SubjectClass',
-  TeachingClass: 'TeachingClass',
   BookRegistration: 'BookRegistration',
+  SubjectClass: 'SubjectClass',
   AcademicYear: 'AcademicYear'
 };
 

@@ -7,7 +7,6 @@ import { useLoading } from "@/context/LoadindContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useTeacher } from "@/context/Teacher/TeacherDataContext";
-import { RiRestaurant2Fill } from "react-icons/ri";
 
 export default function Layout({ children }: { children?: ReactNode }) {
     const { isLoading, setLoading } = useLoading();

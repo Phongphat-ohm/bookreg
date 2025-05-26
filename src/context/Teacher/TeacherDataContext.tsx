@@ -8,8 +8,7 @@ export interface Teacher {
     username: string
     role: string
     advisingClasses: AdvisingClass[]
-    subjectAssignments: SubjectAssignment[]
-    teachingClasses: TeachingClass[]
+    teachingAssignments: TeachingAssignment[]
     create_at: string
     update_at: string
 }
@@ -20,17 +19,13 @@ export interface AdvisingClass {
     name: string
 }
 
-export interface SubjectAssignment {
+export interface TeachingAssignment {
     id: number
     teacher_id: number
     subject_id: number
-}
-
-export interface TeachingClass {
-    id: number
-    teacher_id: number
     class_id: number
 }
+
 
 
 type TeacherContextType = {
