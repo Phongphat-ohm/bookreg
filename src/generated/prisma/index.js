@@ -245,7 +245,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://phongphat:ohm331040@localhost:5432/bookreg?schema=public"
+        "value": "postgresql://neondb_owner:npg_r2otk9pSUhOz@ep-weathered-violet-a1iytyfv-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
       }
     }
   },

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaCalculator, FaPencil, FaTrash } from "react-icons/fa6";
 import { TeachingAssignment } from "./TeachingProp";
 
-export default function BookCard({ data }: { data: TeachingAssignment }) {
+export default function SubjectCard({ data }: { data: TeachingAssignment }) {
     return (
         <Link
             href={`/teacher/book/${data.subject.id}`}
