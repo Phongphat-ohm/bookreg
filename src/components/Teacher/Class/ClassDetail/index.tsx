@@ -13,7 +13,7 @@ export default function ClassDetail() {
     const get_class_detail = async () => {
         try {
 
-            const get_class_detail = await axios.get("/api/class?class_id=" + class_id);
+            const get_class_detail = await axios.get("/api/teacher/class?class_id=" + class_id);
             const data = get_class_detail.data;
 
             if (data.status !== 200) {

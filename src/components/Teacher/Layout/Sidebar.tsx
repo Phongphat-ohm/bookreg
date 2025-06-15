@@ -3,7 +3,7 @@ import { useTeacher } from "@/context/Teacher/TeacherDataContext";
 import { Button, Image } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaArrowRightFromBracket, FaBook, FaChalkboard, FaHouse, } from "react-icons/fa6";
+import { FaArrowRightFromBracket, FaBook, FaChalkboard, FaChartSimple, FaHouse, } from "react-icons/fa6";
 
 export default function Sidebar() {
     const { teacher } = useTeacher();
@@ -14,6 +14,11 @@ export default function Sidebar() {
             icon: <FaHouse />,
             name: "หน้าหลัก",
             link: "/teacher/home"
+        },
+        {
+            icon: <FaChartSimple />,
+            name: "รายงาน",
+            link: "/teacher/report"
         },
         {
             icon: <FaChalkboard />,
@@ -53,7 +58,7 @@ export default function Sidebar() {
                     </li>
                 ))}
                 <li>
-                    <Link href={"logout"}>
+                    <Link href={"/teacher/logout"}>
                         <Button startContent={<FaArrowRightFromBracket />} className="w-full" size="lg" variant="ghost" color={"danger"}>
                             ออกจากระบบ
                         </Button>

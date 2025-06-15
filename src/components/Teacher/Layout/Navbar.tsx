@@ -19,7 +19,7 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className="p-5 top-0 left-0 sticky">
+        <nav className="p-5 top-0 left-0 sticky z-20">
             <div className="flex justify-between items-center w-full bg-blue-900 shadow-md p-5 text-white">
                 <div className="text-sm">{dateTime}</div>
                 <Link href={"settings"} className="hover:text-gray-100 flex gap-2 items-center">

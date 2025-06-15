@@ -140,7 +140,8 @@ exports.Prisma.SubjectScalarFieldEnum = {
   name: 'name',
   description: 'description',
   create_at: 'create_at',
-  update_at: 'update_at'
+  update_at: 'update_at',
+  subject_group_id: 'subject_group_id'
 };
 
 exports.Prisma.TeachingAssignmentScalarFieldEnum = {
@@ -194,6 +195,12 @@ exports.Prisma.AcademicYearScalarFieldEnum = {
   update_at: 'update_at'
 };
 
+exports.Prisma.SubjectGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  header_id: 'header_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -219,7 +226,8 @@ exports.Prisma.ModelName = {
   Book: 'Book',
   BookRegistration: 'BookRegistration',
   SubjectClass: 'SubjectClass',
-  AcademicYear: 'AcademicYear'
+  AcademicYear: 'AcademicYear',
+  SubjectGroup: 'SubjectGroup'
 };
 
 /**

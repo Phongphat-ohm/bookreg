@@ -82,7 +82,6 @@ export default function StudentTable({ students, subject }: { students: Student[
                     <SelectItem startContent={<FaCircle className="text-green-500" />} key="registered">ลงทะเบียนแล้ว</SelectItem>
                     <SelectItem startContent={<FaCircle className="text-red-500" />} key="unregistered">ยังไม่ลงทะเบียน</SelectItem>
                 </Select>
-                <DowloadReport />
             </div>
 
             <Table
@@ -105,7 +104,7 @@ export default function StudentTable({ students, subject }: { students: Student[
                     <TableColumn>รหัสเรียน</TableColumn>
                     <TableColumn>ชื่อนักเรียน</TableColumn>
                     <TableColumn>ลงทะเบียนหนังสือ</TableColumn>
-                    <TableColumn>Actions</TableColumn>
+                    <TableColumn>ข้อมูล</TableColumn>
                 </TableHeader>
                 <TableBody items={items}>
                     {(item) => {

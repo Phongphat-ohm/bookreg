@@ -19,6 +19,7 @@ model Teacher {
 
   advisingClasses     Class[]              @relation("Advisors")
   teachingAssignments TeachingAssignment[]
+  SubjectGroup        SubjectGroup[]
 }
 
 model Class {
@@ -44,8 +45,10 @@ model Subject {
   registrations       BookRegistration[]
   teachingAssignments TeachingAssignment[]
 
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
+  create_at        DateTime      @default(now())
+  update_at        DateTime      @updatedAt
+  subject_group_id Int?
+  SubjectGroup     SubjectGroup? @relation(fields: [subject_group_id], references: [id])
 }
 
 model TeachingAssignment {
@@ -130,4 +133,12 @@ model AcademicYear {
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
   Book      Book[]
+}
+
+model SubjectGroup {
+  id        Int       @id @unique @default(autoincrement())
+  name      String
+  Subject   Subject[]
+  header_id Int
+  Teacher   Teacher   @relation(fields: [header_id], references: [id])
 }

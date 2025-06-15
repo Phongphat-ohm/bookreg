@@ -59,7 +59,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
                     </div>
                 )}
                 <Sidebar />
-                <div className="w-full relative">
+                <div className="w-full relative overflow-y-scroll max-h-screen">
                     <Navbar />
                     <div className="p-5 pt-3">
                         {children}
