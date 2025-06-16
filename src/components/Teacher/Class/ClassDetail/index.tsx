@@ -78,7 +78,7 @@ export default function ClassDetail() {
                                 </div>
                                 <div className="flex gap-2">
                                     <label className=" text-gray-500">จำนวนนักเรียน: </label>
-                                    <label className="text-gray-500">{classDetail?.class.students.length}</label>
+                                    <label className="text-gray-500">{classDetail?.class.students.length} คน</label>
                                 </div>
                                 <div className="flex gap-2">
                                     <label className=" text-gray-500">ที่ปรึกษา: </label>
