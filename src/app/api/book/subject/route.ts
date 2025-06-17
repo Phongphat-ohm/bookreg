@@ -19,7 +19,11 @@ export async function GET(req: Request) {
                 id: Number(subject_id)
             },
             include: {
-                books: true
+                books: {
+                    include: {
+                        AcademicYear: true
+                    }
+                }
             }
         })
 
