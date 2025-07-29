@@ -162,6 +162,7 @@ export default function GetBookView() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex gap-2 items-center">
+                                            <EditModal book={book} reloadBook={get_book_in_subject} />
                                             <Button onPress={() => {
                                                 DeleteBook(book.id).then(r => {
                                                     if (r === true) {
@@ -174,7 +175,6 @@ export default function GetBookView() {
                                             }} size="sm" isIconOnly color="danger">
                                                 <FaTrash />
                                             </Button>
-                                            <EditModal book={book} reloadBook={get_book_in_subject} />
                                         </div>
                                     </TableCell>
                                 </TableRow>

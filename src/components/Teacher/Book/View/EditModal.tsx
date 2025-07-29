@@ -115,7 +115,7 @@ export default function EditModal({ book, reloadBook }: { book: Book, reloadBook
     return (
         <>
             <Button size="sm" onPress={onOpen} isIconOnly color="warning">
-                <FaPencil />
+                <FaPencil className="text-white" />
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
                 <ModalContent>
