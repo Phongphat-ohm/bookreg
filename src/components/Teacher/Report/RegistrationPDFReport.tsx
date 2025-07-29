@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     col2: { width: '12%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', textAlign: 'center', alignItems: "center", fontSize: 8 },
     col3: { width: '25%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', alignItems: "center", fontSize: 8 },
     col4: { width: '12%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', textAlign: 'center', alignItems: "center", fontSize: 8 },
-    col5: { width: '15%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', textAlign: 'center', alignItems: "center", fontSize: 8 },
+    col5: { width: '35%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', textAlign: 'center', alignItems: "center", fontSize: 8 },
     col6: { width: '20%', padding: 1, borderRightWidth: 0.5, borderColor: '#000', fontSize: 8 },
     col7: { width: '11%', padding: 1, textAlign: 'center', fontSize: 8 },
     summary: {
@@ -124,8 +124,7 @@ const RegistrationPDFReport = ({ reportData, customHeader, selectedBookName }: P
             <Text style={styles.col1}>ที่</Text>
             <Text style={styles.col2}>รหัสนักเรียน</Text>
             <Text style={styles.col3}>ชื่อ-สกุล</Text>
-            <Text style={styles.col5}>รหัสหนังสือ</Text>
-            <Text style={styles.col6}>ชื่อหนังสือ</Text>
+            <Text style={styles.col5}>รหัสลงทะเบียนหนังสือ</Text>
             <Text style={styles.col7}>วันที่ลงทะเบียน</Text>
         </View>
     );
@@ -150,9 +149,6 @@ const RegistrationPDFReport = ({ reportData, customHeader, selectedBookName }: P
                                     <Text style={styles.col3}>{student.name}</Text>
                                     <Text style={styles.col5}>
                                         {student.registrations.length > 0 ? student.registrations[0].book_code : 'ยังไม่ลงทะเบียน'}
-                                    </Text>
-                                    <Text style={styles.col6}>
-                                        {student.registrations.length > 0 ? student.registrations[0].book_name : 'ยังไม่ลงทะเบียน'}
                                     </Text>
                                     <Text style={styles.col7}>
                                         {student.registrations.length > 0
