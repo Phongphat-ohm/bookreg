@@ -3,9 +3,10 @@ import { addToast, Button, Table, Input, Spinner, TableBody, TableCell, TableCol
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaBook, FaPencil, FaPlus, FaSpinner, FaTrash } from "react-icons/fa6";
+import { FaBook, FaCircle, FaPencil, FaPlus, FaSpinner, FaTrash } from "react-icons/fa6";
 import Barcode from "react-barcode";
 import DeleteBook from "@/functions/books/DeleteBook";
+import EditModal from "./EditModal";
 
 export interface Data {
     id: number;
@@ -113,11 +114,11 @@ export default function GetBookView() {
                 </div>
             </div>
             <div className="mt-5">
-                <div className="w-full flex items-end gap-6">
+                <div className="w-full flex items-end gap-3">
                     <Button color="primary" isIconOnly onPress={get_book_in_subject}>
                         <FaSpinner className={`${loading ? "animate-spin" : ""}`} />
                     </Button>
-                    <Button color="success" startContent={<FaPlus />}>
+                    <Button color="success" startContent={<FaPlus className="text-xl" />}>
                         เพิ่มหนังสือ
                     </Button>
                     <Input
@@ -154,7 +155,11 @@ export default function GetBookView() {
                                     </TableCell>
                                     <TableCell>{book.name}</TableCell>
                                     <TableCell>{book.description || "-"}</TableCell>
-                                    <TableCell>{book.AcademicYear.year}</TableCell>
+                                    <TableCell>
+                                        <div className="flex gap-1 items-center">
+                                            {book.AcademicYear.is_now && (<FaCircle className="text-green-500" />)}{book.AcademicYear.year}
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <div className="flex gap-2 items-center">
                                             <Button onPress={() => {
@@ -169,9 +174,7 @@ export default function GetBookView() {
                                             }} size="sm" isIconOnly color="danger">
                                                 <FaTrash />
                                             </Button>
-                                            <Button size="sm" isIconOnly color="warning">
-                                                <FaPencil />
-                                            </Button>
+                                            <EditModal book={book} reloadBook={get_book_in_subject} />
                                         </div>
                                     </TableCell>
                                 </TableRow>
