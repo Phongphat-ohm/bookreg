@@ -1,12 +1,13 @@
 "use client";
 import { addToast, Button, Table, Input, Spinner, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBook, FaCircle, FaPencil, FaPlus, FaSpinner, FaTrash } from "react-icons/fa6";
 import Barcode from "react-barcode";
 import DeleteBook from "@/functions/books/DeleteBook";
 import EditModal from "./EditModal";
+import Link from "next/link";
 
 export interface Data {
     id: number;
@@ -118,9 +119,11 @@ export default function GetBookView() {
                     <Button color="primary" isIconOnly onPress={get_book_in_subject}>
                         <FaSpinner className={`${loading ? "animate-spin" : ""}`} />
                     </Button>
-                    <Button color="success" startContent={<FaPlus className="text-xl" />}>
-                        เพิ่มหนังสือ
-                    </Button>
+                    <Link href={subject_id + "/add"}>
+                        <Button color="success" startContent={<FaPlus />}>
+                            เพิ่มหนังสือ
+                        </Button>
+                    </Link>
                     <Input
                         label="ค้นหาหนังสือ"
                         type="search"
