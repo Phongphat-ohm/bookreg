@@ -105,7 +105,7 @@ model BookRegistration {
   student    Student @relation(fields: [student_id], references: [id])
   student_id Int
 
-  book    Book @relation(fields: [book_id], references: [id])
+  book    Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
   book_id Int
 
   subject    Subject @relation(fields: [subject_id], references: [id])

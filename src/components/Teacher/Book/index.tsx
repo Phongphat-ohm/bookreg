@@ -1,7 +1,7 @@
 "use client";
 import { addToast, Button, Input, Spinner } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaSpinner } from "react-icons/fa6";
 import SubjectCard from "./SubjectCard";
 import Link from "next/link";
 import axios from "axios";
@@ -13,6 +13,7 @@ export default function Book() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const get_teaching_subject = async () => {
+        setLoading(true);
         try {
             const config = {
                 method: "get",
@@ -58,11 +59,14 @@ export default function Book() {
     return (
         <div className="px-4">
             <div className="flex gap-3 w-full items-end">
-                <Link href={"book/new"}>
+                {/* <Link href={"book/new"}>
                     <Button startContent={<FaPlus />} color="success">
                         เพิ่มหนังสือ
                     </Button>
-                </Link>
+                </Link> */}
+                <Button color="primary" onPress={get_teaching_subject} isIconOnly>
+                    <FaSpinner className={`${loading && "animate-spin"}`} />
+                </Button>
                 <Input
                     type="search"
                     placeholder="ค้นหาวิชา (ชื่อหรือรหัส)..."

@@ -10,6 +10,8 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { book_id } = body;
 
+        console.log(book_id)
+
         const check_signin = await CheckSignin();
 
         if (check_signin.status !== 200) {

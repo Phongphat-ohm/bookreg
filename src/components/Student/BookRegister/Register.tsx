@@ -243,7 +243,7 @@ export default function RegisterBookSystem() {
                 ) : (
                     <div className="p-5 mt-3">
                         <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-green-500">
-                            <label className="text-gray-500">กรุณาเขียนรหัสลงทะเบียนที่หน้าแรกสุดมุมขวาบนของหนังสือ</label>
+                            <label className="text-gray-500 text-center">กรุณาเขียนรหัสลงทะเบียนที่หน้าแรกสุดมุมขวาบนของหนังสือ</label>
                             {showRegisterCode ? (
                                 <div className="flex flex-col gap-2">
                                     <table className="border border-gray-200 rounded-md shadow-sm overflow-hidden mt-2">
@@ -273,7 +273,7 @@ export default function RegisterBookSystem() {
                                     </Link>
                                 </div>
                             ) : (
-                                <Button color="warning" className="w-full" onPress={() => { setShowRegisterCode(true) }}>แสดงรหัสลงทะเบียน</Button>
+                                <Button color="warning" className="w-full mt-3" onPress={() => { setShowRegisterCode(true) }}>แสดงรหัสลงทะเบียน</Button>
                             )}
                         </div>
                     </div>

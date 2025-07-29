@@ -11,8 +11,19 @@ import {
 } from "@heroui/react";
 import { FaBarcode } from "react-icons/fa6";
 
-export default function BarcodeScanner() {
+interface BarcodeScannerProps {
+    onScan?: (barcode: string) => void;
+}
+
+export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const handleScanResult = (result: string) => {
+        if (onScan) {
+            onScan(result);
+        }
+        onOpenChange(); // ปิด modal
+    };
 
     return (
         <>
@@ -25,9 +36,13 @@ export default function BarcodeScanner() {
                         <>
                             <ModalHeader className="flex flex-col gap-1">แสกนรหัสหลังหนังสือ</ModalHeader>
                             <ModalBody>
-                                
+                                <ScanCode onResult={handleScanResult} />
                             </ModalBody>
-                            <ModalFooter></ModalFooter>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    ปิด
+                                </Button>
+                            </ModalFooter>
                         </>
                     )}
                 </ModalContent>
