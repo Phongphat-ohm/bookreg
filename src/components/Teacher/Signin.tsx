@@ -48,7 +48,7 @@ export default function Signin() {
 
                 setTimeout(() => {
                     if (req_data.role === "admin") {
-                        router.push("/teacher/admin");
+                        router.push("/admin");
                     } else {
                         router.push("/teacher/home");
                     }
