@@ -1,7 +1,7 @@
 "use client";
-import { addToast, Button, Input } from "@heroui/react";
+import { addToast, Button, Input, Card, CardBody, CardHeader } from "@heroui/react";
 import BtmNavbar from "../Navigation/BtmNavbar";
-import { FaChevronLeft, FaMagnifyingGlass } from "react-icons/fa6";
+import { FaChevronLeft, FaMagnifyingGlass, FaBook } from "react-icons/fa6";
 import HistoryTable, { RegisterBook } from "./HistoryTable";
 import Link from "next/link";
 import axios from "axios";
@@ -61,32 +61,74 @@ export default function HistoryRegister() {
     }, [])
 
     return (
-        <>
-            <div className="h-screen w-full bg-gray-100">
-                <BtmNavbar />
-                <div className="w-full flex gap-2 items-center justify-between p-4 bg-gray-50 shadow sticky top-0 left-0">
-                    <div className="flex gap-3 items-center">
-                        <Link href={"/student/home"}>
-                            <Button isIconOnly size="sm" radius="full" variant="shadow">
-                                <FaChevronLeft />
-                            </Button>
-                        </Link>
-                        <h1 className="text-lg text-blue-500">
-                            ค้นหาหนังสือ
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+            <BtmNavbar />
+
+            {/* Header */}
+            <div className="w-full flex gap-2 items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 left-0 z-10">
+                <div className="flex gap-3 items-center">
+                    <Link href={"/student/home"}>
+                        <Button isIconOnly size="sm" radius="full" variant="shadow" color="primary">
+                            <FaChevronLeft />
+                        </Button>
+                    </Link>
+                    <div>
+                        <h1 className="text-xl font-bold text-gray-800">
+                            หนังสือของฉัน
                         </h1>
-                    </div>
-                    <img src={"/images/logo.png"} className="w-20" />
-                </div>
-                <div className="p-5">
-                    <div className="w-full flex gap-3 items-end">
-                        <Input value={searchText} onChange={ev => setSearchText(ev.target.value)} label="ค้นหา" labelPlacement="outside" variant="bordered" placeholder="ค้นหาจาก ชื่อหนังสือ ชื่อวิชา รหัสหนังสือ" />
-                        <BarcodeScanner />
-                    </div>
-                    <div className="mt-2">
-                        <HistoryTable isLoading={isLoading} books={books} searchText={searchText} />
+                        <p className="text-sm text-gray-500">ค้นหาและดูรายการหนังสือที่ลงทะเบียน</p>
                     </div>
                 </div>
+                <img src={"/images/logo.png"} className="w-16 h-16 object-contain" />
             </div>
-        </>
+
+            <div className="p-4 space-y-6">
+                {/* Search Card */}
+                <Card className="shadow-lg border-0">
+                    <CardHeader className="pb-2">
+                        <div className="flex items-center gap-2">
+                            <FaMagnifyingGlass className="text-blue-500 text-lg" />
+                            <h2 className="text-lg font-semibold text-gray-800">ค้นหาหนังสือ</h2>
+                        </div>
+                    </CardHeader>
+                    <CardBody className="pt-2">
+                        <div className="flex gap-3 items-end">
+                            <Input
+                                value={searchText}
+                                onChange={ev => setSearchText(ev.target.value)}
+                                label="ค้นหา"
+                                labelPlacement="outside"
+                                variant="bordered"
+                                placeholder="ค้นหาจาก ชื่อหนังสือ ชื่อวิชา รหัสหนังสือ"
+                                startContent={<FaMagnifyingGlass className="text-gray-400" />}
+                                className="flex-1"
+                            />
+                            <BarcodeScanner />
+                        </div>
+                    </CardBody>
+                </Card>
+
+                {/* Books List Card */}
+                <Card className="shadow-lg border-0">
+                    <CardHeader className="pb-2">
+                        <div className="flex items-center gap-2">
+                            <FaBook className="text-green-500 text-lg" />
+                            <h2 className="text-lg font-semibold text-gray-800">รายการหนังสือ</h2>
+                            <div className="ml-auto">
+                                <span className="text-sm text-gray-500">
+                                    ทั้งหมด {books.length} เล่ม
+                                </span>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardBody className="pt-2">
+                        <HistoryTable isLoading={isLoading} books={books} searchText={searchText} />
+                    </CardBody>
+                </Card>
+
+                {/* Footer Space */}
+                <div className="h-20"></div>
+            </div>
+        </div>
     )
 }

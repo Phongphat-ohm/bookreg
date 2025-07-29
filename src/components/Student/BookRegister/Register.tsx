@@ -1,12 +1,12 @@
 "use client";
 import BtmNavbar from "@/components/Student/Navigation/BtmNavbar";
 import { useUser } from "@/context/Student/UserDataContext";
-import { addToast, Button, Spinner } from "@heroui/react";
+import { addToast, Button, Spinner, Card, CardBody, CardHeader, Divider, Chip } from "@heroui/react";
 import axios from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaChevronLeft } from "react-icons/fa6";
+import { FaChevronLeft, FaUser, FaBook, FaCircleCheck, FaEye, FaHouse, FaBarcode, FaGraduationCap } from "react-icons/fa6";
 
 export interface GetBookProp {
     id: number
@@ -154,131 +154,268 @@ export default function RegisterBookSystem() {
     }
 
     return (
-        <>
-            <div className="min-h-screen w-full bg-gray-100">
-                <BtmNavbar />
-                <div className="w-full flex gap-2 items-center justify-between p-4 bg-gray-50 shadow sticky top-0 left-0">
-                    <div className="flex gap-3 items-center">
-                        <Link href={"/student/register"}>
-                            <Button isIconOnly size="sm" radius="full" variant="shadow">
-                                <FaChevronLeft />
-                            </Button>
-                        </Link>
-                        <h1 className="text-lg text-blue-500">
-                            ยืนยันการลงทะเบียน
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+            <BtmNavbar />
+            
+            {/* Header */}
+            <div className="w-full flex gap-2 items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 left-0 z-10">
+                <div className="flex gap-3 items-center">
+                    <Link href={"/student/register"}>
+                        <Button isIconOnly size="sm" radius="full" variant="shadow" color="primary">
+                            <FaChevronLeft />
+                        </Button>
+                    </Link>
+                    <div>
+                        <h1 className="text-xl font-bold text-gray-800">
+                            {registerData ? "ลงทะเบียนสำเร็จ" : "ยืนยันการลงทะเบียน"}
                         </h1>
+                        <p className="text-sm text-gray-500">
+                            {registerData ? "รหัสลงทะเบียนของคุณ" : "ตรวจสอบข้อมูลก่อนลงทะเบียน"}
+                        </p>
                     </div>
-                    <img src={"/images/logo.png"} className="w-20" />
                 </div>
+                <img src={"/images/logo.png"} className="w-16 h-16 object-contain" />
+            </div>
+
+            <div className="p-4 space-y-6">
                 {registerData === null ? (
                     <>
                         {book === null ? (
-                            <div className="p-5">
-                                <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-blue-500 h-48 flex items-center justify-center">
-                                    <Spinner />
-                                </div>
-                                <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-violet-500 mt-3 h-80  flex items-center justify-center">
-                                    <Spinner />
-                                </div>
-                                {/* <div className="mt-3 flex justify-center items-center gap-3 w-full">
-                                    <Button onPress={confirm_register} color="primary">ลงทะเบียน</Button>
-                                    <Link href={"/student/register"}>
-                                        <Button color="danger">ยกเลิก</Button>
-                                    </Link>
-                                </div> */}
+                            <div className="space-y-4">
+                                {/* Loading Student Info */}
+                                <Card className="shadow-lg border-0">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <FaUser className="text-blue-500 text-lg" />
+                                            <h2 className="text-lg font-semibold text-gray-800">ข้อมูลนักเรียน</h2>
+                                        </div>
+                                    </CardHeader>
+                                    <CardBody className="pt-2">
+                                        <div className="h-24 flex items-center justify-center">
+                                            <Spinner size="lg" color="primary" />
+                                        </div>
+                                    </CardBody>
+                                </Card>
+
+                                {/* Loading Book Info */}
+                                <Card className="shadow-lg border-0">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <FaBook className="text-purple-500 text-lg" />
+                                            <h2 className="text-lg font-semibold text-gray-800">ข้อมูลหนังสือ</h2>
+                                        </div>
+                                    </CardHeader>
+                                    <CardBody className="pt-2">
+                                        <div className="h-48 flex items-center justify-center">
+                                            <Spinner size="lg" color="primary" />
+                                        </div>
+                                    </CardBody>
+                                </Card>
                             </div>
                         ) : (
-                            <div className="p-5">
-                                <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-blue-500">
-                                    <div className="text-gray-500 text-sm">ข้อมูลนักเรียน</div>
-                                    <table className="border border-gray-200 rounded-md shadow-sm overflow-hidden mt-2 w-full">
-                                        <tbody>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">รหัสนักเรียน</td>
-                                                <td className="p-3 border-b border-gray-200">{user?.stu_code}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700">ชื่อ</td>
-                                                <td className="p-3">{user?.name}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-violet-500 mt-3">
-                                    <div className="text-gray-500 text-sm">ข้อมูลหนังสือ</div>
-                                    <table className="border border-gray-200 rounded-md shadow-sm overflow-hidden mt-2 w-full">
-                                        <tbody>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">รหัสวิชา</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.subject.code}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">ชื่อวิชา</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.subject.name}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">ระดับชั้น</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.subject.grade}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">รหัสหนังสือ</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.barcode}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">ชื่อหนังสือ</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.name}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="mt-3 flex justify-center items-center gap-3 w-full">
-                                    <Button onPress={confirm_register} color="primary">ลงทะเบียน</Button>
+                            <div className="space-y-6">
+                                {/* Student Info Card */}
+                                <Card className="shadow-lg border-0">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <FaUser className="text-blue-500 text-lg" />
+                                            <h2 className="text-lg font-semibold text-gray-800">ข้อมูลนักเรียน</h2>
+                                        </div>
+                                    </CardHeader>
+                                    <CardBody className="pt-2">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-2 rounded-lg bg-blue-100">
+                                                    <FaUser className="text-blue-600 text-sm" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-gray-500">รหัสนักเรียน</p>
+                                                    <p className="font-semibold text-gray-800">{user?.stu_code}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-2 rounded-lg bg-green-100">
+                                                    <FaGraduationCap className="text-green-600 text-sm" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-gray-500">ชื่อ-นามสกุล</p>
+                                                    <p className="font-semibold text-gray-800">{user?.name}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+
+                                {/* Book Info Card */}
+                                <Card className="shadow-lg border-0">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <FaBook className="text-purple-500 text-lg" />
+                                            <h2 className="text-lg font-semibold text-gray-800">ข้อมูลหนังสือ</h2>
+                                        </div>
+                                    </CardHeader>
+                                    <CardBody className="pt-2">
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs text-gray-500">รหัสวิชา:</span>
+                                                        <Chip size="sm" color="primary" variant="flat">
+                                                            {book?.subject.code}
+                                                        </Chip>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs text-gray-500">ระดับชั้น:</span>
+                                                        <Chip size="sm" color="secondary" variant="flat">
+                                                            ม.{book?.subject.grade}
+                                                        </Chip>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <p className="text-xs text-gray-500">ชื่อวิชา</p>
+                                                    <p className="font-semibold text-gray-800">{book?.subject.name}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <Divider />
+                                            
+                                            <div className="space-y-3">
+                                                <div className="flex items-center gap-3">
+                                                    <FaBarcode className="text-gray-400" />
+                                                    <div>
+                                                        <p className="text-xs text-gray-500">รหัสหนังสือ</p>
+                                                        <p className="font-mono text-sm font-semibold text-gray-800">{book?.barcode}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <FaBook className="text-gray-400" />
+                                                    <div>
+                                                        <p className="text-xs text-gray-500">ชื่อหนังสือ</p>
+                                                        <p className="font-semibold text-gray-800">{book?.name}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+
+                                {/* Action Buttons */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Button 
+                                        onPress={confirm_register} 
+                                        color="primary" 
+                                        size="lg"
+                                        variant="shadow"
+                                        className="font-semibold"
+                                        startContent={<FaCircleCheck />}
+                                    >
+                                        ยืนยันลงทะเบียน
+                                    </Button>
                                     <Link href={"/student/register"}>
-                                        <Button color="danger">ยกเลิก</Button>
+                                        <Button 
+                                            color="danger" 
+                                            variant="bordered"
+                                            size="lg"
+                                            className="w-full font-semibold"
+                                        >
+                                            ยกเลิก
+                                        </Button>
                                     </Link>
                                 </div>
                             </div>
                         )}
                     </>
                 ) : (
-                    <div className="p-5 mt-3">
-                        <div className="p-5 bg-white rounded-lg shadow-xl border-l-4 border-green-500">
-                            <label className="text-gray-500 text-center">กรุณาเขียนรหัสลงทะเบียนที่หน้าแรกสุดมุมขวาบนของหนังสือ</label>
-                            {showRegisterCode ? (
-                                <div className="flex flex-col gap-2">
-                                    <table className="border border-gray-200 rounded-md shadow-sm overflow-hidden mt-2">
-                                        <tbody>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">ชื่อวิชา</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.subject.code}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">รหัสวิชา</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.subject.name}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">ชื่อหนังสือ</td>
-                                                <td className="p-3 border-b border-gray-200">{book?.name}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-medium text-gray-700 border-b border-gray-200">รหัสลงทะเบียน</td>
-                                                <td className="p-3 border-b border-gray-200 text-red-500 font-bold">{registerData.register_code}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <Link href={"/student/home"}>
-                                        <Button color="success" className="w-full">
-                                            สำเร็จ
-                                        </Button>
-                                    </Link>
+                    <div className="space-y-6">
+                        {/* Success Card */}
+                        <Card className="shadow-lg border-0 bg-gradient-to-r from-green-500 to-emerald-600">
+                            <CardBody className="p-6 text-center">
+                                <div className="flex flex-col items-center gap-4">
+                                    <div className="p-4 rounded-full bg-white/20">
+                                        <FaCircleCheck className="text-white text-3xl" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-white mb-2">ลงทะเบียนสำเร็จ!</h2>
+                                        <p className="text-white/90 text-sm">
+                                            กรุณาเขียนรหัสลงทะเบียนที่หน้าแรกสุด<br />มุมขวาบนของหนังสือ
+                                        </p>
+                                    </div>
                                 </div>
-                            ) : (
-                                <Button color="warning" className="w-full mt-3" onPress={() => { setShowRegisterCode(true) }}>แสดงรหัสลงทะเบียน</Button>
-                            )}
-                        </div>
+                            </CardBody>
+                        </Card>
+
+                        {/* Registration Code Card */}
+                        <Card className="shadow-lg border-0">
+                            <CardHeader className="text-center pb-2">
+                                <h3 className="text-lg font-semibold text-gray-800 w-full">รหัสลงทะเบียน</h3>
+                            </CardHeader>
+                            <CardBody className="pt-2">
+                                {showRegisterCode ? (
+                                    <div className="space-y-4">
+                                        <div className="text-center p-6 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border border-red-200">
+                                            <p className="text-xs text-gray-600 mb-2">รหัสลงทะเบียนของคุณ</p>
+                                            <p className="text-3xl font-bold text-red-600 font-mono tracking-wider">
+                                                {registerData.register_code}
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+                                            <div className="grid grid-cols-2 gap-3 text-sm">
+                                                <div>
+                                                    <span className="text-gray-500">รหัสวิชา:</span>
+                                                    <p className="font-semibold">{book?.subject.code}</p>
+                                                </div>
+                                                <div>
+                                                    <span className="text-gray-500">ชื่อวิชา:</span>
+                                                    <p className="font-semibold">{book?.subject.name}</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span className="text-gray-500 text-sm">ชื่อหนังสือ:</span>
+                                                <p className="font-semibold">{book?.name}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <Link href={"/student/home"}>
+                                            <Button 
+                                                color="success" 
+                                                className="w-full" 
+                                                size="lg"
+                                                variant="shadow"
+                                                startContent={<FaHouse />}
+                                            >
+                                                กลับหน้าหลัก
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className="text-center space-y-4">
+                                        <div className="p-6">
+                                            <FaEye className="text-4xl text-gray-400 mx-auto mb-3" />
+                                            <p className="text-gray-600 text-sm">
+                                                กดปุ่มด้านล่างเพื่อแสดงรหัสลงทะเบียน
+                                            </p>
+                                        </div>
+                                        <Button 
+                                            color="warning" 
+                                            className="w-full" 
+                                            size="lg"
+                                            variant="shadow"
+                                            onPress={() => setShowRegisterCode(true)}
+                                            startContent={<FaEye />}
+                                        >
+                                            แสดงรหัสลงทะเบียน
+                                        </Button>
+                                    </div>
+                                )}
+                            </CardBody>
+                        </Card>
                     </div>
                 )}
-            </div >
-        </>
+
+                {/* Footer Space */}
+                <div className="h-20"></div>
+            </div>
+        </div>
     )
 }

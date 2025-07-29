@@ -51,19 +51,29 @@ export default function BtmNavbar() {
                 </div>
             )}
             <div className="fixed bottom-0 left-0 z-40 w-full max-sm:block hidden">
-                <div className="w-full bg-white shadow-md px-3 py-3 flex justify-around items-center rounded-t-2xl border-t border-gray-200">
+                <div className="w-full bg-white/95 backdrop-blur-sm shadow-2xl px-4 py-3 flex justify-around items-center rounded-t-3xl border-t border-gray-100">
                     {navItems.map((item, idx) =>
                         item.isCenter ? (
-                            <Link href={item.link} key={idx} className="relative flex flex-col items-center -mt-10">
-                                <button className="flex items-center justify-center bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
+                            <Link href={item.link} key={idx} className="relative flex flex-col items-center -mt-12">
+                                <button className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white w-16 h-16 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border-4 border-white">
                                     <FaPlus className="text-2xl" />
                                 </button>
-                                <span className="text-sm mt-1 text-blue-600 font-medium">ลงทะเบียนใหม่</span>
+                                <span className="text-xs mt-2 text-blue-600 font-semibold">ลงทะเบียน</span>
                             </Link>
                         ) : (
-                            <Link href={item.link} key={idx} className={`flex flex-col items-center ${path == item.link ? "text-blue-700" : "text-gray-500"} transition-all duration-200 cursor-pointer`}>
-                                <item.icon className="text-xl" />
-                                <span className="text-xs mt-1">{item.label}</span>
+                            <Link href={item.link} key={idx} className={`flex flex-col items-center p-2 rounded-xl transition-all duration-300 ${
+                                path === item.link 
+                                    ? "text-blue-600 bg-blue-50 scale-105" 
+                                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                            }`}>
+                                <div className={`p-2 rounded-lg transition-all duration-300 ${
+                                    path === item.link 
+                                        ? "bg-blue-100" 
+                                        : "bg-transparent"
+                                }`}>
+                                    <item.icon className="text-xl" />
+                                </div>
+                                <span className="text-xs mt-1 font-medium">{item.label}</span>
                             </Link>
                         )
                     )}
