@@ -3,7 +3,6 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-// GET - ดึงรายการครูที่สอนในกลุ่มสาระ
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -19,19 +18,22 @@ export async function GET(
             });
         }
 
-        // ตรวจสอบว่ากลุ่มสาระมีอยู่จริง
         const subjectGroup = await prisma.subjectGroup.findUnique({
             where: { id },
             include: {
-                Teacher: {
-                    select: {
-                        id: true,
-                        name: true,
-                        username: true,
-                        role: true
+                members: {
+                    include: {
+                        teacher: {
+                            select: {
+                                id: true,
+                                name: true,
+                                username: true,
+                                role: true
+                            }
+                        }
                     }
                 },
-                Subject: {
+                subjects: {
                     include: {
                         teachingAssignments: {
                             include: {
@@ -72,23 +74,24 @@ export async function GET(
             });
         }
 
-        // จัดกลุ่มข้อมูลครูและวิชาที่สอน
         const teacherMap = new Map();
 
-        // เพิ่มหัวหน้ากลุ่มสาระ
-        teacherMap.set(subjectGroup.Teacher.id, {
-            teacher: subjectGroup.Teacher,
-            isHead: true,
-            subjects: [],
-            totalSubjects: 0,
-            totalClasses: 0
+        // เพิ่มครูใน members ทั้งหมด
+        subjectGroup.members.forEach(member => {
+            teacherMap.set(member.teacher.id, {
+                teacher: member.teacher,
+                isHead: member.role === "head", // ใช้ role จาก SubjectGroupMembership
+                subjects: [],
+                totalSubjects: 0,
+                totalClasses: 0
+            });
         });
 
-        // เพิ่มครูที่สอนในกลุ่มสาระ
-        subjectGroup.Subject.forEach(subject => {
+        // เพิ่มข้อมูลการสอนของครู
+        subjectGroup.subjects.forEach(subject => {
             subject.teachingAssignments.forEach(assignment => {
                 const teacherId = assignment.teacher.id;
-                
+
                 if (!teacherMap.has(teacherId)) {
                     teacherMap.set(teacherId, {
                         teacher: assignment.teacher,
@@ -100,10 +103,9 @@ export async function GET(
                 }
 
                 const teacherData = teacherMap.get(teacherId);
-                
-                // ตรวจสอบว่ามีวิชานี้แล้วหรือไม่
+
                 let subjectEntry = teacherData.subjects.find((s: any) => s.subject.id === subject.id);
-                
+
                 if (!subjectEntry) {
                     subjectEntry = {
                         subject: {
@@ -117,21 +119,21 @@ export async function GET(
                     teacherData.subjects.push(subjectEntry);
                 }
 
-                // เพิ่มห้องเรียน
                 if (!subjectEntry.classes.find((c: any) => c.id === assignment.class.id)) {
                     subjectEntry.classes.push(assignment.class);
                 }
             });
         });
 
-        // คำนวณสถิติ
         teacherMap.forEach(teacherData => {
             teacherData.totalSubjects = teacherData.subjects.length;
-            teacherData.totalClasses = teacherData.subjects.reduce((total: number, s: any) => total + s.classes.length, 0);
+            teacherData.totalClasses = teacherData.subjects.reduce(
+                (total: number, s: any) => total + s.classes.length,
+                0
+            );
         });
 
         const teachers = Array.from(teacherMap.values()).sort((a: any, b: any) => {
-            // หัวหน้ากลุ่มสาระขึ้นก่อน
             if (a.isHead) return -1;
             if (b.isHead) return 1;
             return a.teacher.name.localeCompare(b.teacher.name);
@@ -145,11 +147,10 @@ export async function GET(
                     id: subjectGroup.id,
                     name: subjectGroup.name
                 },
-                teachers: teachers,
+                teachers,
                 totalTeachers: teachers.length
             }
         });
-
     } catch (error) {
         console.error("Error fetching teachers in subject group:", error);
         return NextResponse.json({
