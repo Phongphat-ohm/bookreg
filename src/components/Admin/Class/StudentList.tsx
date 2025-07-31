@@ -22,10 +22,11 @@ import {
     addToast
 } from "@heroui/react";
 import { useState, useMemo } from "react";
-import { Users, Search, Plus, MoreVertical, Edit, Trash2, UserPlus, Upload, CheckSquare, Square } from "lucide-react";
+import { Users, Search, Plus, MoreVertical, Edit, Trash2, UserPlus, Upload, Download } from "lucide-react";
 import EditStudentModal from "./EditStudentModal";
 import AddStudentModal from "./AddStudentModal";
 import ImportStudentsModal from "./ImportStudentsModal";
+import ExportStudentsModal from "./ExportStudentsModal";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -40,9 +41,10 @@ interface StudentListProps {
     classId: number;
     students: Student[];
     onUpdate: () => void;
+    className?: string;
 }
 
-export default function StudentList({ classId, students, onUpdate }: StudentListProps) {
+export default function StudentList({ classId, students, onUpdate, className }: StudentListProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [page, setPage] = useState(1);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -52,12 +54,14 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
     const [isDeleting, setIsDeleting] = useState<number | null>(null);
     const [selectedStudents, setSelectedStudents] = useState<Set<number>>(new Set());
     const [isBulkDeleting, setIsBulkDeleting] = useState(false);
-    
+    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+    const [exportType, setExportType] = useState<'all' | 'selected'>('all');
+
     const rowsPerPage = 10;
 
     const filteredStudents = useMemo(() => {
         if (!searchTerm) return students;
-        
+
         return students.filter(student =>
             student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             student.stu_code.toLowerCase().includes(searchTerm.toLowerCase())
@@ -114,7 +118,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
 
         try {
             setIsDeleting(student.id);
-            
+
             // Show loading
             Swal.fire({
                 title: 'กำลังลบ...',
@@ -128,7 +132,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
             });
 
             const response = await axios.delete(`/api/admin/students/${student.id}`);
-            
+
             if (response.data.status === 200) {
                 await Swal.fire({
                     title: 'สำเร็จ!',
@@ -211,20 +215,19 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
     const handleBulkDelete = async () => {
         if (selectedStudents.size === 0) return;
 
-        const studentNames = paginatedStudents
-            .filter(student => selectedStudents.has(student.id))
-            .map(student => student.name)
-            .join(', ');
+        const selectedStudentsList = paginatedStudents.filter(student => selectedStudents.has(student.id));
+        const studentNames = selectedStudentsList.map(student => student.name).join(', ');
 
-        const confirmAlert =await Swal.fire({
-            title:"ยืนยัน",
-            text:"คุณต้องการลบข้อมูลที่คุณเลือกหรือไม่",
-            showConfirmButton:true,
-            showCancelButton:true,
-            confirmButtonText:"ยืนยัน",
-            cancelButtonText:"ยกเลิก",
-            confirmButtonColor:"#ef4444",
-            cancelButtonColor:"#6b7280",
+        const confirmAlert = await Swal.fire({
+            title: "ยืนยันการลบ",
+            html: `คุณต้องการลบนักเรียน ${selectedStudents.size} คนหรือไม่?<br><br><strong>รายชื่อ:</strong><br>${studentNames}`,
+            icon: 'warning',
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "ลบทั้งหมด",
+            cancelButtonText: "ยกเลิก",
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#6b7280",
             customClass: {
                 popup: 'rounded-lg',
                 title: 'text-lg font-semibold',
@@ -232,47 +235,140 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                 confirmButton: 'rounded-lg px-4 py-2 font-medium',
                 cancelButton: 'rounded-lg px-4 py-2 font-medium'
             }
-        })
+        });
 
         if (!confirmAlert.isConfirmed) {
             return;
         }
 
-        setIsBulkDeleting(true);
-        let successCount = 0;
-        let errorCount = 0;
-
-        for (const studentId of selectedStudents) {
-            try {
-                const response = await axios.delete(`/api/admin/students/${studentId}`);
-                if (response.data.status === 200) {
-                    successCount++;
-                } else {
-                    errorCount++;
-                }
-            } catch (error) {
-                console.error(`Error deleting student ${studentId}:`, error);
-                errorCount++;
+        // Show loading alert
+        Swal.fire({
+            title: 'กำลังลบนักเรียน...',
+            html: `กำลังดำเนินการลบ ${selectedStudents.size} คน<br>กรุณารอสักครู่`,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
             }
+        });
+
+        setIsBulkDeleting(true);
+
+        try {
+            const studentIds = Array.from(selectedStudents);
+            const response = await axios.delete('/api/admin/students/bulk-delete', {
+                data: { studentIds }
+            });
+
+            if (response.data.status === 200) {
+                const result = response.data.data;
+
+                // Close loading alert
+                Swal.close();
+
+                if (result.failed > 0) {
+                    // Show detailed results if there are failures
+                    const errorList = result.errors.map((error: any) =>
+                        `• ${error.name}: ${error.error}`
+                    ).join('<br>');
+
+                    await Swal.fire({
+                        title: 'ผลการลบนักเรียน',
+                        html: `
+                            <div class="text-left">
+                                <p><strong>สำเร็จ:</strong> ${result.success} คน</p>
+                                <p><strong>ล้มเหลว:</strong> ${result.failed} คน</p>
+                                ${result.failed > 0 ? `<br><strong>รายละเอียดข้อผิดพลาด:</strong><br>${errorList}` : ''}
+                            </div>
+                        `,
+                        icon: result.success > 0 ? 'warning' : 'error',
+                        confirmButtonText: 'ตกลง',
+                        customClass: {
+                            popup: 'rounded-lg',
+                            confirmButton: 'rounded-lg px-4 py-2 font-medium'
+                        }
+                    });
+                } else {
+                    // Show success message
+                    await Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: `ลบนักเรียนสำเร็จทั้งหมด ${result.success} คน`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        customClass: {
+                            popup: 'rounded-lg'
+                        }
+                    });
+                }
+
+                if (result.success > 0) {
+                    addToast({
+                        color: "success",
+                        title: "สำเร็จ",
+                        description: `ลบนักเรียนสำเร็จ ${result.success} คน${result.failed > 0 ? ` (ล้มเหลว ${result.failed} คน)` : ''}`
+                    });
+                    onUpdate();
+                }
+            } else {
+                Swal.close();
+                await Swal.fire({
+                    title: 'ผิดพลาด!',
+                    text: response.data.message || "ไม่สามารถลบนักเรียนได้",
+                    icon: 'error',
+                    confirmButtonText: 'ตกลง',
+                    customClass: {
+                        popup: 'rounded-lg',
+                        confirmButton: 'rounded-lg px-4 py-2 font-medium'
+                    }
+                });
+            }
+        } catch (error: any) {
+            console.error("Error bulk deleting students:", error);
+            Swal.close();
+            await Swal.fire({
+                title: 'ผิดพลาด!',
+                text: error.response?.data?.message || "เกิดข้อผิดพลาดในการลบนักเรียน",
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+                customClass: {
+                    popup: 'rounded-lg',
+                    confirmButton: 'rounded-lg px-4 py-2 font-medium'
+                }
+            });
+        } finally {
+            setIsBulkDeleting(false);
+            setSelectedStudents(new Set());
+        }
+    };
+
+    const handleExportAll = () => {
+        if (filteredStudents.length === 0) {
+            addToast({
+                color: "warning",
+                title: "ไม่มีข้อมูล",
+                description: "ไม่มีข้อมูลนักเรียนสำหรับการ export"
+            });
+            return;
         }
 
-        setIsBulkDeleting(false);
-        setSelectedStudents(new Set());
+        setExportType('all');
+        setIsExportModalOpen(true);
+    };
 
-        if (successCount > 0) {
+    const handleExportSelected = () => {
+        if (selectedStudents.size === 0) {
             addToast({
-                color: "success",
-                title: "สำเร็จ",
-                description: `ลบนักเรียนสำเร็จ ${successCount} คน${errorCount > 0 ? ` (ล้มเหลว ${errorCount} คน)` : ''}`
+                color: "warning",
+                title: "ไม่ได้เลือกข้อมูล",
+                description: "กรุณาเลือกนักเรียนที่ต้องการ export"
             });
-            onUpdate();
-        } else {
-            addToast({
-                color: "danger",
-                title: "ผิดพลาด",
-                description: "ไม่สามารถลบนักเรียนได้"
-            });
+            return;
         }
+
+        setExportType('selected');
+        setIsExportModalOpen(true);
     };
 
     const formatDate = (dateString: string) => {
@@ -305,24 +401,46 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div className="flex gap-2">
                             {selectedStudents.size > 0 && (
-                                <Button
-                                    color="danger"
-                                    variant="bordered"
-                                    startContent={<Trash2 className="w-4 h-4" />}
-                                    onPress={handleBulkDelete}
-                                    isLoading={isBulkDeleting}
-                                    className="border-red-300 text-red-600 hover:bg-red-50"
-                                >
-                                    ลบที่เลือก ({selectedStudents.size})
-                                </Button>
+                                <>
+                                    <Button
+                                        variant="bordered"
+                                        startContent={<Download className="w-4 h-4" />}
+                                        onPress={handleExportSelected}
+                                        disabled={isBulkDeleting}
+                                        className="border-blue-300 text-blue-600 hover:bg-blue-50"
+                                    >
+                                        Export ที่เลือก ({selectedStudents.size})
+                                    </Button>
+                                    <Button
+                                        color="danger"
+                                        variant="bordered"
+                                        startContent={!isBulkDeleting && <Trash2 className="w-4 h-4" />}
+                                        onPress={handleBulkDelete}
+                                        isLoading={isBulkDeleting}
+                                        disabled={isBulkDeleting}
+                                        className="border-red-300 text-red-600 hover:bg-red-50"
+                                    >
+                                        {isBulkDeleting ? 'กำลังลบ...' : `ลบที่เลือก (${selectedStudents.size})`}
+                                    </Button>
+                                </>
                             )}
+                            <Button
+                                variant="bordered"
+                                startContent={<Download className="w-4 h-4" />}
+                                onPress={handleExportAll}
+                                disabled={isBulkDeleting || filteredStudents.length === 0}
+                                className="border-blue-300 text-blue-600 hover:bg-blue-50"
+                            >
+                                Export Excel
+                            </Button>
                             <Button
                                 variant="bordered"
                                 startContent={<Upload className="w-4 h-4" />}
                                 onPress={() => setIsImportModalOpen(true)}
+                                disabled={isBulkDeleting}
                                 className="border-green-300 text-green-600 hover:bg-green-50"
                             >
                                 นำเข้า CSV
@@ -331,6 +449,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                 color="primary"
                                 startContent={<Plus className="w-4 h-4" />}
                                 onPress={() => setIsAddModalOpen(true)}
+                                disabled={isBulkDeleting}
                                 className="bg-gradient-to-r from-green-500 to-green-600"
                             >
                                 เพิ่มนักเรียน
@@ -347,6 +466,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                             value={searchTerm}
                             onValueChange={handleSearchChange}
                             startContent={<Search className="w-4 h-4 text-gray-400" />}
+                            disabled={isBulkDeleting}
                             classNames={{
                                 input: "text-sm",
                                 inputWrapper: "border-gray-300"
@@ -371,6 +491,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                             isSelected={paginatedStudents.length > 0 && paginatedStudents.every(student => selectedStudents.has(student.id))}
                                             isIndeterminate={paginatedStudents.some(student => selectedStudents.has(student.id)) && !paginatedStudents.every(student => selectedStudents.has(student.id))}
                                             onValueChange={handleSelectAll}
+                                            disabled={isBulkDeleting}
                                             aria-label="เลือกทั้งหมด"
                                         />
                                     </TableColumn>
@@ -386,6 +507,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                                 <Checkbox
                                                     isSelected={selectedStudents.has(student.id)}
                                                     onValueChange={(isSelected) => handleSelectStudent(student.id, isSelected)}
+                                                    disabled={isBulkDeleting}
                                                     aria-label={`เลือก ${student.name}`}
                                                 />
                                             </TableCell>
@@ -424,7 +546,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                                             variant="light"
                                                             size="sm"
                                                             isIconOnly
-                                                            isDisabled={isDeleting === student.id}
+                                                            isDisabled={isDeleting === student.id || isBulkDeleting}
                                                         >
                                                             <MoreVertical className="w-4 h-4" />
                                                         </Button>
@@ -462,6 +584,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                         page={page}
                                         onChange={handlePageChange}
                                         showControls
+                                        isDisabled={isBulkDeleting}
                                         classNames={{
                                             cursor: "bg-blue-500 text-white"
                                         }}
@@ -494,6 +617,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                         variant="bordered"
                                         startContent={<Upload className="w-4 h-4" />}
                                         onPress={() => setIsImportModalOpen(true)}
+                                        disabled={isBulkDeleting}
                                         className="border-green-300 text-green-600 hover:bg-green-50"
                                     >
                                         นำเข้าจาก CSV
@@ -502,6 +626,7 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                                         color="primary"
                                         startContent={<Plus className="w-4 h-4" />}
                                         onPress={() => setIsAddModalOpen(true)}
+                                        disabled={isBulkDeleting}
                                         className="bg-gradient-to-r from-green-500 to-green-600"
                                     >
                                         เพิ่มนักเรียนคนแรก
@@ -538,6 +663,14 @@ export default function StudentList({ classId, students, onUpdate }: StudentList
                 onClose={() => setIsImportModalOpen(false)}
                 onSuccess={handleImportSuccess}
                 classId={classId}
+            />
+
+            <ExportStudentsModal
+                isOpen={isExportModalOpen}
+                onClose={() => setIsExportModalOpen(false)}
+                students={filteredStudents}
+                selectedStudents={exportType === 'selected' ? selectedStudents : undefined}
+                className={className}
             />
         </>
     );

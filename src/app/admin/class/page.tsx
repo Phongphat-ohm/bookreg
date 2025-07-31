@@ -45,7 +45,7 @@ export default function ClassPage() {
         studentCountRange: ""
     });
 
-    const { filteredClasses, isFiltered, searchStats } = useClassSearch(classes, searchFilters);
+    const { filteredClasses, isFiltered, searchStats } = useClassSearch(classes || [], searchFilters);
 
     const fetchClasses = async () => {
         try {

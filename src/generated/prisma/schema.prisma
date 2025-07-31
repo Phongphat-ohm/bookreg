@@ -17,9 +17,9 @@ model Teacher {
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
 
-  advisingClasses     Class[]              @relation("Advisors")
+  advisingClasses     Class[]                 @relation("ClassAdvisors") // ✅ แก้ตรงนี้
   teachingAssignments TeachingAssignment[]
-  SubjectGroup        SubjectGroup[]
+  subjectMembership   SubjectGroupMembership?
 }
 
 model Class {
@@ -27,7 +27,7 @@ model Class {
   grade String
   name  String
 
-  advisors            Teacher[]            @relation("Advisors")
+  advisors            Teacher[]            @relation("ClassAdvisors") // ✅ และตรงนี้ต้องชื่อเดียวกัน
   students            Student[]
   subjectClasses      SubjectClass[]
   teachingAssignments TeachingAssignment[]
@@ -63,7 +63,6 @@ model TeachingAssignment {
   class    Class @relation(fields: [class_id], references: [id])
   class_id Int
 
-  // ป้องกันไม่ให้มีครูหลายคนสอนวิชาเดียวกันในห้องเดียวกัน
   @@unique([subject_id, class_id])
 }
 
@@ -105,7 +104,7 @@ model BookRegistration {
   student    Student @relation(fields: [student_id], references: [id])
   student_id Int
 
-  book    Book @relation(fields: [book_id], references: [id])
+  book    Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
   book_id Int
 
   subject    Subject @relation(fields: [subject_id], references: [id])
@@ -136,9 +135,19 @@ model AcademicYear {
 }
 
 model SubjectGroup {
-  id        Int       @id @unique @default(autoincrement())
-  name      String
-  Subject   Subject[]
-  header_id Int
-  Teacher   Teacher   @relation(fields: [header_id], references: [id])
+  id       Int                      @id @default(autoincrement())
+  name     String
+  subjects Subject[]
+  members  SubjectGroupMembership[]
+}
+
+model SubjectGroupMembership {
+  id               Int          @id @default(autoincrement())
+  teacher          Teacher      @relation(fields: [teacher_id], references: [id])
+  teacher_id       Int          @unique // ครู 1 คนอยู่ได้แค่กลุ่มเดียว
+  subject_group    SubjectGroup @relation(fields: [subject_group_id], references: [id])
+  subject_group_id Int
+
+  role      String   @default("member") // ไม่ใช้ enum
+  joined_at DateTime @default(now())
 }

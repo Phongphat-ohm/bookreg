@@ -27,11 +27,6 @@ const link_list: LinkList[] = [
         icon: <FaUserGroup />
     },
     {
-        name: "วิชา",
-        href: "/admin/subject",
-        icon: <FaTable />
-    },
-    {
         name: "บุคคลากร",
         href: "/admin/teacher",
         icon: <FaUserTie />

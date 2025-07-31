@@ -6,23 +6,16 @@ import {
     ModalBody,
     ModalFooter,
     Button,
-    Card,
-    CardBody,
-    Progress,
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Chip,
-    Select,
-    SelectItem,
     addToast
 } from "@heroui/react";
-import { useState, useRef } from "react";
-import { Upload, FileText, Download, AlertCircle, CheckCircle, X, ArrowRight, Columns } from "lucide-react";
+import { useState } from "react";
+import { Upload, ArrowRight, ArrowLeft, X } from "lucide-react";
 import axios from "axios";
+import FileUploadStep from "./Import/FileUploadStep";
+import ColumnMappingStep from "./Import/ColumnMappingStep";
+import PreviewStep from "./Import/PreviewStep";
+import ImportProgressStep from "./Import/ImportProgressStep";
+import ImportResultStep from "./Import/ImportResultStep";
 
 interface ImportStudentsModalProps {
     isOpen: boolean;
@@ -74,22 +67,10 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
     const [isProcessing, setIsProcessing] = useState(false);
     const [importResult, setImportResult] = useState<ImportResult | null>(null);
     const [currentStep, setCurrentStep] = useState<'upload' | 'mapping' | 'preview' | 'importing' | 'result'>('upload');
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = event.target.files?.[0];
-        if (selectedFile) {
-            if (selectedFile.type !== 'text/csv' && !selectedFile.name.endsWith('.csv')) {
-                addToast({
-                    color: "danger",
-                    title: "ไฟล์ไม่ถูกต้อง",
-                    description: "กรุณาเลือกไฟล์ CSV เท่านั้น"
-                });
-                return;
-            }
-            setFile(selectedFile);
-            parseCSV(selectedFile);
-        }
+    const handleFileSelect = (selectedFile: File) => {
+        setFile(selectedFile);
+        parseCSV(selectedFile);
     };
 
     const parseCSV = (file: File) => {
@@ -109,7 +90,7 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
 
             // Parse headers and data
             const headers = lines[0].split(',').map(col => col.trim().replace(/"/g, ''));
-            const dataRows = lines.slice(1).map(line => 
+            const dataRows = lines.slice(1).map(line =>
                 line.split(',').map(col => col.trim().replace(/"/g, ''))
             );
 
@@ -189,7 +170,7 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
             setCurrentStep('preview');
         }
     };
-
+    
     const handleImport = async () => {
         setIsProcessing(true);
         setCurrentStep('importing');
@@ -201,7 +182,7 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
             errors: []
         };
 
-        // Option 1: Use bulk API (faster for large datasets)
+        // Try bulk API first (faster for large datasets)
         try {
             const response = await axios.post(`/api/admin/classes/${classId}/students/bulk`, {
                 students: students.map(s => ({
@@ -304,9 +285,6 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
         setImportResult(null);
         setCurrentStep('upload');
         setIsProcessing(false);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
         onClose();
     };
 
@@ -334,6 +312,27 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
         document.body.removeChild(link);
     };
 
+    const canProceedToPreview = () => {
+        return columnMapping.name !== null &&
+            columnMapping.stu_code !== null &&
+            columnMapping.password !== null;
+    };
+
+    const canGoBack = () => {
+        return currentStep !== 'upload' && currentStep !== 'importing';
+    };
+
+    const getStepTitle = () => {
+        switch (currentStep) {
+            case 'upload': return 'เลือกไฟล์ CSV ที่มีข้อมูลนักเรียน';
+            case 'mapping': return 'จับคู่คอลัมน์ข้อมูลกับฟิลด์ที่ต้องการ';
+            case 'preview': return 'ตรวจสอบข้อมูลก่อนนำเข้า';
+            case 'importing': return 'กำลังนำเข้าข้อมูล...';
+            case 'result': return 'ผลการนำเข้าข้อมูล';
+            default: return '';
+        }
+    };
+
     return (
         <Modal
             isOpen={isOpen}
@@ -354,469 +353,96 @@ export default function ImportStudentsModal({ isOpen, onClose, onSuccess, classI
                     </div>
                     <div>
                         <h2 className="text-xl font-bold text-gray-800">นำเข้านักเรียนจากไฟล์ CSV</h2>
-                        <p className="text-sm text-gray-600">
-                            {currentStep === 'upload' && 'เลือกไฟล์ CSV ที่มีข้อมูลนักเรียน'}
-                            {currentStep === 'mapping' && 'จับคู่คอลัมน์ข้อมูลกับฟิลด์ที่ต้องการ'}
-                            {currentStep === 'preview' && 'ตรวจสอบข้อมูลก่อนนำเข้า'}
-                            {currentStep === 'importing' && 'กำลังนำเข้าข้อมูล...'}
-                            {currentStep === 'result' && 'ผลการนำเข้าข้อมูล'}
-                        </p>
+                        <p className="text-sm text-gray-600">{getStepTitle()}</p>
                     </div>
                 </ModalHeader>
 
                 <ModalBody className="py-6">
-                    {/* Upload Step */}
                     {currentStep === 'upload' && (
-                        <div className="space-y-6">
-                            <div className="text-center">
-                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 hover:border-gray-400 transition-colors">
-                                    <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-lg font-medium text-gray-700 mb-2">เลือกไฟล์ CSV</h3>
-                                    <p className="text-gray-500 mb-4">ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        accept=".csv"
-                                        onChange={handleFileSelect}
-                                        className="hidden"
-                                    />
-                                    <Button
-                                        color="primary"
-                                        onPress={() => fileInputRef.current?.click()}
-                                        startContent={<Upload className="w-4 h-4" />}
-                                    >
-                                        เลือกไฟล์
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <Card>
-                                <CardBody>
-                                    <div className="flex items-start gap-3">
-                                        <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-medium text-gray-800 mb-2">รูปแบบไฟล์ CSV</h4>
-                                            <p className="text-sm text-gray-600 mb-3">
-                                                ระบบจะให้คุณเลือกว่าคอลัมน์ไหนคือข้อมูลอะไร ไม่จำเป็นต้องเรียงตามลำดับ
-                                            </p>
-                                            <Button
-                                                size="sm"
-                                                variant="bordered"
-                                                startContent={<Download className="w-4 h-4" />}
-                                                onPress={downloadTemplate}
-                                            >
-                                                ดาวน์โหลดไฟล์ตัวอย่าง
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </CardBody>
-                            </Card>
-                        </div>
+                        <FileUploadStep
+                            onFileSelect={handleFileSelect}
+                            onDownloadTemplate={downloadTemplate}
+                        />
                     )}
 
-                    {/* Column Mapping Step */}
-                    {currentStep === 'mapping' && csvData && (
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Columns className="w-5 h-5 text-blue-600" />
-                                <div>
-                                    <h3 className="text-lg font-medium text-gray-800">จับคู่คอลัมน์ข้อมูล</h3>
-                                    <p className="text-sm text-gray-600">เลือกคอลัมน์จากไฟล์ CSV ที่ตรงกับข้อมูลที่ต้องการ</p>
-                                </div>
-                            </div>
-
-                            {/* File Info */}
-                            <Card>
-                                <CardBody>
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="font-medium text-gray-800">{file?.name}</p>
-                                            <p className="text-sm text-gray-600">
-                                                {csvData.headers.length} คอลัมน์ • {csvData.rows.length} แถว
-                                            </p>
-                                        </div>
-                                        <Chip color="primary" variant="flat">
-                                            CSV
-                                        </Chip>
-                                    </div>
-                                </CardBody>
-                            </Card>
-
-                            {/* Column Mapping */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {/* Name Mapping */}
-                                <Card>
-                                    <CardBody>
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                                <h4 className="font-medium text-gray-800">ชื่อ-นามสกุล</h4>
-                                                <span className="text-red-500">*</span>
-                                            </div>
-                                            <Select
-                                                placeholder="เลือกคอลัมน์"
-                                                selectedKeys={columnMapping.name !== null ? [columnMapping.name.toString()] : []}
-                                                onSelectionChange={(keys) => {
-                                                    const value = Array.from(keys)[0];
-                                                    setColumnMapping(prev => ({
-                                                        ...prev,
-                                                        name: value ? parseInt(value as string) : null
-                                                    }));
-                                                }}
-                                                size="sm"
-                                            >
-                                                {csvData.headers.map((header, index) => (
-                                                    <SelectItem key={index.toString()} textValue={header}>
-                                                        <div>
-                                                            <p className="font-medium">{header}</p>
-                                                            <p className="text-xs text-gray-500">
-                                                                ตัวอย่าง: {csvData.rows[0]?.[index] || '-'}
-                                                            </p>
-                                                        </div>
-                                                    </SelectItem>
-                                                ))}
-                                            </Select>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-
-                                {/* Student Code Mapping */}
-                                <Card>
-                                    <CardBody>
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                                <h4 className="font-medium text-gray-800">รหัสนักเรียน</h4>
-                                                <span className="text-red-500">*</span>
-                                            </div>
-                                            <Select
-                                                placeholder="เลือกคอลัมน์"
-                                                selectedKeys={columnMapping.stu_code !== null ? [columnMapping.stu_code.toString()] : []}
-                                                onSelectionChange={(keys) => {
-                                                    const value = Array.from(keys)[0];
-                                                    setColumnMapping(prev => ({
-                                                        ...prev,
-                                                        stu_code: value ? parseInt(value as string) : null
-                                                    }));
-                                                }}
-                                                size="sm"
-                                            >
-                                                {csvData.headers.map((header, index) => (
-                                                    <SelectItem key={index.toString()} textValue={header}>
-                                                        <div>
-                                                            <p className="font-medium">{header}</p>
-                                                            <p className="text-xs text-gray-500">
-                                                                ตัวอย่าง: {csvData.rows[0]?.[index] || '-'}
-                                                            </p>
-                                                        </div>
-                                                    </SelectItem>
-                                                ))}
-                                            </Select>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-
-                                {/* Password Mapping */}
-                                <Card>
-                                    <CardBody>
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                                                <h4 className="font-medium text-gray-800">รหัสผ่าน</h4>
-                                                <span className="text-red-500">*</span>
-                                            </div>
-                                            <Select
-                                                placeholder="เลือกคอลัมน์"
-                                                selectedKeys={columnMapping.password !== null ? [columnMapping.password.toString()] : []}
-                                                onSelectionChange={(keys) => {
-                                                    const value = Array.from(keys)[0];
-                                                    setColumnMapping(prev => ({
-                                                        ...prev,
-                                                        password: value ? parseInt(value as string) : null
-                                                    }));
-                                                }}
-                                                size="sm"
-                                            >
-                                                {csvData.headers.map((header, index) => (
-                                                    <SelectItem key={index.toString()} textValue={header}>
-                                                        <div>
-                                                            <p className="font-medium">{header}</p>
-                                                            <p className="text-xs text-gray-500">
-                                                                ตัวอย่าง: {csvData.rows[0]?.[index] || '-'}
-                                                            </p>
-                                                        </div>
-                                                    </SelectItem>
-                                                ))}
-                                            </Select>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </div>
-
-                            {/* Preview Mapping */}
-                            {columnMapping.name !== null && columnMapping.stu_code !== null && columnMapping.password !== null && (
-                                <Card>
-                                    <CardBody>
-                                        <h4 className="font-medium text-gray-800 mb-3">ตัวอย่างการจับคู่ข้อมูล</h4>
-                                        <div className="overflow-x-auto">
-                                            <Table
-                                                aria-label="ตัวอย่างการจับคู่"
-                                                classNames={{
-                                                    wrapper: "shadow-none border border-gray-200"
-                                                }}
-                                            >
-                                                <TableHeader>
-                                                    <TableColumn>ชื่อ-นามสกุล</TableColumn>
-                                                    <TableColumn>รหัสนักเรียน</TableColumn>
-                                                    <TableColumn>รหัสผ่าน</TableColumn>
-                                                </TableHeader>
-                                                <TableBody>
-                                                    {csvData.rows.slice(0, 3).map((row, index) => (
-                                                        <TableRow key={index}>
-                                                            <TableCell>
-                                                                <span className="text-blue-600 font-medium">
-                                                                    {row[columnMapping.name!] || '-'}
-                                                                </span>
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Chip size="sm" color="success" variant="flat">
-                                                                    {row[columnMapping.stu_code!] || '-'}
-                                                                </Chip>
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <span className="font-mono text-purple-600">
-                                                                    {row[columnMapping.password!] ? '●'.repeat(Math.min(row[columnMapping.password!].length, 8)) : '-'}
-                                                                </span>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                            {csvData.rows.length > 3 && (
-                                                <p className="text-center text-sm text-gray-500 mt-2">
-                                                    และอีก {csvData.rows.length - 3} แถว...
-                                                </p>
-                                            )}
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            )}
-                        </div>
+                    {currentStep === 'mapping' && csvData && file && (
+                        <ColumnMappingStep
+                            csvData={csvData}
+                            file={file}
+                            columnMapping={columnMapping}
+                            onMappingChange={setColumnMapping}
+                        />
                     )}
 
-                    {/* Preview Step */}
-                    {currentStep === 'preview' && (
-                        <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-medium text-gray-800">
-                                    ตรวจสอบข้อมูล ({students.length} คน)
-                                </h3>
-                                <Chip color="primary" variant="flat">
-                                    {file?.name}
-                                </Chip>
-                            </div>
-
-                            <div className="max-h-96 overflow-y-auto">
-                                <Table
-                                    aria-label="ตัวอย่างข้อมูลนักเรียน"
-                                    classNames={{
-                                        wrapper: "shadow-none border border-gray-200"
-                                    }}
-                                >
-                                    <TableHeader>
-                                        <TableColumn>ชื่อ-นามสกุล</TableColumn>
-                                        <TableColumn>รหัสนักเรียน</TableColumn>
-                                        <TableColumn>รหัสผ่าน</TableColumn>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {students.slice(0, 10).map((student, index) => (
-                                            <TableRow key={index}>
-                                                <TableCell>{student.name}</TableCell>
-                                                <TableCell>
-                                                    <Chip size="sm" variant="flat">
-                                                        {student.stu_code}
-                                                    </Chip>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <span className="font-mono text-sm">
-                                                        {'*'.repeat(student.password.length)}
-                                                    </span>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                                {students.length > 10 && (
-                                    <p className="text-center text-sm text-gray-500 mt-2">
-                                        และอีก {students.length - 10} คน...
-                                    </p>
-                                )}
-                            </div>
-                        </div>
+                    {currentStep === 'preview' && file && (
+                        <PreviewStep
+                            students={students}
+                            fileName={file.name}
+                        />
                     )}
 
-                    {/* Importing Step */}
                     {currentStep === 'importing' && (
-                        <div className="space-y-6">
-                            <div className="text-center">
-                                <h3 className="text-lg font-medium text-gray-800 mb-4">กำลังนำเข้าข้อมูล</h3>
-                                <Progress
-                                    value={(students.filter(s => s.status !== 'pending').length / students.length) * 100}
-                                    className="mb-4"
-                                    color="primary"
-                                />
-                                <p className="text-sm text-gray-600">
-                                    {students.filter(s => s.status !== 'pending').length} / {students.length} คน
-                                </p>
-                            </div>
-
-                            <div className="max-h-64 overflow-y-auto">
-                                <div className="space-y-2">
-                                    {students.map((student, index) => (
-                                        <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
-                                            <div className="flex-shrink-0">
-                                                {student.status === 'pending' && (
-                                                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                                                )}
-                                                {student.status === 'success' && (
-                                                    <CheckCircle className="w-4 h-4 text-green-500" />
-                                                )}
-                                                {student.status === 'error' && (
-                                                    <X className="w-4 h-4 text-red-500" />
-                                                )}
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="text-sm font-medium">{student.name}</p>
-                                                <p className="text-xs text-gray-500">{student.stu_code}</p>
-                                                {student.error && (
-                                                    <p className="text-xs text-red-500">{student.error}</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                        <ImportProgressStep
+                            students={students}
+                            isProcessing={isProcessing}
+                        />
                     )}
 
-                    {/* Result Step */}
                     {currentStep === 'result' && importResult && (
-                        <div className="space-y-6">
-                            <div className="text-center">
-                                <h3 className="text-lg font-medium text-gray-800 mb-4">ผลการนำเข้าข้อมูล</h3>
-
-                                <div className="grid grid-cols-3 gap-4 mb-6">
-                                    <Card>
-                                        <CardBody className="text-center py-4">
-                                            <p className="text-2xl font-bold text-green-600">{importResult.success}</p>
-                                            <p className="text-sm text-gray-600">สำเร็จ</p>
-                                        </CardBody>
-                                    </Card>
-                                    <Card>
-                                        <CardBody className="text-center py-4">
-                                            <p className="text-2xl font-bold text-red-600">{importResult.failed}</p>
-                                            <p className="text-sm text-gray-600">ล้มเหลว</p>
-                                        </CardBody>
-                                    </Card>
-                                    <Card>
-                                        <CardBody className="text-center py-4">
-                                            <p className="text-2xl font-bold text-blue-600">{importResult.total}</p>
-                                            <p className="text-sm text-gray-600">ทั้งหมด</p>
-                                        </CardBody>
-                                    </Card>
-                                </div>
-                            </div>
-
-                            {importResult.errors.length > 0 && (
-                                <div>
-                                    <h4 className="font-medium text-gray-800 mb-3">รายการที่ล้มเหลว:</h4>
-                                    <div className="max-h-48 overflow-y-auto">
-                                        <Table
-                                            aria-label="รายการที่ล้มเหลว"
-                                            classNames={{
-                                                wrapper: "shadow-none border border-gray-200"
-                                            }}
-                                        >
-                                            <TableHeader>
-                                                <TableColumn>แถว</TableColumn>
-                                                <TableColumn>ชื่อ</TableColumn>
-                                                <TableColumn>รหัส</TableColumn>
-                                                <TableColumn>ข้อผิดพลาด</TableColumn>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {importResult.errors.map((error, errorIndex) => (
-                                                    <TableRow key={errorIndex}>
-                                                        <TableCell>{error.row}</TableCell>
-                                                        <TableCell>{error.name}</TableCell>
-                                                        <TableCell>{error.stu_code}</TableCell>
-                                                        <TableCell>
-                                                            <span className="text-red-600 text-sm">{error.error}</span>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <ImportResultStep result={importResult} />
                     )}
                 </ModalBody>
 
-                <ModalFooter>
-                    {currentStep === 'upload' && (
-                        <Button variant="light" onPress={handleClose}>
-                            ยกเลิก
-                        </Button>
-                    )}
-
-                    {currentStep === 'mapping' && (
-                        <>
-                            <Button variant="light" onPress={() => setCurrentStep('upload')}>
-                                กลับ
-                            </Button>
+                <ModalFooter className="flex justify-between">
+                    <div>
+                        {canGoBack() && (
                             <Button
-                                color="primary"
-                                onPress={handleProceedToPreview}
-                                startContent={<ArrowRight className="w-4 h-4" />}
-                                isDisabled={columnMapping.name === null || columnMapping.stu_code === null || columnMapping.password === null}
+                                variant="bordered"
+                                startContent={<ArrowLeft className="w-4 h-4" />}
+                                onPress={() => {
+                                    if (currentStep === 'mapping') setCurrentStep('upload');
+                                    else if (currentStep === 'preview') setCurrentStep('mapping');
+                                    else if (currentStep === 'result') setCurrentStep('preview');
+                                }}
+                                disabled={isProcessing}
                             >
-                                ดูตัวอย่างข้อมูล
+                                ย้อนกลับ
                             </Button>
-                        </>
-                    )}
+                        )}
+                    </div>
 
-                    {currentStep === 'preview' && (
-                        <>
-                            <Button variant="light" onPress={() => setCurrentStep('mapping')}>
-                                กลับ
-                            </Button>
-                            <Button
-                                color="primary"
-                                onPress={handleImport}
-                                startContent={<Upload className="w-4 h-4" />}
-                                className="bg-gradient-to-r from-green-500 to-green-600"
-                            >
-                                นำเข้าข้อมูล ({students.length} คน)
-                            </Button>
-                        </>
-                    )}
-
-                    {currentStep === 'importing' && (
-                        <Button variant="light" isDisabled>
-                            กำลังดำเนินการ...
-                        </Button>
-                    )}
-
-                    {currentStep === 'result' && (
+                    <div className="flex gap-2">
                         <Button
-                            color="primary"
-                            onPress={handleFinish}
-                            startContent={<CheckCircle className="w-4 h-4" />}
+                            variant="bordered"
+                            startContent={<X className="w-4 h-4" />}
+                            onPress={currentStep === 'result' ? handleFinish : handleClose}
+                            disabled={isProcessing}
                         >
-                            เสร็จสิ้น
+                            {currentStep === 'result' ? 'เสร็จสิ้น' : 'ยกเลิก'}
                         </Button>
-                    )}
+
+                        {currentStep === 'mapping' && (
+                            <Button
+                                color="primary"
+                                endContent={<ArrowRight className="w-4 h-4" />}
+                                onPress={handleProceedToPreview}
+                                disabled={!canProceedToPreview()}
+                            >
+                                ดูตัวอย่าง
+                            </Button>
+                        )}
+
+                        {currentStep === 'preview' && (
+                            <Button
+                                color="primary"
+                                endContent={<Upload className="w-4 h-4" />}
+                                onPress={handleImport}
+                                disabled={isProcessing}
+                            >
+                                เริ่มนำเข้า
+                            </Button>
+                        )}
+                    </div>
                 </ModalFooter>
             </ModalContent>
         </Modal>

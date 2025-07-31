@@ -129,6 +129,7 @@ export default function ClassDetailPage() {
                             classId={classData.id}
                             students={classData.students}
                             onUpdate={handleStudentUpdate}
+                            className={`${classData.grade}/${classData.name}`}
                         />
                     </div>
                 </div>

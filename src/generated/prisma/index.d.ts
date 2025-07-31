@@ -63,6 +63,11 @@ export type AcademicYear = $Result.DefaultSelection<Prisma.$AcademicYearPayload>
  * 
  */
 export type SubjectGroup = $Result.DefaultSelection<Prisma.$SubjectGroupPayload>
+/**
+ * Model SubjectGroupMembership
+ * 
+ */
+export type SubjectGroupMembership = $Result.DefaultSelection<Prisma.$SubjectGroupMembershipPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -288,6 +293,16 @@ export class PrismaClient<
     * ```
     */
   get subjectGroup(): Prisma.SubjectGroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subjectGroupMembership`: Exposes CRUD operations for the **SubjectGroupMembership** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SubjectGroupMemberships
+    * const subjectGroupMemberships = await prisma.subjectGroupMembership.findMany()
+    * ```
+    */
+  get subjectGroupMembership(): Prisma.SubjectGroupMembershipDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -346,8 +361,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.12.0
-   * Query Engine version: 8047c96bbd92db98a2abc7c9323ce77c02c89dbc
+   * Prisma Client JS version: 6.9.0
+   * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
    */
   export type PrismaVersion = {
     client: string
@@ -737,7 +752,8 @@ export namespace Prisma {
     BookRegistration: 'BookRegistration',
     SubjectClass: 'SubjectClass',
     AcademicYear: 'AcademicYear',
-    SubjectGroup: 'SubjectGroup'
+    SubjectGroup: 'SubjectGroup',
+    SubjectGroupMembership: 'SubjectGroupMembership'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -756,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "teacher" | "class" | "subject" | "teachingAssignment" | "student" | "book" | "bookRegistration" | "subjectClass" | "academicYear" | "subjectGroup"
+      modelProps: "teacher" | "class" | "subject" | "teachingAssignment" | "student" | "book" | "bookRegistration" | "subjectClass" | "academicYear" | "subjectGroup" | "subjectGroupMembership"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1500,6 +1516,80 @@ export namespace Prisma {
           }
         }
       }
+      SubjectGroupMembership: {
+        payload: Prisma.$SubjectGroupMembershipPayload<ExtArgs>
+        fields: Prisma.SubjectGroupMembershipFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubjectGroupMembershipFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubjectGroupMembershipFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          findFirst: {
+            args: Prisma.SubjectGroupMembershipFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubjectGroupMembershipFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          findMany: {
+            args: Prisma.SubjectGroupMembershipFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>[]
+          }
+          create: {
+            args: Prisma.SubjectGroupMembershipCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          createMany: {
+            args: Prisma.SubjectGroupMembershipCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubjectGroupMembershipCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>[]
+          }
+          delete: {
+            args: Prisma.SubjectGroupMembershipDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          update: {
+            args: Prisma.SubjectGroupMembershipUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubjectGroupMembershipDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubjectGroupMembershipUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubjectGroupMembershipUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubjectGroupMembershipUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubjectGroupMembershipPayload>
+          }
+          aggregate: {
+            args: Prisma.SubjectGroupMembershipAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubjectGroupMembership>
+          }
+          groupBy: {
+            args: Prisma.SubjectGroupMembershipGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubjectGroupMembershipGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubjectGroupMembershipCountArgs<ExtArgs>
+            result: $Utils.Optional<SubjectGroupMembershipCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1594,6 +1684,7 @@ export namespace Prisma {
     subjectClass?: SubjectClassOmit
     academicYear?: AcademicYearOmit
     subjectGroup?: SubjectGroupOmit
+    subjectGroupMembership?: SubjectGroupMembershipOmit
   }
 
   /* Types for Logging */
@@ -1690,13 +1781,11 @@ export namespace Prisma {
   export type TeacherCountOutputType = {
     advisingClasses: number
     teachingAssignments: number
-    SubjectGroup: number
   }
 
   export type TeacherCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     advisingClasses?: boolean | TeacherCountOutputTypeCountAdvisingClassesArgs
     teachingAssignments?: boolean | TeacherCountOutputTypeCountTeachingAssignmentsArgs
-    SubjectGroup?: boolean | TeacherCountOutputTypeCountSubjectGroupArgs
   }
 
   // Custom InputTypes
@@ -1722,13 +1811,6 @@ export namespace Prisma {
    */
   export type TeacherCountOutputTypeCountTeachingAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TeachingAssignmentWhereInput
-  }
-
-  /**
-   * TeacherCountOutputType without action
-   */
-  export type TeacherCountOutputTypeCountSubjectGroupArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SubjectGroupWhereInput
   }
 
 
@@ -1946,11 +2028,13 @@ export namespace Prisma {
    */
 
   export type SubjectGroupCountOutputType = {
-    Subject: number
+    subjects: number
+    members: number
   }
 
   export type SubjectGroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Subject?: boolean | SubjectGroupCountOutputTypeCountSubjectArgs
+    subjects?: boolean | SubjectGroupCountOutputTypeCountSubjectsArgs
+    members?: boolean | SubjectGroupCountOutputTypeCountMembersArgs
   }
 
   // Custom InputTypes
@@ -1967,8 +2051,15 @@ export namespace Prisma {
   /**
    * SubjectGroupCountOutputType without action
    */
-  export type SubjectGroupCountOutputTypeCountSubjectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubjectGroupCountOutputTypeCountSubjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubjectWhereInput
+  }
+
+  /**
+   * SubjectGroupCountOutputType without action
+   */
+  export type SubjectGroupCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubjectGroupMembershipWhereInput
   }
 
 
@@ -2192,7 +2283,7 @@ export namespace Prisma {
     update_at?: boolean
     advisingClasses?: boolean | Teacher$advisingClassesArgs<ExtArgs>
     teachingAssignments?: boolean | Teacher$teachingAssignmentsArgs<ExtArgs>
-    SubjectGroup?: boolean | Teacher$SubjectGroupArgs<ExtArgs>
+    subjectMembership?: boolean | Teacher$subjectMembershipArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teacher"]>
 
@@ -2230,7 +2321,7 @@ export namespace Prisma {
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     advisingClasses?: boolean | Teacher$advisingClassesArgs<ExtArgs>
     teachingAssignments?: boolean | Teacher$teachingAssignmentsArgs<ExtArgs>
-    SubjectGroup?: boolean | Teacher$SubjectGroupArgs<ExtArgs>
+    subjectMembership?: boolean | Teacher$subjectMembershipArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeacherIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2241,7 +2332,7 @@ export namespace Prisma {
     objects: {
       advisingClasses: Prisma.$ClassPayload<ExtArgs>[]
       teachingAssignments: Prisma.$TeachingAssignmentPayload<ExtArgs>[]
-      SubjectGroup: Prisma.$SubjectGroupPayload<ExtArgs>[]
+      subjectMembership: Prisma.$SubjectGroupMembershipPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2647,7 +2738,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     advisingClasses<T extends Teacher$advisingClassesArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$advisingClassesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teachingAssignments<T extends Teacher$teachingAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$teachingAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeachingAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    SubjectGroup<T extends Teacher$SubjectGroupArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$SubjectGroupArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subjectMembership<T extends Teacher$subjectMembershipArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$subjectMembershipArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3120,27 +3211,22 @@ export namespace Prisma {
   }
 
   /**
-   * Teacher.SubjectGroup
+   * Teacher.subjectMembership
    */
-  export type Teacher$SubjectGroupArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Teacher$subjectMembershipArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SubjectGroup
+     * Select specific fields to fetch from the SubjectGroupMembership
      */
-    select?: SubjectGroupSelect<ExtArgs> | null
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SubjectGroup
+     * Omit specific fields from the SubjectGroupMembership
      */
-    omit?: SubjectGroupOmit<ExtArgs> | null
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SubjectGroupInclude<ExtArgs> | null
-    where?: SubjectGroupWhereInput
-    orderBy?: SubjectGroupOrderByWithRelationInput | SubjectGroupOrderByWithRelationInput[]
-    cursor?: SubjectGroupWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SubjectGroupScalarFieldEnum | SubjectGroupScalarFieldEnum[]
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    where?: SubjectGroupMembershipWhereInput
   }
 
   /**
@@ -12361,60 +12447,50 @@ export namespace Prisma {
 
   export type SubjectGroupAvgAggregateOutputType = {
     id: number | null
-    header_id: number | null
   }
 
   export type SubjectGroupSumAggregateOutputType = {
     id: number | null
-    header_id: number | null
   }
 
   export type SubjectGroupMinAggregateOutputType = {
     id: number | null
     name: string | null
-    header_id: number | null
   }
 
   export type SubjectGroupMaxAggregateOutputType = {
     id: number | null
     name: string | null
-    header_id: number | null
   }
 
   export type SubjectGroupCountAggregateOutputType = {
     id: number
     name: number
-    header_id: number
     _all: number
   }
 
 
   export type SubjectGroupAvgAggregateInputType = {
     id?: true
-    header_id?: true
   }
 
   export type SubjectGroupSumAggregateInputType = {
     id?: true
-    header_id?: true
   }
 
   export type SubjectGroupMinAggregateInputType = {
     id?: true
     name?: true
-    header_id?: true
   }
 
   export type SubjectGroupMaxAggregateInputType = {
     id?: true
     name?: true
-    header_id?: true
   }
 
   export type SubjectGroupCountAggregateInputType = {
     id?: true
     name?: true
-    header_id?: true
     _all?: true
   }
 
@@ -12507,7 +12583,6 @@ export namespace Prisma {
   export type SubjectGroupGroupByOutputType = {
     id: number
     name: string
-    header_id: number
     _count: SubjectGroupCountAggregateOutputType | null
     _avg: SubjectGroupAvgAggregateOutputType | null
     _sum: SubjectGroupSumAggregateOutputType | null
@@ -12532,55 +12607,44 @@ export namespace Prisma {
   export type SubjectGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    header_id?: boolean
-    Subject?: boolean | SubjectGroup$SubjectArgs<ExtArgs>
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subjects?: boolean | SubjectGroup$subjectsArgs<ExtArgs>
+    members?: boolean | SubjectGroup$membersArgs<ExtArgs>
     _count?: boolean | SubjectGroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subjectGroup"]>
 
   export type SubjectGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    header_id?: boolean
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subjectGroup"]>
 
   export type SubjectGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    header_id?: boolean
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subjectGroup"]>
 
   export type SubjectGroupSelectScalar = {
     id?: boolean
     name?: boolean
-    header_id?: boolean
   }
 
-  export type SubjectGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "header_id", ExtArgs["result"]["subjectGroup"]>
+  export type SubjectGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["subjectGroup"]>
   export type SubjectGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Subject?: boolean | SubjectGroup$SubjectArgs<ExtArgs>
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subjects?: boolean | SubjectGroup$subjectsArgs<ExtArgs>
+    members?: boolean | SubjectGroup$membersArgs<ExtArgs>
     _count?: boolean | SubjectGroupCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SubjectGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
-  }
-  export type SubjectGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Teacher?: boolean | TeacherDefaultArgs<ExtArgs>
-  }
+  export type SubjectGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SubjectGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $SubjectGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SubjectGroup"
     objects: {
-      Subject: Prisma.$SubjectPayload<ExtArgs>[]
-      Teacher: Prisma.$TeacherPayload<ExtArgs>
+      subjects: Prisma.$SubjectPayload<ExtArgs>[]
+      members: Prisma.$SubjectGroupMembershipPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
-      header_id: number
     }, ExtArgs["result"]["subjectGroup"]>
     composites: {}
   }
@@ -12975,8 +13039,8 @@ export namespace Prisma {
    */
   export interface Prisma__SubjectGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Subject<T extends SubjectGroup$SubjectArgs<ExtArgs> = {}>(args?: Subset<T, SubjectGroup$SubjectArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Teacher<T extends TeacherDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeacherDefaultArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subjects<T extends SubjectGroup$subjectsArgs<ExtArgs> = {}>(args?: Subset<T, SubjectGroup$subjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends SubjectGroup$membersArgs<ExtArgs> = {}>(args?: Subset<T, SubjectGroup$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13008,7 +13072,6 @@ export namespace Prisma {
   interface SubjectGroupFieldRefs {
     readonly id: FieldRef<"SubjectGroup", 'Int'>
     readonly name: FieldRef<"SubjectGroup", 'String'>
-    readonly header_id: FieldRef<"SubjectGroup", 'Int'>
   }
     
 
@@ -13258,10 +13321,6 @@ export namespace Prisma {
      */
     data: SubjectGroupCreateManyInput | SubjectGroupCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SubjectGroupIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13332,10 +13391,6 @@ export namespace Prisma {
      * Limit how many SubjectGroups to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SubjectGroupIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13405,9 +13460,9 @@ export namespace Prisma {
   }
 
   /**
-   * SubjectGroup.Subject
+   * SubjectGroup.subjects
    */
-  export type SubjectGroup$SubjectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubjectGroup$subjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Subject
      */
@@ -13429,6 +13484,30 @@ export namespace Prisma {
   }
 
   /**
+   * SubjectGroup.members
+   */
+  export type SubjectGroup$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    where?: SubjectGroupMembershipWhereInput
+    orderBy?: SubjectGroupMembershipOrderByWithRelationInput | SubjectGroupMembershipOrderByWithRelationInput[]
+    cursor?: SubjectGroupMembershipWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubjectGroupMembershipScalarFieldEnum | SubjectGroupMembershipScalarFieldEnum[]
+  }
+
+  /**
    * SubjectGroup without action
    */
   export type SubjectGroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13444,6 +13523,1114 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SubjectGroupInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SubjectGroupMembership
+   */
+
+  export type AggregateSubjectGroupMembership = {
+    _count: SubjectGroupMembershipCountAggregateOutputType | null
+    _avg: SubjectGroupMembershipAvgAggregateOutputType | null
+    _sum: SubjectGroupMembershipSumAggregateOutputType | null
+    _min: SubjectGroupMembershipMinAggregateOutputType | null
+    _max: SubjectGroupMembershipMaxAggregateOutputType | null
+  }
+
+  export type SubjectGroupMembershipAvgAggregateOutputType = {
+    id: number | null
+    teacher_id: number | null
+    subject_group_id: number | null
+  }
+
+  export type SubjectGroupMembershipSumAggregateOutputType = {
+    id: number | null
+    teacher_id: number | null
+    subject_group_id: number | null
+  }
+
+  export type SubjectGroupMembershipMinAggregateOutputType = {
+    id: number | null
+    teacher_id: number | null
+    subject_group_id: number | null
+    role: string | null
+    joined_at: Date | null
+  }
+
+  export type SubjectGroupMembershipMaxAggregateOutputType = {
+    id: number | null
+    teacher_id: number | null
+    subject_group_id: number | null
+    role: string | null
+    joined_at: Date | null
+  }
+
+  export type SubjectGroupMembershipCountAggregateOutputType = {
+    id: number
+    teacher_id: number
+    subject_group_id: number
+    role: number
+    joined_at: number
+    _all: number
+  }
+
+
+  export type SubjectGroupMembershipAvgAggregateInputType = {
+    id?: true
+    teacher_id?: true
+    subject_group_id?: true
+  }
+
+  export type SubjectGroupMembershipSumAggregateInputType = {
+    id?: true
+    teacher_id?: true
+    subject_group_id?: true
+  }
+
+  export type SubjectGroupMembershipMinAggregateInputType = {
+    id?: true
+    teacher_id?: true
+    subject_group_id?: true
+    role?: true
+    joined_at?: true
+  }
+
+  export type SubjectGroupMembershipMaxAggregateInputType = {
+    id?: true
+    teacher_id?: true
+    subject_group_id?: true
+    role?: true
+    joined_at?: true
+  }
+
+  export type SubjectGroupMembershipCountAggregateInputType = {
+    id?: true
+    teacher_id?: true
+    subject_group_id?: true
+    role?: true
+    joined_at?: true
+    _all?: true
+  }
+
+  export type SubjectGroupMembershipAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubjectGroupMembership to aggregate.
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubjectGroupMemberships to fetch.
+     */
+    orderBy?: SubjectGroupMembershipOrderByWithRelationInput | SubjectGroupMembershipOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubjectGroupMembershipWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubjectGroupMemberships from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubjectGroupMemberships.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SubjectGroupMemberships
+    **/
+    _count?: true | SubjectGroupMembershipCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubjectGroupMembershipAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubjectGroupMembershipSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubjectGroupMembershipMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubjectGroupMembershipMaxAggregateInputType
+  }
+
+  export type GetSubjectGroupMembershipAggregateType<T extends SubjectGroupMembershipAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubjectGroupMembership]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubjectGroupMembership[P]>
+      : GetScalarType<T[P], AggregateSubjectGroupMembership[P]>
+  }
+
+
+
+
+  export type SubjectGroupMembershipGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubjectGroupMembershipWhereInput
+    orderBy?: SubjectGroupMembershipOrderByWithAggregationInput | SubjectGroupMembershipOrderByWithAggregationInput[]
+    by: SubjectGroupMembershipScalarFieldEnum[] | SubjectGroupMembershipScalarFieldEnum
+    having?: SubjectGroupMembershipScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubjectGroupMembershipCountAggregateInputType | true
+    _avg?: SubjectGroupMembershipAvgAggregateInputType
+    _sum?: SubjectGroupMembershipSumAggregateInputType
+    _min?: SubjectGroupMembershipMinAggregateInputType
+    _max?: SubjectGroupMembershipMaxAggregateInputType
+  }
+
+  export type SubjectGroupMembershipGroupByOutputType = {
+    id: number
+    teacher_id: number
+    subject_group_id: number
+    role: string
+    joined_at: Date
+    _count: SubjectGroupMembershipCountAggregateOutputType | null
+    _avg: SubjectGroupMembershipAvgAggregateOutputType | null
+    _sum: SubjectGroupMembershipSumAggregateOutputType | null
+    _min: SubjectGroupMembershipMinAggregateOutputType | null
+    _max: SubjectGroupMembershipMaxAggregateOutputType | null
+  }
+
+  type GetSubjectGroupMembershipGroupByPayload<T extends SubjectGroupMembershipGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubjectGroupMembershipGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubjectGroupMembershipGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubjectGroupMembershipGroupByOutputType[P]>
+            : GetScalarType<T[P], SubjectGroupMembershipGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubjectGroupMembershipSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teacher_id?: boolean
+    subject_group_id?: boolean
+    role?: boolean
+    joined_at?: boolean
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subjectGroupMembership"]>
+
+  export type SubjectGroupMembershipSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teacher_id?: boolean
+    subject_group_id?: boolean
+    role?: boolean
+    joined_at?: boolean
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subjectGroupMembership"]>
+
+  export type SubjectGroupMembershipSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teacher_id?: boolean
+    subject_group_id?: boolean
+    role?: boolean
+    joined_at?: boolean
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subjectGroupMembership"]>
+
+  export type SubjectGroupMembershipSelectScalar = {
+    id?: boolean
+    teacher_id?: boolean
+    subject_group_id?: boolean
+    role?: boolean
+    joined_at?: boolean
+  }
+
+  export type SubjectGroupMembershipOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teacher_id" | "subject_group_id" | "role" | "joined_at", ExtArgs["result"]["subjectGroupMembership"]>
+  export type SubjectGroupMembershipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }
+  export type SubjectGroupMembershipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }
+  export type SubjectGroupMembershipIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    subject_group?: boolean | SubjectGroupDefaultArgs<ExtArgs>
+  }
+
+  export type $SubjectGroupMembershipPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SubjectGroupMembership"
+    objects: {
+      teacher: Prisma.$TeacherPayload<ExtArgs>
+      subject_group: Prisma.$SubjectGroupPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      teacher_id: number
+      subject_group_id: number
+      role: string
+      joined_at: Date
+    }, ExtArgs["result"]["subjectGroupMembership"]>
+    composites: {}
+  }
+
+  type SubjectGroupMembershipGetPayload<S extends boolean | null | undefined | SubjectGroupMembershipDefaultArgs> = $Result.GetResult<Prisma.$SubjectGroupMembershipPayload, S>
+
+  type SubjectGroupMembershipCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubjectGroupMembershipFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubjectGroupMembershipCountAggregateInputType | true
+    }
+
+  export interface SubjectGroupMembershipDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SubjectGroupMembership'], meta: { name: 'SubjectGroupMembership' } }
+    /**
+     * Find zero or one SubjectGroupMembership that matches the filter.
+     * @param {SubjectGroupMembershipFindUniqueArgs} args - Arguments to find a SubjectGroupMembership
+     * @example
+     * // Get one SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubjectGroupMembershipFindUniqueArgs>(args: SelectSubset<T, SubjectGroupMembershipFindUniqueArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SubjectGroupMembership that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubjectGroupMembershipFindUniqueOrThrowArgs} args - Arguments to find a SubjectGroupMembership
+     * @example
+     * // Get one SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubjectGroupMembershipFindUniqueOrThrowArgs>(args: SelectSubset<T, SubjectGroupMembershipFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubjectGroupMembership that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipFindFirstArgs} args - Arguments to find a SubjectGroupMembership
+     * @example
+     * // Get one SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubjectGroupMembershipFindFirstArgs>(args?: SelectSubset<T, SubjectGroupMembershipFindFirstArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubjectGroupMembership that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipFindFirstOrThrowArgs} args - Arguments to find a SubjectGroupMembership
+     * @example
+     * // Get one SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubjectGroupMembershipFindFirstOrThrowArgs>(args?: SelectSubset<T, SubjectGroupMembershipFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SubjectGroupMemberships that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SubjectGroupMemberships
+     * const subjectGroupMemberships = await prisma.subjectGroupMembership.findMany()
+     * 
+     * // Get first 10 SubjectGroupMemberships
+     * const subjectGroupMemberships = await prisma.subjectGroupMembership.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const subjectGroupMembershipWithIdOnly = await prisma.subjectGroupMembership.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubjectGroupMembershipFindManyArgs>(args?: SelectSubset<T, SubjectGroupMembershipFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SubjectGroupMembership.
+     * @param {SubjectGroupMembershipCreateArgs} args - Arguments to create a SubjectGroupMembership.
+     * @example
+     * // Create one SubjectGroupMembership
+     * const SubjectGroupMembership = await prisma.subjectGroupMembership.create({
+     *   data: {
+     *     // ... data to create a SubjectGroupMembership
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubjectGroupMembershipCreateArgs>(args: SelectSubset<T, SubjectGroupMembershipCreateArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SubjectGroupMemberships.
+     * @param {SubjectGroupMembershipCreateManyArgs} args - Arguments to create many SubjectGroupMemberships.
+     * @example
+     * // Create many SubjectGroupMemberships
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubjectGroupMembershipCreateManyArgs>(args?: SelectSubset<T, SubjectGroupMembershipCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SubjectGroupMemberships and returns the data saved in the database.
+     * @param {SubjectGroupMembershipCreateManyAndReturnArgs} args - Arguments to create many SubjectGroupMemberships.
+     * @example
+     * // Create many SubjectGroupMemberships
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SubjectGroupMemberships and only return the `id`
+     * const subjectGroupMembershipWithIdOnly = await prisma.subjectGroupMembership.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubjectGroupMembershipCreateManyAndReturnArgs>(args?: SelectSubset<T, SubjectGroupMembershipCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SubjectGroupMembership.
+     * @param {SubjectGroupMembershipDeleteArgs} args - Arguments to delete one SubjectGroupMembership.
+     * @example
+     * // Delete one SubjectGroupMembership
+     * const SubjectGroupMembership = await prisma.subjectGroupMembership.delete({
+     *   where: {
+     *     // ... filter to delete one SubjectGroupMembership
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubjectGroupMembershipDeleteArgs>(args: SelectSubset<T, SubjectGroupMembershipDeleteArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SubjectGroupMembership.
+     * @param {SubjectGroupMembershipUpdateArgs} args - Arguments to update one SubjectGroupMembership.
+     * @example
+     * // Update one SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubjectGroupMembershipUpdateArgs>(args: SelectSubset<T, SubjectGroupMembershipUpdateArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SubjectGroupMemberships.
+     * @param {SubjectGroupMembershipDeleteManyArgs} args - Arguments to filter SubjectGroupMemberships to delete.
+     * @example
+     * // Delete a few SubjectGroupMemberships
+     * const { count } = await prisma.subjectGroupMembership.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubjectGroupMembershipDeleteManyArgs>(args?: SelectSubset<T, SubjectGroupMembershipDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubjectGroupMemberships.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SubjectGroupMemberships
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubjectGroupMembershipUpdateManyArgs>(args: SelectSubset<T, SubjectGroupMembershipUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubjectGroupMemberships and returns the data updated in the database.
+     * @param {SubjectGroupMembershipUpdateManyAndReturnArgs} args - Arguments to update many SubjectGroupMemberships.
+     * @example
+     * // Update many SubjectGroupMemberships
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SubjectGroupMemberships and only return the `id`
+     * const subjectGroupMembershipWithIdOnly = await prisma.subjectGroupMembership.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubjectGroupMembershipUpdateManyAndReturnArgs>(args: SelectSubset<T, SubjectGroupMembershipUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SubjectGroupMembership.
+     * @param {SubjectGroupMembershipUpsertArgs} args - Arguments to update or create a SubjectGroupMembership.
+     * @example
+     * // Update or create a SubjectGroupMembership
+     * const subjectGroupMembership = await prisma.subjectGroupMembership.upsert({
+     *   create: {
+     *     // ... data to create a SubjectGroupMembership
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SubjectGroupMembership we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubjectGroupMembershipUpsertArgs>(args: SelectSubset<T, SubjectGroupMembershipUpsertArgs<ExtArgs>>): Prisma__SubjectGroupMembershipClient<$Result.GetResult<Prisma.$SubjectGroupMembershipPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SubjectGroupMemberships.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipCountArgs} args - Arguments to filter SubjectGroupMemberships to count.
+     * @example
+     * // Count the number of SubjectGroupMemberships
+     * const count = await prisma.subjectGroupMembership.count({
+     *   where: {
+     *     // ... the filter for the SubjectGroupMemberships we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubjectGroupMembershipCountArgs>(
+      args?: Subset<T, SubjectGroupMembershipCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubjectGroupMembershipCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SubjectGroupMembership.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubjectGroupMembershipAggregateArgs>(args: Subset<T, SubjectGroupMembershipAggregateArgs>): Prisma.PrismaPromise<GetSubjectGroupMembershipAggregateType<T>>
+
+    /**
+     * Group by SubjectGroupMembership.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubjectGroupMembershipGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubjectGroupMembershipGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubjectGroupMembershipGroupByArgs['orderBy'] }
+        : { orderBy?: SubjectGroupMembershipGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubjectGroupMembershipGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubjectGroupMembershipGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SubjectGroupMembership model
+   */
+  readonly fields: SubjectGroupMembershipFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SubjectGroupMembership.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubjectGroupMembershipClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    teacher<T extends TeacherDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeacherDefaultArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subject_group<T extends SubjectGroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectGroupDefaultArgs<ExtArgs>>): Prisma__SubjectGroupClient<$Result.GetResult<Prisma.$SubjectGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SubjectGroupMembership model
+   */
+  interface SubjectGroupMembershipFieldRefs {
+    readonly id: FieldRef<"SubjectGroupMembership", 'Int'>
+    readonly teacher_id: FieldRef<"SubjectGroupMembership", 'Int'>
+    readonly subject_group_id: FieldRef<"SubjectGroupMembership", 'Int'>
+    readonly role: FieldRef<"SubjectGroupMembership", 'String'>
+    readonly joined_at: FieldRef<"SubjectGroupMembership", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SubjectGroupMembership findUnique
+   */
+  export type SubjectGroupMembershipFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter, which SubjectGroupMembership to fetch.
+     */
+    where: SubjectGroupMembershipWhereUniqueInput
+  }
+
+  /**
+   * SubjectGroupMembership findUniqueOrThrow
+   */
+  export type SubjectGroupMembershipFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter, which SubjectGroupMembership to fetch.
+     */
+    where: SubjectGroupMembershipWhereUniqueInput
+  }
+
+  /**
+   * SubjectGroupMembership findFirst
+   */
+  export type SubjectGroupMembershipFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter, which SubjectGroupMembership to fetch.
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubjectGroupMemberships to fetch.
+     */
+    orderBy?: SubjectGroupMembershipOrderByWithRelationInput | SubjectGroupMembershipOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubjectGroupMemberships.
+     */
+    cursor?: SubjectGroupMembershipWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubjectGroupMemberships from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubjectGroupMemberships.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubjectGroupMemberships.
+     */
+    distinct?: SubjectGroupMembershipScalarFieldEnum | SubjectGroupMembershipScalarFieldEnum[]
+  }
+
+  /**
+   * SubjectGroupMembership findFirstOrThrow
+   */
+  export type SubjectGroupMembershipFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter, which SubjectGroupMembership to fetch.
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubjectGroupMemberships to fetch.
+     */
+    orderBy?: SubjectGroupMembershipOrderByWithRelationInput | SubjectGroupMembershipOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubjectGroupMemberships.
+     */
+    cursor?: SubjectGroupMembershipWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubjectGroupMemberships from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubjectGroupMemberships.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubjectGroupMemberships.
+     */
+    distinct?: SubjectGroupMembershipScalarFieldEnum | SubjectGroupMembershipScalarFieldEnum[]
+  }
+
+  /**
+   * SubjectGroupMembership findMany
+   */
+  export type SubjectGroupMembershipFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter, which SubjectGroupMemberships to fetch.
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubjectGroupMemberships to fetch.
+     */
+    orderBy?: SubjectGroupMembershipOrderByWithRelationInput | SubjectGroupMembershipOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SubjectGroupMemberships.
+     */
+    cursor?: SubjectGroupMembershipWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubjectGroupMemberships from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubjectGroupMemberships.
+     */
+    skip?: number
+    distinct?: SubjectGroupMembershipScalarFieldEnum | SubjectGroupMembershipScalarFieldEnum[]
+  }
+
+  /**
+   * SubjectGroupMembership create
+   */
+  export type SubjectGroupMembershipCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SubjectGroupMembership.
+     */
+    data: XOR<SubjectGroupMembershipCreateInput, SubjectGroupMembershipUncheckedCreateInput>
+  }
+
+  /**
+   * SubjectGroupMembership createMany
+   */
+  export type SubjectGroupMembershipCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SubjectGroupMemberships.
+     */
+    data: SubjectGroupMembershipCreateManyInput | SubjectGroupMembershipCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SubjectGroupMembership createManyAndReturn
+   */
+  export type SubjectGroupMembershipCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * The data used to create many SubjectGroupMemberships.
+     */
+    data: SubjectGroupMembershipCreateManyInput | SubjectGroupMembershipCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubjectGroupMembership update
+   */
+  export type SubjectGroupMembershipUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SubjectGroupMembership.
+     */
+    data: XOR<SubjectGroupMembershipUpdateInput, SubjectGroupMembershipUncheckedUpdateInput>
+    /**
+     * Choose, which SubjectGroupMembership to update.
+     */
+    where: SubjectGroupMembershipWhereUniqueInput
+  }
+
+  /**
+   * SubjectGroupMembership updateMany
+   */
+  export type SubjectGroupMembershipUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SubjectGroupMemberships.
+     */
+    data: XOR<SubjectGroupMembershipUpdateManyMutationInput, SubjectGroupMembershipUncheckedUpdateManyInput>
+    /**
+     * Filter which SubjectGroupMemberships to update
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * Limit how many SubjectGroupMemberships to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubjectGroupMembership updateManyAndReturn
+   */
+  export type SubjectGroupMembershipUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * The data used to update SubjectGroupMemberships.
+     */
+    data: XOR<SubjectGroupMembershipUpdateManyMutationInput, SubjectGroupMembershipUncheckedUpdateManyInput>
+    /**
+     * Filter which SubjectGroupMemberships to update
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * Limit how many SubjectGroupMemberships to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubjectGroupMembership upsert
+   */
+  export type SubjectGroupMembershipUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SubjectGroupMembership to update in case it exists.
+     */
+    where: SubjectGroupMembershipWhereUniqueInput
+    /**
+     * In case the SubjectGroupMembership found by the `where` argument doesn't exist, create a new SubjectGroupMembership with this data.
+     */
+    create: XOR<SubjectGroupMembershipCreateInput, SubjectGroupMembershipUncheckedCreateInput>
+    /**
+     * In case the SubjectGroupMembership was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubjectGroupMembershipUpdateInput, SubjectGroupMembershipUncheckedUpdateInput>
+  }
+
+  /**
+   * SubjectGroupMembership delete
+   */
+  export type SubjectGroupMembershipDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
+    /**
+     * Filter which SubjectGroupMembership to delete.
+     */
+    where: SubjectGroupMembershipWhereUniqueInput
+  }
+
+  /**
+   * SubjectGroupMembership deleteMany
+   */
+  export type SubjectGroupMembershipDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubjectGroupMemberships to delete
+     */
+    where?: SubjectGroupMembershipWhereInput
+    /**
+     * Limit how many SubjectGroupMemberships to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubjectGroupMembership without action
+   */
+  export type SubjectGroupMembershipDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubjectGroupMembership
+     */
+    select?: SubjectGroupMembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubjectGroupMembership
+     */
+    omit?: SubjectGroupMembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectGroupMembershipInclude<ExtArgs> | null
   }
 
 
@@ -13568,11 +14755,21 @@ export namespace Prisma {
 
   export const SubjectGroupScalarFieldEnum: {
     id: 'id',
-    name: 'name',
-    header_id: 'header_id'
+    name: 'name'
   };
 
   export type SubjectGroupScalarFieldEnum = (typeof SubjectGroupScalarFieldEnum)[keyof typeof SubjectGroupScalarFieldEnum]
+
+
+  export const SubjectGroupMembershipScalarFieldEnum: {
+    id: 'id',
+    teacher_id: 'teacher_id',
+    subject_group_id: 'subject_group_id',
+    role: 'role',
+    joined_at: 'joined_at'
+  };
+
+  export type SubjectGroupMembershipScalarFieldEnum = (typeof SubjectGroupMembershipScalarFieldEnum)[keyof typeof SubjectGroupMembershipScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -13683,7 +14880,7 @@ export namespace Prisma {
     update_at?: DateTimeFilter<"Teacher"> | Date | string
     advisingClasses?: ClassListRelationFilter
     teachingAssignments?: TeachingAssignmentListRelationFilter
-    SubjectGroup?: SubjectGroupListRelationFilter
+    subjectMembership?: XOR<SubjectGroupMembershipNullableScalarRelationFilter, SubjectGroupMembershipWhereInput> | null
   }
 
   export type TeacherOrderByWithRelationInput = {
@@ -13696,7 +14893,7 @@ export namespace Prisma {
     update_at?: SortOrder
     advisingClasses?: ClassOrderByRelationAggregateInput
     teachingAssignments?: TeachingAssignmentOrderByRelationAggregateInput
-    SubjectGroup?: SubjectGroupOrderByRelationAggregateInput
+    subjectMembership?: SubjectGroupMembershipOrderByWithRelationInput
   }
 
   export type TeacherWhereUniqueInput = Prisma.AtLeast<{
@@ -13712,7 +14909,7 @@ export namespace Prisma {
     update_at?: DateTimeFilter<"Teacher"> | Date | string
     advisingClasses?: ClassListRelationFilter
     teachingAssignments?: TeachingAssignmentListRelationFilter
-    SubjectGroup?: SubjectGroupListRelationFilter
+    subjectMembership?: XOR<SubjectGroupMembershipNullableScalarRelationFilter, SubjectGroupMembershipWhereInput> | null
   }, "id" | "username">
 
   export type TeacherOrderByWithAggregationInput = {
@@ -14271,17 +15468,15 @@ export namespace Prisma {
     NOT?: SubjectGroupWhereInput | SubjectGroupWhereInput[]
     id?: IntFilter<"SubjectGroup"> | number
     name?: StringFilter<"SubjectGroup"> | string
-    header_id?: IntFilter<"SubjectGroup"> | number
-    Subject?: SubjectListRelationFilter
-    Teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
+    subjects?: SubjectListRelationFilter
+    members?: SubjectGroupMembershipListRelationFilter
   }
 
   export type SubjectGroupOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    header_id?: SortOrder
-    Subject?: SubjectOrderByRelationAggregateInput
-    Teacher?: TeacherOrderByWithRelationInput
+    subjects?: SubjectOrderByRelationAggregateInput
+    members?: SubjectGroupMembershipOrderByRelationAggregateInput
   }
 
   export type SubjectGroupWhereUniqueInput = Prisma.AtLeast<{
@@ -14290,15 +15485,13 @@ export namespace Prisma {
     OR?: SubjectGroupWhereInput[]
     NOT?: SubjectGroupWhereInput | SubjectGroupWhereInput[]
     name?: StringFilter<"SubjectGroup"> | string
-    header_id?: IntFilter<"SubjectGroup"> | number
-    Subject?: SubjectListRelationFilter
-    Teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
-  }, "id" | "id">
+    subjects?: SubjectListRelationFilter
+    members?: SubjectGroupMembershipListRelationFilter
+  }, "id">
 
   export type SubjectGroupOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    header_id?: SortOrder
     _count?: SubjectGroupCountOrderByAggregateInput
     _avg?: SubjectGroupAvgOrderByAggregateInput
     _max?: SubjectGroupMaxOrderByAggregateInput
@@ -14312,7 +15505,66 @@ export namespace Prisma {
     NOT?: SubjectGroupScalarWhereWithAggregatesInput | SubjectGroupScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"SubjectGroup"> | number
     name?: StringWithAggregatesFilter<"SubjectGroup"> | string
-    header_id?: IntWithAggregatesFilter<"SubjectGroup"> | number
+  }
+
+  export type SubjectGroupMembershipWhereInput = {
+    AND?: SubjectGroupMembershipWhereInput | SubjectGroupMembershipWhereInput[]
+    OR?: SubjectGroupMembershipWhereInput[]
+    NOT?: SubjectGroupMembershipWhereInput | SubjectGroupMembershipWhereInput[]
+    id?: IntFilter<"SubjectGroupMembership"> | number
+    teacher_id?: IntFilter<"SubjectGroupMembership"> | number
+    subject_group_id?: IntFilter<"SubjectGroupMembership"> | number
+    role?: StringFilter<"SubjectGroupMembership"> | string
+    joined_at?: DateTimeFilter<"SubjectGroupMembership"> | Date | string
+    teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
+    subject_group?: XOR<SubjectGroupScalarRelationFilter, SubjectGroupWhereInput>
+  }
+
+  export type SubjectGroupMembershipOrderByWithRelationInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+    role?: SortOrder
+    joined_at?: SortOrder
+    teacher?: TeacherOrderByWithRelationInput
+    subject_group?: SubjectGroupOrderByWithRelationInput
+  }
+
+  export type SubjectGroupMembershipWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    teacher_id?: number
+    AND?: SubjectGroupMembershipWhereInput | SubjectGroupMembershipWhereInput[]
+    OR?: SubjectGroupMembershipWhereInput[]
+    NOT?: SubjectGroupMembershipWhereInput | SubjectGroupMembershipWhereInput[]
+    subject_group_id?: IntFilter<"SubjectGroupMembership"> | number
+    role?: StringFilter<"SubjectGroupMembership"> | string
+    joined_at?: DateTimeFilter<"SubjectGroupMembership"> | Date | string
+    teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
+    subject_group?: XOR<SubjectGroupScalarRelationFilter, SubjectGroupWhereInput>
+  }, "id" | "teacher_id">
+
+  export type SubjectGroupMembershipOrderByWithAggregationInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+    role?: SortOrder
+    joined_at?: SortOrder
+    _count?: SubjectGroupMembershipCountOrderByAggregateInput
+    _avg?: SubjectGroupMembershipAvgOrderByAggregateInput
+    _max?: SubjectGroupMembershipMaxOrderByAggregateInput
+    _min?: SubjectGroupMembershipMinOrderByAggregateInput
+    _sum?: SubjectGroupMembershipSumOrderByAggregateInput
+  }
+
+  export type SubjectGroupMembershipScalarWhereWithAggregatesInput = {
+    AND?: SubjectGroupMembershipScalarWhereWithAggregatesInput | SubjectGroupMembershipScalarWhereWithAggregatesInput[]
+    OR?: SubjectGroupMembershipScalarWhereWithAggregatesInput[]
+    NOT?: SubjectGroupMembershipScalarWhereWithAggregatesInput | SubjectGroupMembershipScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SubjectGroupMembership"> | number
+    teacher_id?: IntWithAggregatesFilter<"SubjectGroupMembership"> | number
+    subject_group_id?: IntWithAggregatesFilter<"SubjectGroupMembership"> | number
+    role?: StringWithAggregatesFilter<"SubjectGroupMembership"> | string
+    joined_at?: DateTimeWithAggregatesFilter<"SubjectGroupMembership"> | Date | string
   }
 
   export type TeacherCreateInput = {
@@ -14324,7 +15576,7 @@ export namespace Prisma {
     update_at?: Date | string
     advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutTeacherInput
-    SubjectGroup?: SubjectGroupCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherUncheckedCreateInput = {
@@ -14337,7 +15589,7 @@ export namespace Prisma {
     update_at?: Date | string
     advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
     teachingAssignments?: TeachingAssignmentUncheckedCreateNestedManyWithoutTeacherInput
-    SubjectGroup?: SubjectGroupUncheckedCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipUncheckedCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherUpdateInput = {
@@ -14349,7 +15601,7 @@ export namespace Prisma {
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUpdateManyWithoutAdvisorsNestedInput
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutTeacherNestedInput
-    SubjectGroup?: SubjectGroupUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUpdateOneWithoutTeacherNestedInput
   }
 
   export type TeacherUncheckedUpdateInput = {
@@ -14362,7 +15614,7 @@ export namespace Prisma {
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUncheckedUpdateManyWithoutAdvisorsNestedInput
     teachingAssignments?: TeachingAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
-    SubjectGroup?: SubjectGroupUncheckedUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUncheckedUpdateOneWithoutTeacherNestedInput
   }
 
   export type TeacherCreateManyInput = {
@@ -14460,7 +15712,7 @@ export namespace Prisma {
     subjectClasses?: SubjectClassCreateNestedManyWithoutSubjectInput
     registrations?: BookRegistrationCreateNestedManyWithoutSubjectInput
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutSubjectInput
-    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectInput
+    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectsInput
   }
 
   export type SubjectUncheckedCreateInput = {
@@ -14489,7 +15741,7 @@ export namespace Prisma {
     subjectClasses?: SubjectClassUpdateManyWithoutSubjectNestedInput
     registrations?: BookRegistrationUpdateManyWithoutSubjectNestedInput
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutSubjectNestedInput
-    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectNestedInput
+    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectsNestedInput
   }
 
   export type SubjectUncheckedUpdateInput = {
@@ -14882,34 +16134,33 @@ export namespace Prisma {
 
   export type SubjectGroupCreateInput = {
     name: string
-    Subject?: SubjectCreateNestedManyWithoutSubjectGroupInput
-    Teacher: TeacherCreateNestedOneWithoutSubjectGroupInput
+    subjects?: SubjectCreateNestedManyWithoutSubjectGroupInput
+    members?: SubjectGroupMembershipCreateNestedManyWithoutSubject_groupInput
   }
 
   export type SubjectGroupUncheckedCreateInput = {
     id?: number
     name: string
-    header_id: number
-    Subject?: SubjectUncheckedCreateNestedManyWithoutSubjectGroupInput
+    subjects?: SubjectUncheckedCreateNestedManyWithoutSubjectGroupInput
+    members?: SubjectGroupMembershipUncheckedCreateNestedManyWithoutSubject_groupInput
   }
 
   export type SubjectGroupUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    Subject?: SubjectUpdateManyWithoutSubjectGroupNestedInput
-    Teacher?: TeacherUpdateOneRequiredWithoutSubjectGroupNestedInput
+    subjects?: SubjectUpdateManyWithoutSubjectGroupNestedInput
+    members?: SubjectGroupMembershipUpdateManyWithoutSubject_groupNestedInput
   }
 
   export type SubjectGroupUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    header_id?: IntFieldUpdateOperationsInput | number
-    Subject?: SubjectUncheckedUpdateManyWithoutSubjectGroupNestedInput
+    subjects?: SubjectUncheckedUpdateManyWithoutSubjectGroupNestedInput
+    members?: SubjectGroupMembershipUncheckedUpdateManyWithoutSubject_groupNestedInput
   }
 
   export type SubjectGroupCreateManyInput = {
     id?: number
     name: string
-    header_id: number
   }
 
   export type SubjectGroupUpdateManyMutationInput = {
@@ -14919,7 +16170,57 @@ export namespace Prisma {
   export type SubjectGroupUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    header_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubjectGroupMembershipCreateInput = {
+    role?: string
+    joined_at?: Date | string
+    teacher: TeacherCreateNestedOneWithoutSubjectMembershipInput
+    subject_group: SubjectGroupCreateNestedOneWithoutMembersInput
+  }
+
+  export type SubjectGroupMembershipUncheckedCreateInput = {
+    id?: number
+    teacher_id: number
+    subject_group_id: number
+    role?: string
+    joined_at?: Date | string
+  }
+
+  export type SubjectGroupMembershipUpdateInput = {
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacher?: TeacherUpdateOneRequiredWithoutSubjectMembershipNestedInput
+    subject_group?: SubjectGroupUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type SubjectGroupMembershipUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teacher_id?: IntFieldUpdateOperationsInput | number
+    subject_group_id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubjectGroupMembershipCreateManyInput = {
+    id?: number
+    teacher_id: number
+    subject_group_id: number
+    role?: string
+    joined_at?: Date | string
+  }
+
+  export type SubjectGroupMembershipUpdateManyMutationInput = {
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubjectGroupMembershipUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teacher_id?: IntFieldUpdateOperationsInput | number
+    subject_group_id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -14971,10 +16272,9 @@ export namespace Prisma {
     none?: TeachingAssignmentWhereInput
   }
 
-  export type SubjectGroupListRelationFilter = {
-    every?: SubjectGroupWhereInput
-    some?: SubjectGroupWhereInput
-    none?: SubjectGroupWhereInput
+  export type SubjectGroupMembershipNullableScalarRelationFilter = {
+    is?: SubjectGroupMembershipWhereInput | null
+    isNot?: SubjectGroupMembershipWhereInput | null
   }
 
   export type ClassOrderByRelationAggregateInput = {
@@ -14982,10 +16282,6 @@ export namespace Prisma {
   }
 
   export type TeachingAssignmentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SubjectGroupOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15541,36 +16837,82 @@ export namespace Prisma {
     none?: SubjectWhereInput
   }
 
+  export type SubjectGroupMembershipListRelationFilter = {
+    every?: SubjectGroupMembershipWhereInput
+    some?: SubjectGroupMembershipWhereInput
+    none?: SubjectGroupMembershipWhereInput
+  }
+
   export type SubjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SubjectGroupMembershipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type SubjectGroupCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    header_id?: SortOrder
   }
 
   export type SubjectGroupAvgOrderByAggregateInput = {
     id?: SortOrder
-    header_id?: SortOrder
   }
 
   export type SubjectGroupMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    header_id?: SortOrder
   }
 
   export type SubjectGroupMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    header_id?: SortOrder
   }
 
   export type SubjectGroupSumOrderByAggregateInput = {
     id?: SortOrder
-    header_id?: SortOrder
+  }
+
+  export type SubjectGroupScalarRelationFilter = {
+    is?: SubjectGroupWhereInput
+    isNot?: SubjectGroupWhereInput
+  }
+
+  export type SubjectGroupMembershipCountOrderByAggregateInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+    role?: SortOrder
+    joined_at?: SortOrder
+  }
+
+  export type SubjectGroupMembershipAvgOrderByAggregateInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+  }
+
+  export type SubjectGroupMembershipMaxOrderByAggregateInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+    role?: SortOrder
+    joined_at?: SortOrder
+  }
+
+  export type SubjectGroupMembershipMinOrderByAggregateInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
+    role?: SortOrder
+    joined_at?: SortOrder
+  }
+
+  export type SubjectGroupMembershipSumOrderByAggregateInput = {
+    id?: SortOrder
+    teacher_id?: SortOrder
+    subject_group_id?: SortOrder
   }
 
   export type ClassCreateNestedManyWithoutAdvisorsInput = {
@@ -15586,11 +16928,10 @@ export namespace Prisma {
     connect?: TeachingAssignmentWhereUniqueInput | TeachingAssignmentWhereUniqueInput[]
   }
 
-  export type SubjectGroupCreateNestedManyWithoutTeacherInput = {
-    create?: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput> | SubjectGroupCreateWithoutTeacherInput[] | SubjectGroupUncheckedCreateWithoutTeacherInput[]
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutTeacherInput | SubjectGroupCreateOrConnectWithoutTeacherInput[]
-    createMany?: SubjectGroupCreateManyTeacherInputEnvelope
-    connect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
+  export type SubjectGroupMembershipCreateNestedOneWithoutTeacherInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutTeacherInput
+    connect?: SubjectGroupMembershipWhereUniqueInput
   }
 
   export type ClassUncheckedCreateNestedManyWithoutAdvisorsInput = {
@@ -15606,11 +16947,10 @@ export namespace Prisma {
     connect?: TeachingAssignmentWhereUniqueInput | TeachingAssignmentWhereUniqueInput[]
   }
 
-  export type SubjectGroupUncheckedCreateNestedManyWithoutTeacherInput = {
-    create?: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput> | SubjectGroupCreateWithoutTeacherInput[] | SubjectGroupUncheckedCreateWithoutTeacherInput[]
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutTeacherInput | SubjectGroupCreateOrConnectWithoutTeacherInput[]
-    createMany?: SubjectGroupCreateManyTeacherInputEnvelope
-    connect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
+  export type SubjectGroupMembershipUncheckedCreateNestedOneWithoutTeacherInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutTeacherInput
+    connect?: SubjectGroupMembershipWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15648,18 +16988,14 @@ export namespace Prisma {
     deleteMany?: TeachingAssignmentScalarWhereInput | TeachingAssignmentScalarWhereInput[]
   }
 
-  export type SubjectGroupUpdateManyWithoutTeacherNestedInput = {
-    create?: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput> | SubjectGroupCreateWithoutTeacherInput[] | SubjectGroupUncheckedCreateWithoutTeacherInput[]
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutTeacherInput | SubjectGroupCreateOrConnectWithoutTeacherInput[]
-    upsert?: SubjectGroupUpsertWithWhereUniqueWithoutTeacherInput | SubjectGroupUpsertWithWhereUniqueWithoutTeacherInput[]
-    createMany?: SubjectGroupCreateManyTeacherInputEnvelope
-    set?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    disconnect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    delete?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    connect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    update?: SubjectGroupUpdateWithWhereUniqueWithoutTeacherInput | SubjectGroupUpdateWithWhereUniqueWithoutTeacherInput[]
-    updateMany?: SubjectGroupUpdateManyWithWhereWithoutTeacherInput | SubjectGroupUpdateManyWithWhereWithoutTeacherInput[]
-    deleteMany?: SubjectGroupScalarWhereInput | SubjectGroupScalarWhereInput[]
+  export type SubjectGroupMembershipUpdateOneWithoutTeacherNestedInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutTeacherInput
+    upsert?: SubjectGroupMembershipUpsertWithoutTeacherInput
+    disconnect?: SubjectGroupMembershipWhereInput | boolean
+    delete?: SubjectGroupMembershipWhereInput | boolean
+    connect?: SubjectGroupMembershipWhereUniqueInput
+    update?: XOR<XOR<SubjectGroupMembershipUpdateToOneWithWhereWithoutTeacherInput, SubjectGroupMembershipUpdateWithoutTeacherInput>, SubjectGroupMembershipUncheckedUpdateWithoutTeacherInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -15697,18 +17033,14 @@ export namespace Prisma {
     deleteMany?: TeachingAssignmentScalarWhereInput | TeachingAssignmentScalarWhereInput[]
   }
 
-  export type SubjectGroupUncheckedUpdateManyWithoutTeacherNestedInput = {
-    create?: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput> | SubjectGroupCreateWithoutTeacherInput[] | SubjectGroupUncheckedCreateWithoutTeacherInput[]
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutTeacherInput | SubjectGroupCreateOrConnectWithoutTeacherInput[]
-    upsert?: SubjectGroupUpsertWithWhereUniqueWithoutTeacherInput | SubjectGroupUpsertWithWhereUniqueWithoutTeacherInput[]
-    createMany?: SubjectGroupCreateManyTeacherInputEnvelope
-    set?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    disconnect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    delete?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    connect?: SubjectGroupWhereUniqueInput | SubjectGroupWhereUniqueInput[]
-    update?: SubjectGroupUpdateWithWhereUniqueWithoutTeacherInput | SubjectGroupUpdateWithWhereUniqueWithoutTeacherInput[]
-    updateMany?: SubjectGroupUpdateManyWithWhereWithoutTeacherInput | SubjectGroupUpdateManyWithWhereWithoutTeacherInput[]
-    deleteMany?: SubjectGroupScalarWhereInput | SubjectGroupScalarWhereInput[]
+  export type SubjectGroupMembershipUncheckedUpdateOneWithoutTeacherNestedInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutTeacherInput
+    upsert?: SubjectGroupMembershipUpsertWithoutTeacherInput
+    disconnect?: SubjectGroupMembershipWhereInput | boolean
+    delete?: SubjectGroupMembershipWhereInput | boolean
+    connect?: SubjectGroupMembershipWhereUniqueInput
+    update?: XOR<XOR<SubjectGroupMembershipUpdateToOneWithWhereWithoutTeacherInput, SubjectGroupMembershipUpdateWithoutTeacherInput>, SubjectGroupMembershipUncheckedUpdateWithoutTeacherInput>
   }
 
   export type TeacherCreateNestedManyWithoutAdvisingClassesInput = {
@@ -15903,9 +17235,9 @@ export namespace Prisma {
     connect?: TeachingAssignmentWhereUniqueInput | TeachingAssignmentWhereUniqueInput[]
   }
 
-  export type SubjectGroupCreateNestedOneWithoutSubjectInput = {
-    create?: XOR<SubjectGroupCreateWithoutSubjectInput, SubjectGroupUncheckedCreateWithoutSubjectInput>
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutSubjectInput
+  export type SubjectGroupCreateNestedOneWithoutSubjectsInput = {
+    create?: XOR<SubjectGroupCreateWithoutSubjectsInput, SubjectGroupUncheckedCreateWithoutSubjectsInput>
+    connectOrCreate?: SubjectGroupCreateOrConnectWithoutSubjectsInput
     connect?: SubjectGroupWhereUniqueInput
   }
 
@@ -15997,14 +17329,14 @@ export namespace Prisma {
     deleteMany?: TeachingAssignmentScalarWhereInput | TeachingAssignmentScalarWhereInput[]
   }
 
-  export type SubjectGroupUpdateOneWithoutSubjectNestedInput = {
-    create?: XOR<SubjectGroupCreateWithoutSubjectInput, SubjectGroupUncheckedCreateWithoutSubjectInput>
-    connectOrCreate?: SubjectGroupCreateOrConnectWithoutSubjectInput
-    upsert?: SubjectGroupUpsertWithoutSubjectInput
+  export type SubjectGroupUpdateOneWithoutSubjectsNestedInput = {
+    create?: XOR<SubjectGroupCreateWithoutSubjectsInput, SubjectGroupUncheckedCreateWithoutSubjectsInput>
+    connectOrCreate?: SubjectGroupCreateOrConnectWithoutSubjectsInput
+    upsert?: SubjectGroupUpsertWithoutSubjectsInput
     disconnect?: SubjectGroupWhereInput | boolean
     delete?: SubjectGroupWhereInput | boolean
     connect?: SubjectGroupWhereUniqueInput
-    update?: XOR<XOR<SubjectGroupUpdateToOneWithWhereWithoutSubjectInput, SubjectGroupUpdateWithoutSubjectInput>, SubjectGroupUncheckedUpdateWithoutSubjectInput>
+    update?: XOR<XOR<SubjectGroupUpdateToOneWithWhereWithoutSubjectsInput, SubjectGroupUpdateWithoutSubjectsInput>, SubjectGroupUncheckedUpdateWithoutSubjectsInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -16362,10 +17694,11 @@ export namespace Prisma {
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
   }
 
-  export type TeacherCreateNestedOneWithoutSubjectGroupInput = {
-    create?: XOR<TeacherCreateWithoutSubjectGroupInput, TeacherUncheckedCreateWithoutSubjectGroupInput>
-    connectOrCreate?: TeacherCreateOrConnectWithoutSubjectGroupInput
-    connect?: TeacherWhereUniqueInput
+  export type SubjectGroupMembershipCreateNestedManyWithoutSubject_groupInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput> | SubjectGroupMembershipCreateWithoutSubject_groupInput[] | SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput[]
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput | SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput[]
+    createMany?: SubjectGroupMembershipCreateManySubject_groupInputEnvelope
+    connect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
   }
 
   export type SubjectUncheckedCreateNestedManyWithoutSubjectGroupInput = {
@@ -16373,6 +17706,13 @@ export namespace Prisma {
     connectOrCreate?: SubjectCreateOrConnectWithoutSubjectGroupInput | SubjectCreateOrConnectWithoutSubjectGroupInput[]
     createMany?: SubjectCreateManySubjectGroupInputEnvelope
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
+  }
+
+  export type SubjectGroupMembershipUncheckedCreateNestedManyWithoutSubject_groupInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput> | SubjectGroupMembershipCreateWithoutSubject_groupInput[] | SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput[]
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput | SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput[]
+    createMany?: SubjectGroupMembershipCreateManySubject_groupInputEnvelope
+    connect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
   }
 
   export type SubjectUpdateManyWithoutSubjectGroupNestedInput = {
@@ -16389,12 +17729,18 @@ export namespace Prisma {
     deleteMany?: SubjectScalarWhereInput | SubjectScalarWhereInput[]
   }
 
-  export type TeacherUpdateOneRequiredWithoutSubjectGroupNestedInput = {
-    create?: XOR<TeacherCreateWithoutSubjectGroupInput, TeacherUncheckedCreateWithoutSubjectGroupInput>
-    connectOrCreate?: TeacherCreateOrConnectWithoutSubjectGroupInput
-    upsert?: TeacherUpsertWithoutSubjectGroupInput
-    connect?: TeacherWhereUniqueInput
-    update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutSubjectGroupInput, TeacherUpdateWithoutSubjectGroupInput>, TeacherUncheckedUpdateWithoutSubjectGroupInput>
+  export type SubjectGroupMembershipUpdateManyWithoutSubject_groupNestedInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput> | SubjectGroupMembershipCreateWithoutSubject_groupInput[] | SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput[]
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput | SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput[]
+    upsert?: SubjectGroupMembershipUpsertWithWhereUniqueWithoutSubject_groupInput | SubjectGroupMembershipUpsertWithWhereUniqueWithoutSubject_groupInput[]
+    createMany?: SubjectGroupMembershipCreateManySubject_groupInputEnvelope
+    set?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    disconnect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    delete?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    connect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    update?: SubjectGroupMembershipUpdateWithWhereUniqueWithoutSubject_groupInput | SubjectGroupMembershipUpdateWithWhereUniqueWithoutSubject_groupInput[]
+    updateMany?: SubjectGroupMembershipUpdateManyWithWhereWithoutSubject_groupInput | SubjectGroupMembershipUpdateManyWithWhereWithoutSubject_groupInput[]
+    deleteMany?: SubjectGroupMembershipScalarWhereInput | SubjectGroupMembershipScalarWhereInput[]
   }
 
   export type SubjectUncheckedUpdateManyWithoutSubjectGroupNestedInput = {
@@ -16409,6 +17755,48 @@ export namespace Prisma {
     update?: SubjectUpdateWithWhereUniqueWithoutSubjectGroupInput | SubjectUpdateWithWhereUniqueWithoutSubjectGroupInput[]
     updateMany?: SubjectUpdateManyWithWhereWithoutSubjectGroupInput | SubjectUpdateManyWithWhereWithoutSubjectGroupInput[]
     deleteMany?: SubjectScalarWhereInput | SubjectScalarWhereInput[]
+  }
+
+  export type SubjectGroupMembershipUncheckedUpdateManyWithoutSubject_groupNestedInput = {
+    create?: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput> | SubjectGroupMembershipCreateWithoutSubject_groupInput[] | SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput[]
+    connectOrCreate?: SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput | SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput[]
+    upsert?: SubjectGroupMembershipUpsertWithWhereUniqueWithoutSubject_groupInput | SubjectGroupMembershipUpsertWithWhereUniqueWithoutSubject_groupInput[]
+    createMany?: SubjectGroupMembershipCreateManySubject_groupInputEnvelope
+    set?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    disconnect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    delete?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    connect?: SubjectGroupMembershipWhereUniqueInput | SubjectGroupMembershipWhereUniqueInput[]
+    update?: SubjectGroupMembershipUpdateWithWhereUniqueWithoutSubject_groupInput | SubjectGroupMembershipUpdateWithWhereUniqueWithoutSubject_groupInput[]
+    updateMany?: SubjectGroupMembershipUpdateManyWithWhereWithoutSubject_groupInput | SubjectGroupMembershipUpdateManyWithWhereWithoutSubject_groupInput[]
+    deleteMany?: SubjectGroupMembershipScalarWhereInput | SubjectGroupMembershipScalarWhereInput[]
+  }
+
+  export type TeacherCreateNestedOneWithoutSubjectMembershipInput = {
+    create?: XOR<TeacherCreateWithoutSubjectMembershipInput, TeacherUncheckedCreateWithoutSubjectMembershipInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutSubjectMembershipInput
+    connect?: TeacherWhereUniqueInput
+  }
+
+  export type SubjectGroupCreateNestedOneWithoutMembersInput = {
+    create?: XOR<SubjectGroupCreateWithoutMembersInput, SubjectGroupUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: SubjectGroupCreateOrConnectWithoutMembersInput
+    connect?: SubjectGroupWhereUniqueInput
+  }
+
+  export type TeacherUpdateOneRequiredWithoutSubjectMembershipNestedInput = {
+    create?: XOR<TeacherCreateWithoutSubjectMembershipInput, TeacherUncheckedCreateWithoutSubjectMembershipInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutSubjectMembershipInput
+    upsert?: TeacherUpsertWithoutSubjectMembershipInput
+    connect?: TeacherWhereUniqueInput
+    update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutSubjectMembershipInput, TeacherUpdateWithoutSubjectMembershipInput>, TeacherUncheckedUpdateWithoutSubjectMembershipInput>
+  }
+
+  export type SubjectGroupUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<SubjectGroupCreateWithoutMembersInput, SubjectGroupUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: SubjectGroupCreateOrConnectWithoutMembersInput
+    upsert?: SubjectGroupUpsertWithoutMembersInput
+    connect?: SubjectGroupWhereUniqueInput
+    update?: XOR<XOR<SubjectGroupUpdateToOneWithWhereWithoutMembersInput, SubjectGroupUpdateWithoutMembersInput>, SubjectGroupUncheckedUpdateWithoutMembersInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -16630,25 +18018,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SubjectGroupCreateWithoutTeacherInput = {
-    name: string
-    Subject?: SubjectCreateNestedManyWithoutSubjectGroupInput
+  export type SubjectGroupMembershipCreateWithoutTeacherInput = {
+    role?: string
+    joined_at?: Date | string
+    subject_group: SubjectGroupCreateNestedOneWithoutMembersInput
   }
 
-  export type SubjectGroupUncheckedCreateWithoutTeacherInput = {
+  export type SubjectGroupMembershipUncheckedCreateWithoutTeacherInput = {
     id?: number
-    name: string
-    Subject?: SubjectUncheckedCreateNestedManyWithoutSubjectGroupInput
+    subject_group_id: number
+    role?: string
+    joined_at?: Date | string
   }
 
-  export type SubjectGroupCreateOrConnectWithoutTeacherInput = {
-    where: SubjectGroupWhereUniqueInput
-    create: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput>
-  }
-
-  export type SubjectGroupCreateManyTeacherInputEnvelope = {
-    data: SubjectGroupCreateManyTeacherInput | SubjectGroupCreateManyTeacherInput[]
-    skipDuplicates?: boolean
+  export type SubjectGroupMembershipCreateOrConnectWithoutTeacherInput = {
+    where: SubjectGroupMembershipWhereUniqueInput
+    create: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
   }
 
   export type ClassUpsertWithWhereUniqueWithoutAdvisorsInput = {
@@ -16702,29 +18087,28 @@ export namespace Prisma {
     class_id?: IntFilter<"TeachingAssignment"> | number
   }
 
-  export type SubjectGroupUpsertWithWhereUniqueWithoutTeacherInput = {
-    where: SubjectGroupWhereUniqueInput
-    update: XOR<SubjectGroupUpdateWithoutTeacherInput, SubjectGroupUncheckedUpdateWithoutTeacherInput>
-    create: XOR<SubjectGroupCreateWithoutTeacherInput, SubjectGroupUncheckedCreateWithoutTeacherInput>
+  export type SubjectGroupMembershipUpsertWithoutTeacherInput = {
+    update: XOR<SubjectGroupMembershipUpdateWithoutTeacherInput, SubjectGroupMembershipUncheckedUpdateWithoutTeacherInput>
+    create: XOR<SubjectGroupMembershipCreateWithoutTeacherInput, SubjectGroupMembershipUncheckedCreateWithoutTeacherInput>
+    where?: SubjectGroupMembershipWhereInput
   }
 
-  export type SubjectGroupUpdateWithWhereUniqueWithoutTeacherInput = {
-    where: SubjectGroupWhereUniqueInput
-    data: XOR<SubjectGroupUpdateWithoutTeacherInput, SubjectGroupUncheckedUpdateWithoutTeacherInput>
+  export type SubjectGroupMembershipUpdateToOneWithWhereWithoutTeacherInput = {
+    where?: SubjectGroupMembershipWhereInput
+    data: XOR<SubjectGroupMembershipUpdateWithoutTeacherInput, SubjectGroupMembershipUncheckedUpdateWithoutTeacherInput>
   }
 
-  export type SubjectGroupUpdateManyWithWhereWithoutTeacherInput = {
-    where: SubjectGroupScalarWhereInput
-    data: XOR<SubjectGroupUpdateManyMutationInput, SubjectGroupUncheckedUpdateManyWithoutTeacherInput>
+  export type SubjectGroupMembershipUpdateWithoutTeacherInput = {
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject_group?: SubjectGroupUpdateOneRequiredWithoutMembersNestedInput
   }
 
-  export type SubjectGroupScalarWhereInput = {
-    AND?: SubjectGroupScalarWhereInput | SubjectGroupScalarWhereInput[]
-    OR?: SubjectGroupScalarWhereInput[]
-    NOT?: SubjectGroupScalarWhereInput | SubjectGroupScalarWhereInput[]
-    id?: IntFilter<"SubjectGroup"> | number
-    name?: StringFilter<"SubjectGroup"> | string
-    header_id?: IntFilter<"SubjectGroup"> | number
+  export type SubjectGroupMembershipUncheckedUpdateWithoutTeacherInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    subject_group_id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TeacherCreateWithoutAdvisingClassesInput = {
@@ -16735,7 +18119,7 @@ export namespace Prisma {
     create_at?: Date | string
     update_at?: Date | string
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutTeacherInput
-    SubjectGroup?: SubjectGroupCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherUncheckedCreateWithoutAdvisingClassesInput = {
@@ -16747,7 +18131,7 @@ export namespace Prisma {
     create_at?: Date | string
     update_at?: Date | string
     teachingAssignments?: TeachingAssignmentUncheckedCreateNestedManyWithoutTeacherInput
-    SubjectGroup?: SubjectGroupUncheckedCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipUncheckedCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherCreateOrConnectWithoutAdvisingClassesInput = {
@@ -17019,20 +18403,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SubjectGroupCreateWithoutSubjectInput = {
+  export type SubjectGroupCreateWithoutSubjectsInput = {
     name: string
-    Teacher: TeacherCreateNestedOneWithoutSubjectGroupInput
+    members?: SubjectGroupMembershipCreateNestedManyWithoutSubject_groupInput
   }
 
-  export type SubjectGroupUncheckedCreateWithoutSubjectInput = {
+  export type SubjectGroupUncheckedCreateWithoutSubjectsInput = {
     id?: number
     name: string
-    header_id: number
+    members?: SubjectGroupMembershipUncheckedCreateNestedManyWithoutSubject_groupInput
   }
 
-  export type SubjectGroupCreateOrConnectWithoutSubjectInput = {
+  export type SubjectGroupCreateOrConnectWithoutSubjectsInput = {
     where: SubjectGroupWhereUniqueInput
-    create: XOR<SubjectGroupCreateWithoutSubjectInput, SubjectGroupUncheckedCreateWithoutSubjectInput>
+    create: XOR<SubjectGroupCreateWithoutSubjectsInput, SubjectGroupUncheckedCreateWithoutSubjectsInput>
   }
 
   export type BookUpsertWithWhereUniqueWithoutSubjectInput = {
@@ -17125,26 +18509,26 @@ export namespace Prisma {
     data: XOR<TeachingAssignmentUpdateManyMutationInput, TeachingAssignmentUncheckedUpdateManyWithoutSubjectInput>
   }
 
-  export type SubjectGroupUpsertWithoutSubjectInput = {
-    update: XOR<SubjectGroupUpdateWithoutSubjectInput, SubjectGroupUncheckedUpdateWithoutSubjectInput>
-    create: XOR<SubjectGroupCreateWithoutSubjectInput, SubjectGroupUncheckedCreateWithoutSubjectInput>
+  export type SubjectGroupUpsertWithoutSubjectsInput = {
+    update: XOR<SubjectGroupUpdateWithoutSubjectsInput, SubjectGroupUncheckedUpdateWithoutSubjectsInput>
+    create: XOR<SubjectGroupCreateWithoutSubjectsInput, SubjectGroupUncheckedCreateWithoutSubjectsInput>
     where?: SubjectGroupWhereInput
   }
 
-  export type SubjectGroupUpdateToOneWithWhereWithoutSubjectInput = {
+  export type SubjectGroupUpdateToOneWithWhereWithoutSubjectsInput = {
     where?: SubjectGroupWhereInput
-    data: XOR<SubjectGroupUpdateWithoutSubjectInput, SubjectGroupUncheckedUpdateWithoutSubjectInput>
+    data: XOR<SubjectGroupUpdateWithoutSubjectsInput, SubjectGroupUncheckedUpdateWithoutSubjectsInput>
   }
 
-  export type SubjectGroupUpdateWithoutSubjectInput = {
+  export type SubjectGroupUpdateWithoutSubjectsInput = {
     name?: StringFieldUpdateOperationsInput | string
-    Teacher?: TeacherUpdateOneRequiredWithoutSubjectGroupNestedInput
+    members?: SubjectGroupMembershipUpdateManyWithoutSubject_groupNestedInput
   }
 
-  export type SubjectGroupUncheckedUpdateWithoutSubjectInput = {
+  export type SubjectGroupUncheckedUpdateWithoutSubjectsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    header_id?: IntFieldUpdateOperationsInput | number
+    members?: SubjectGroupMembershipUncheckedUpdateManyWithoutSubject_groupNestedInput
   }
 
   export type TeacherCreateWithoutTeachingAssignmentsInput = {
@@ -17155,7 +18539,7 @@ export namespace Prisma {
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
-    SubjectGroup?: SubjectGroupCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherUncheckedCreateWithoutTeachingAssignmentsInput = {
@@ -17167,7 +18551,7 @@ export namespace Prisma {
     create_at?: Date | string
     update_at?: Date | string
     advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
-    SubjectGroup?: SubjectGroupUncheckedCreateNestedManyWithoutTeacherInput
+    subjectMembership?: SubjectGroupMembershipUncheckedCreateNestedOneWithoutTeacherInput
   }
 
   export type TeacherCreateOrConnectWithoutTeachingAssignmentsInput = {
@@ -17185,7 +18569,7 @@ export namespace Prisma {
     books?: BookCreateNestedManyWithoutSubjectInput
     subjectClasses?: SubjectClassCreateNestedManyWithoutSubjectInput
     registrations?: BookRegistrationCreateNestedManyWithoutSubjectInput
-    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectInput
+    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectsInput
   }
 
   export type SubjectUncheckedCreateWithoutTeachingAssignmentsInput = {
@@ -17248,7 +18632,7 @@ export namespace Prisma {
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUpdateManyWithoutAdvisorsNestedInput
-    SubjectGroup?: SubjectGroupUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUpdateOneWithoutTeacherNestedInput
   }
 
   export type TeacherUncheckedUpdateWithoutTeachingAssignmentsInput = {
@@ -17260,7 +18644,7 @@ export namespace Prisma {
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     advisingClasses?: ClassUncheckedUpdateManyWithoutAdvisorsNestedInput
-    SubjectGroup?: SubjectGroupUncheckedUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUncheckedUpdateOneWithoutTeacherNestedInput
   }
 
   export type SubjectUpsertWithoutTeachingAssignmentsInput = {
@@ -17284,7 +18668,7 @@ export namespace Prisma {
     books?: BookUpdateManyWithoutSubjectNestedInput
     subjectClasses?: SubjectClassUpdateManyWithoutSubjectNestedInput
     registrations?: BookRegistrationUpdateManyWithoutSubjectNestedInput
-    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectNestedInput
+    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectsNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutTeachingAssignmentsInput = {
@@ -17430,7 +18814,7 @@ export namespace Prisma {
     subjectClasses?: SubjectClassCreateNestedManyWithoutSubjectInput
     registrations?: BookRegistrationCreateNestedManyWithoutSubjectInput
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutSubjectInput
-    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectInput
+    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectsInput
   }
 
   export type SubjectUncheckedCreateWithoutBooksInput = {
@@ -17518,7 +18902,7 @@ export namespace Prisma {
     subjectClasses?: SubjectClassUpdateManyWithoutSubjectNestedInput
     registrations?: BookRegistrationUpdateManyWithoutSubjectNestedInput
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutSubjectNestedInput
-    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectNestedInput
+    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectsNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutBooksInput = {
@@ -17637,7 +19021,7 @@ export namespace Prisma {
     books?: BookCreateNestedManyWithoutSubjectInput
     subjectClasses?: SubjectClassCreateNestedManyWithoutSubjectInput
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutSubjectInput
-    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectInput
+    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectsInput
   }
 
   export type SubjectUncheckedCreateWithoutRegistrationsInput = {
@@ -17742,7 +19126,7 @@ export namespace Prisma {
     books?: BookUpdateManyWithoutSubjectNestedInput
     subjectClasses?: SubjectClassUpdateManyWithoutSubjectNestedInput
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutSubjectNestedInput
-    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectNestedInput
+    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectsNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutRegistrationsInput = {
@@ -17769,7 +19153,7 @@ export namespace Prisma {
     books?: BookCreateNestedManyWithoutSubjectInput
     registrations?: BookRegistrationCreateNestedManyWithoutSubjectInput
     teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutSubjectInput
-    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectInput
+    SubjectGroup?: SubjectGroupCreateNestedOneWithoutSubjectsInput
   }
 
   export type SubjectUncheckedCreateWithoutSubjectClassesInput = {
@@ -17834,7 +19218,7 @@ export namespace Prisma {
     books?: BookUpdateManyWithoutSubjectNestedInput
     registrations?: BookRegistrationUpdateManyWithoutSubjectNestedInput
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutSubjectNestedInput
-    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectNestedInput
+    SubjectGroup?: SubjectGroupUpdateOneWithoutSubjectsNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutSubjectClassesInput = {
@@ -17963,32 +19347,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type TeacherCreateWithoutSubjectGroupInput = {
-    name: string
-    username: string
-    password: string
+  export type SubjectGroupMembershipCreateWithoutSubject_groupInput = {
     role?: string
-    create_at?: Date | string
-    update_at?: Date | string
-    advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
-    teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutTeacherInput
+    joined_at?: Date | string
+    teacher: TeacherCreateNestedOneWithoutSubjectMembershipInput
   }
 
-  export type TeacherUncheckedCreateWithoutSubjectGroupInput = {
+  export type SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput = {
     id?: number
-    name: string
-    username: string
-    password: string
+    teacher_id: number
     role?: string
-    create_at?: Date | string
-    update_at?: Date | string
-    advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
-    teachingAssignments?: TeachingAssignmentUncheckedCreateNestedManyWithoutTeacherInput
+    joined_at?: Date | string
   }
 
-  export type TeacherCreateOrConnectWithoutSubjectGroupInput = {
-    where: TeacherWhereUniqueInput
-    create: XOR<TeacherCreateWithoutSubjectGroupInput, TeacherUncheckedCreateWithoutSubjectGroupInput>
+  export type SubjectGroupMembershipCreateOrConnectWithoutSubject_groupInput = {
+    where: SubjectGroupMembershipWhereUniqueInput
+    create: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput>
+  }
+
+  export type SubjectGroupMembershipCreateManySubject_groupInputEnvelope = {
+    data: SubjectGroupMembershipCreateManySubject_groupInput | SubjectGroupMembershipCreateManySubject_groupInput[]
+    skipDuplicates?: boolean
   }
 
   export type SubjectUpsertWithWhereUniqueWithoutSubjectGroupInput = {
@@ -18021,18 +19400,89 @@ export namespace Prisma {
     subject_group_id?: IntNullableFilter<"Subject"> | number | null
   }
 
-  export type TeacherUpsertWithoutSubjectGroupInput = {
-    update: XOR<TeacherUpdateWithoutSubjectGroupInput, TeacherUncheckedUpdateWithoutSubjectGroupInput>
-    create: XOR<TeacherCreateWithoutSubjectGroupInput, TeacherUncheckedCreateWithoutSubjectGroupInput>
+  export type SubjectGroupMembershipUpsertWithWhereUniqueWithoutSubject_groupInput = {
+    where: SubjectGroupMembershipWhereUniqueInput
+    update: XOR<SubjectGroupMembershipUpdateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedUpdateWithoutSubject_groupInput>
+    create: XOR<SubjectGroupMembershipCreateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedCreateWithoutSubject_groupInput>
+  }
+
+  export type SubjectGroupMembershipUpdateWithWhereUniqueWithoutSubject_groupInput = {
+    where: SubjectGroupMembershipWhereUniqueInput
+    data: XOR<SubjectGroupMembershipUpdateWithoutSubject_groupInput, SubjectGroupMembershipUncheckedUpdateWithoutSubject_groupInput>
+  }
+
+  export type SubjectGroupMembershipUpdateManyWithWhereWithoutSubject_groupInput = {
+    where: SubjectGroupMembershipScalarWhereInput
+    data: XOR<SubjectGroupMembershipUpdateManyMutationInput, SubjectGroupMembershipUncheckedUpdateManyWithoutSubject_groupInput>
+  }
+
+  export type SubjectGroupMembershipScalarWhereInput = {
+    AND?: SubjectGroupMembershipScalarWhereInput | SubjectGroupMembershipScalarWhereInput[]
+    OR?: SubjectGroupMembershipScalarWhereInput[]
+    NOT?: SubjectGroupMembershipScalarWhereInput | SubjectGroupMembershipScalarWhereInput[]
+    id?: IntFilter<"SubjectGroupMembership"> | number
+    teacher_id?: IntFilter<"SubjectGroupMembership"> | number
+    subject_group_id?: IntFilter<"SubjectGroupMembership"> | number
+    role?: StringFilter<"SubjectGroupMembership"> | string
+    joined_at?: DateTimeFilter<"SubjectGroupMembership"> | Date | string
+  }
+
+  export type TeacherCreateWithoutSubjectMembershipInput = {
+    name: string
+    username: string
+    password: string
+    role?: string
+    create_at?: Date | string
+    update_at?: Date | string
+    advisingClasses?: ClassCreateNestedManyWithoutAdvisorsInput
+    teachingAssignments?: TeachingAssignmentCreateNestedManyWithoutTeacherInput
+  }
+
+  export type TeacherUncheckedCreateWithoutSubjectMembershipInput = {
+    id?: number
+    name: string
+    username: string
+    password: string
+    role?: string
+    create_at?: Date | string
+    update_at?: Date | string
+    advisingClasses?: ClassUncheckedCreateNestedManyWithoutAdvisorsInput
+    teachingAssignments?: TeachingAssignmentUncheckedCreateNestedManyWithoutTeacherInput
+  }
+
+  export type TeacherCreateOrConnectWithoutSubjectMembershipInput = {
+    where: TeacherWhereUniqueInput
+    create: XOR<TeacherCreateWithoutSubjectMembershipInput, TeacherUncheckedCreateWithoutSubjectMembershipInput>
+  }
+
+  export type SubjectGroupCreateWithoutMembersInput = {
+    name: string
+    subjects?: SubjectCreateNestedManyWithoutSubjectGroupInput
+  }
+
+  export type SubjectGroupUncheckedCreateWithoutMembersInput = {
+    id?: number
+    name: string
+    subjects?: SubjectUncheckedCreateNestedManyWithoutSubjectGroupInput
+  }
+
+  export type SubjectGroupCreateOrConnectWithoutMembersInput = {
+    where: SubjectGroupWhereUniqueInput
+    create: XOR<SubjectGroupCreateWithoutMembersInput, SubjectGroupUncheckedCreateWithoutMembersInput>
+  }
+
+  export type TeacherUpsertWithoutSubjectMembershipInput = {
+    update: XOR<TeacherUpdateWithoutSubjectMembershipInput, TeacherUncheckedUpdateWithoutSubjectMembershipInput>
+    create: XOR<TeacherCreateWithoutSubjectMembershipInput, TeacherUncheckedCreateWithoutSubjectMembershipInput>
     where?: TeacherWhereInput
   }
 
-  export type TeacherUpdateToOneWithWhereWithoutSubjectGroupInput = {
+  export type TeacherUpdateToOneWithWhereWithoutSubjectMembershipInput = {
     where?: TeacherWhereInput
-    data: XOR<TeacherUpdateWithoutSubjectGroupInput, TeacherUncheckedUpdateWithoutSubjectGroupInput>
+    data: XOR<TeacherUpdateWithoutSubjectMembershipInput, TeacherUncheckedUpdateWithoutSubjectMembershipInput>
   }
 
-  export type TeacherUpdateWithoutSubjectGroupInput = {
+  export type TeacherUpdateWithoutSubjectMembershipInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -18043,7 +19493,7 @@ export namespace Prisma {
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutTeacherNestedInput
   }
 
-  export type TeacherUncheckedUpdateWithoutSubjectGroupInput = {
+  export type TeacherUncheckedUpdateWithoutSubjectMembershipInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
@@ -18055,15 +19505,32 @@ export namespace Prisma {
     teachingAssignments?: TeachingAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
   }
 
+  export type SubjectGroupUpsertWithoutMembersInput = {
+    update: XOR<SubjectGroupUpdateWithoutMembersInput, SubjectGroupUncheckedUpdateWithoutMembersInput>
+    create: XOR<SubjectGroupCreateWithoutMembersInput, SubjectGroupUncheckedCreateWithoutMembersInput>
+    where?: SubjectGroupWhereInput
+  }
+
+  export type SubjectGroupUpdateToOneWithWhereWithoutMembersInput = {
+    where?: SubjectGroupWhereInput
+    data: XOR<SubjectGroupUpdateWithoutMembersInput, SubjectGroupUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type SubjectGroupUpdateWithoutMembersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    subjects?: SubjectUpdateManyWithoutSubjectGroupNestedInput
+  }
+
+  export type SubjectGroupUncheckedUpdateWithoutMembersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    subjects?: SubjectUncheckedUpdateManyWithoutSubjectGroupNestedInput
+  }
+
   export type TeachingAssignmentCreateManyTeacherInput = {
     id?: number
     subject_id: number
     class_id: number
-  }
-
-  export type SubjectGroupCreateManyTeacherInput = {
-    id?: number
-    name: string
   }
 
   export type ClassUpdateWithoutAdvisorsInput = {
@@ -18106,22 +19573,6 @@ export namespace Prisma {
     class_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SubjectGroupUpdateWithoutTeacherInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    Subject?: SubjectUpdateManyWithoutSubjectGroupNestedInput
-  }
-
-  export type SubjectGroupUncheckedUpdateWithoutTeacherInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    Subject?: SubjectUncheckedUpdateManyWithoutSubjectGroupNestedInput
-  }
-
-  export type SubjectGroupUncheckedUpdateManyWithoutTeacherInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
   export type StudentCreateManyClassInput = {
     id?: number
     name: string
@@ -18150,7 +19601,7 @@ export namespace Prisma {
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     teachingAssignments?: TeachingAssignmentUpdateManyWithoutTeacherNestedInput
-    SubjectGroup?: SubjectGroupUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUpdateOneWithoutTeacherNestedInput
   }
 
   export type TeacherUncheckedUpdateWithoutAdvisingClassesInput = {
@@ -18162,7 +19613,7 @@ export namespace Prisma {
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
     teachingAssignments?: TeachingAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
-    SubjectGroup?: SubjectGroupUncheckedUpdateManyWithoutTeacherNestedInput
+    subjectMembership?: SubjectGroupMembershipUncheckedUpdateOneWithoutTeacherNestedInput
   }
 
   export type TeacherUncheckedUpdateManyWithoutAdvisingClassesInput = {
@@ -18461,6 +19912,13 @@ export namespace Prisma {
     update_at?: Date | string
   }
 
+  export type SubjectGroupMembershipCreateManySubject_groupInput = {
+    id?: number
+    teacher_id: number
+    role?: string
+    joined_at?: Date | string
+  }
+
   export type SubjectUpdateWithoutSubjectGroupInput = {
     code?: StringFieldUpdateOperationsInput | string
     grade?: StringFieldUpdateOperationsInput | string
@@ -18496,6 +19954,26 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     create_at?: DateTimeFieldUpdateOperationsInput | Date | string
     update_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubjectGroupMembershipUpdateWithoutSubject_groupInput = {
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacher?: TeacherUpdateOneRequiredWithoutSubjectMembershipNestedInput
+  }
+
+  export type SubjectGroupMembershipUncheckedUpdateWithoutSubject_groupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teacher_id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubjectGroupMembershipUncheckedUpdateManyWithoutSubject_groupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teacher_id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    joined_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.12.0
- * Query Engine version: 8047c96bbd92db98a2abc7c9323ce77c02c89dbc
+ * Prisma Client JS version: 6.9.0
+ * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
  */
 Prisma.prismaVersion = {
-  client: "6.12.0",
-  engine: "8047c96bbd92db98a2abc7c9323ce77c02c89dbc"
+  client: "6.9.0",
+  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -200,8 +200,15 @@ exports.Prisma.AcademicYearScalarFieldEnum = {
 
 exports.Prisma.SubjectGroupScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  header_id: 'header_id'
+  name: 'name'
+};
+
+exports.Prisma.SubjectGroupMembershipScalarFieldEnum = {
+  id: 'id',
+  teacher_id: 'teacher_id',
+  subject_group_id: 'subject_group_id',
+  role: 'role',
+  joined_at: 'joined_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -230,7 +237,8 @@ exports.Prisma.ModelName = {
   BookRegistration: 'BookRegistration',
   SubjectClass: 'SubjectClass',
   AcademicYear: 'AcademicYear',
-  SubjectGroup: 'SubjectGroup'
+  SubjectGroup: 'SubjectGroup',
+  SubjectGroupMembership: 'SubjectGroupMembership'
 };
 
 /**
