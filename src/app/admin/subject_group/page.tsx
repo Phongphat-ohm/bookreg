@@ -5,12 +5,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SubjectGroupList } from "@/components/Admin/SubjectGroup";
 
-interface Teacher {
-    id: number;
-    name: string;
-    username: string;
-}
-
 interface Subject {
     id: number;
     name: string;
@@ -21,8 +15,22 @@ interface Subject {
 interface SubjectGroup {
     id: number;
     name: string;
-    Teacher: Teacher;
-    Subject: Subject[];
+    members: SubjectGroupMember[];
+    subjects: Subject[];
+}
+
+interface SubjectGroupMember {
+    id: number;
+    role: string;
+    joined_at: string;
+    teacher: Teacher;
+}
+
+interface Teacher {
+    id: number;
+    name: string;
+    username: string;
+    role?: string;
 }
 
 export default function SubjectGroupPage() {
