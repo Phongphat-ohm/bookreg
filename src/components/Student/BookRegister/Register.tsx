@@ -60,6 +60,7 @@ export default function RegisterBookSystem() {
     const [book, setBook] = useState<GetBookProp | null>(null);
     const [registerData, setRegisterData] = useState<BookRegistrationProps | null>(null);
     const [showRegisterCode, setShowRegisterCode] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
 
     const check_book_reg = async () => {
         let config = {
@@ -106,6 +107,11 @@ export default function RegisterBookSystem() {
     }, [])
 
     const confirm_register = async () => {
+        // ป้องกันการกดซ้ำ
+        if (isRegistering) return;
+
+        setIsRegistering(true);
+
         let data = JSON.stringify({
             "book_code": book_code
         });
@@ -150,13 +156,15 @@ export default function RegisterBookSystem() {
                 timeout: 3000,
                 shouldShowTimeoutProgress: true,
             })
+        } finally {
+            setIsRegistering(false);
         }
     }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
             <BtmNavbar />
-            
+
             {/* Header */}
             <div className="w-full flex gap-2 items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 left-0 z-10">
                 <div className="flex gap-3 items-center">
@@ -276,9 +284,9 @@ export default function RegisterBookSystem() {
                                                     <p className="font-semibold text-gray-800">{book?.subject.name}</p>
                                                 </div>
                                             </div>
-                                            
+
                                             <Divider />
-                                            
+
                                             <div className="space-y-3">
                                                 <div className="flex items-center gap-3">
                                                     <FaBarcode className="text-gray-400" />
@@ -301,22 +309,24 @@ export default function RegisterBookSystem() {
 
                                 {/* Action Buttons */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <Button 
-                                        onPress={confirm_register} 
-                                        color="primary" 
+                                    <Button
+                                        onPress={confirm_register}
+                                        color="primary"
                                         size="lg"
                                         variant="shadow"
                                         className="font-semibold"
-                                        startContent={<FaCircleCheck />}
+                                        isLoading={isRegistering}
+                                        isDisabled={isRegistering}
                                     >
-                                        ยืนยันลงทะเบียน
+                                        {isRegistering ? "กำลังลงทะเบียน..." : "ยืนยันลงทะเบียน"}
                                     </Button>
                                     <Link href={"/student/register"}>
-                                        <Button 
-                                            color="danger" 
+                                        <Button
+                                            color="danger"
                                             variant="bordered"
                                             size="lg"
                                             className="w-full font-semibold"
+                                            isDisabled={isRegistering}
                                         >
                                             ยกเลิก
                                         </Button>
@@ -358,7 +368,7 @@ export default function RegisterBookSystem() {
                                                 {registerData.register_code}
                                             </p>
                                         </div>
-                                        
+
                                         <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
                                             <div className="grid grid-cols-2 gap-3 text-sm">
                                                 <div>
@@ -375,11 +385,11 @@ export default function RegisterBookSystem() {
                                                 <p className="font-semibold">{book?.name}</p>
                                             </div>
                                         </div>
-                                        
+
                                         <Link href={"/student/home"}>
-                                            <Button 
-                                                color="success" 
-                                                className="w-full" 
+                                            <Button
+                                                color="success"
+                                                className="w-full"
                                                 size="lg"
                                                 variant="shadow"
                                                 startContent={<FaHouse />}
@@ -396,9 +406,9 @@ export default function RegisterBookSystem() {
                                                 กดปุ่มด้านล่างเพื่อแสดงรหัสลงทะเบียน
                                             </p>
                                         </div>
-                                        <Button 
-                                            color="warning" 
-                                            className="w-full" 
+                                        <Button
+                                            color="warning"
+                                            className="w-full"
                                             size="lg"
                                             variant="shadow"
                                             onPress={() => setShowRegisterCode(true)}
