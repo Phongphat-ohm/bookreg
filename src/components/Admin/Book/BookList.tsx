@@ -41,7 +41,10 @@ import {
 } from "lucide-react";
 import AddBookModal from "./AddBookModal";
 import BookRegistrationsModal from "./BookRegistrationsModal";
+import EditBookModal from "./EditBookModal";
 import BarcodeScanner from "@/components/Common/BarcodeScanner";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 interface SubjectGroup {
     id: number;
@@ -137,9 +140,11 @@ export default function BookList({
     const [sortBy, setSortBy] = useState("name");
     const [sortOrder, setSortOrder] = useState("asc");
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isRegistrationsModalOpen, setIsRegistrationsModalOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [isScannerOpen, setIsScannerOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState<number | null>(null);
 
     const handleSearchChange = (value: string) => {
         setSearchTerm(value);
@@ -274,6 +279,96 @@ export default function BookList({
 
     const handleRegistrationUpdate = () => {
         onUpdate();
+    };
+
+    const handleEditBook = (book: Book) => {
+        setSelectedBook(book);
+        setIsEditModalOpen(true);
+    };
+
+    const handleEditSuccess = () => {
+        setIsEditModalOpen(false);
+        setSelectedBook(null);
+        onUpdate();
+    };
+
+    const handleDeleteBook = async (book: Book) => {
+        const result = await Swal.fire({
+            title: 'ยืนยันการลบ',
+            html: `คุณต้องการลบหนังสือ<br><strong>"${book.name}"</strong><br>รหัส: ${book.barcode} หรือไม่?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'ลบ',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-lg',
+                title: 'text-lg font-semibold',
+                htmlContainer: 'text-sm',
+                confirmButton: 'rounded-lg px-4 py-2 font-medium',
+                cancelButton: 'rounded-lg px-4 py-2 font-medium'
+            }
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+            setIsDeleting(book.id);
+
+            Swal.fire({
+                title: 'กำลังลบ...',
+                text: 'กรุณารอสักครู่',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const response = await axios.delete(`/api/admin/books/${book.id}`);
+
+            if (response.data.status === 200) {
+                await Swal.fire({
+                    title: 'สำเร็จ!',
+                    text: response.data.message,
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: 'rounded-lg'
+                    }
+                });
+                onUpdate();
+            } else {
+                await Swal.fire({
+                    title: 'ผิดพลาด!',
+                    text: response.data.message || "ไม่สามารถลบหนังสือได้",
+                    icon: 'error',
+                    confirmButtonText: 'ตกลง',
+                    customClass: {
+                        popup: 'rounded-lg',
+                        confirmButton: 'rounded-lg px-4 py-2 font-medium'
+                    }
+                });
+            }
+        } catch (error: any) {
+            console.error("Error deleting book:", error);
+            await Swal.fire({
+                title: 'ผิดพลาด!',
+                text: error.response?.data?.message || "เกิดข้อผิดพลาดในการลบหนังสือ",
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+                customClass: {
+                    popup: 'rounded-lg',
+                    confirmButton: 'rounded-lg px-4 py-2 font-medium'
+                }
+            });
+        } finally {
+            setIsDeleting(null);
+        }
     };
 
     // สร้างรายการกลุ่มสาระจาก subjects
@@ -557,6 +652,7 @@ export default function BookList({
                                                                 variant="light"
                                                                 size="sm"
                                                                 isIconOnly
+                                                                isDisabled={isDeleting === book.id}
                                                             >
                                                                 <MoreVertical className="w-4 h-4" />
                                                             </Button>
@@ -565,6 +661,7 @@ export default function BookList({
                                                             <DropdownItem
                                                                 key="edit"
                                                                 startContent={<Edit className="w-4 h-4" />}
+                                                                onPress={() => handleEditBook(book)}
                                                             >
                                                                 แก้ไขข้อมูล
                                                             </DropdownItem>
@@ -573,6 +670,7 @@ export default function BookList({
                                                                 className="text-danger"
                                                                 color="danger"
                                                                 startContent={<Trash2 className="w-4 h-4" />}
+                                                                onPress={() => handleDeleteBook(book)}
                                                             >
                                                                 ลบหนังสือ
                                                             </DropdownItem>
@@ -665,6 +763,20 @@ export default function BookList({
                 onScan={handleBarcodeScanned}
                 title="สแกนบาร์โค้ดเพื่อค้นหา"
             />
+
+            {selectedBook && (
+                <EditBookModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        setIsEditModalOpen(false);
+                        setSelectedBook(null);
+                    }}
+                    onSuccess={handleEditSuccess}
+                    book={selectedBook}
+                    subjects={subjects}
+                    academicYears={academicYears}
+                />
+            )}
         </>
     );
 }
