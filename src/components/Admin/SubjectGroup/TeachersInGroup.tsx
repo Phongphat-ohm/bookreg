@@ -142,8 +142,8 @@ export default function TeachersInGroup({ subjectGroupData, onUpdate }: Teachers
 
         return Array.from(teacherMap.values()).sort((a, b) => {
             // หัวหน้ากลุ่มสาระขึ้นก่อน
-            const aIsHeader = subjectGroupData.members.find(m => m.teacher.id === a.teacher.id)?.role === 'header';
-            const bIsHeader = subjectGroupData.members.find(m => m.teacher.id === b.teacher.id)?.role === 'header';
+            const aIsHeader = subjectGroupData.members.find(m => m.teacher.id === a.teacher.id)?.role === 'head';
+            const bIsHeader = subjectGroupData.members.find(m => m.teacher.id === b.teacher.id)?.role === 'head';
             
             if (aIsHeader && !bIsHeader) return -1;
             if (!aIsHeader && bIsHeader) return 1;
@@ -225,7 +225,7 @@ export default function TeachersInGroup({ subjectGroupData, onUpdate }: Teachers
                                         <TableCell>
                                             {(() => {
                                                 const membership = subjectGroupData.members.find(m => m.teacher.id === teacherData.teacher.id);
-                                                if (membership?.role === 'header') {
+                                                if (membership?.role === 'head') {
                                                     return (
                                                         <Chip
                                                             size="sm"

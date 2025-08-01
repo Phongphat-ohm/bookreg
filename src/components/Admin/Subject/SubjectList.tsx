@@ -346,7 +346,7 @@ export default function SubjectList({ subjects, onUpdate }: SubjectListProps) {
                                                     <Users className="w-3 h-3 text-gray-400" />
                                                     <div>
                                                         <p className="font-medium text-gray-800 text-sm">{subject.SubjectGroup.name}</p>
-                                                        <p className="text-xs text-gray-500">หัวหน้า: {subject.SubjectGroup.Teacher.name}</p>
+                                                        <p className="text-xs text-gray-500">หัวหน้า: {subject.SubjectGroup.members?.[0]?.teacher?.name || 'ไม่มีหัวหน้า'}</p>
                                                     </div>
                                                 </div>
                                             </TableCell>

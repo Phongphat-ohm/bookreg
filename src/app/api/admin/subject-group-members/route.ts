@@ -17,10 +17,10 @@ export async function POST(request: NextRequest) {
         }
 
         // ตรวจสอบว่า role ถูกต้อง
-        if (!['header', 'member'].includes(role)) {
+        if (!['head', 'member'].includes(role)) {
             return NextResponse.json({
                 status: 400,
-                message: "Role ต้องเป็น header หรือ member เท่านั้น"
+                message: "Role ต้องเป็น head หรือ member เท่านั้น"
             });
         }
 
@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
         }
 
         // ถ้าเป็นการเพิ่มหัวหน้า ต้องตรวจสอบว่ามีหัวหน้าแล้วหรือไม่
-        if (role === 'header') {
+        if (role === 'head') {
             const existingHeader = await prisma.subjectGroupMembership.findFirst({
                 where: {
                     subject_group_id: parseInt(subject_group_id),
-                    role: 'header'
+                    role: 'head'
                 },
                 include: {
                     teacher: true
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
             status: 201,
-            message: `เพิ่ม${role === 'header' ? 'หัวหน้า' : 'สมาชิก'}กลุ่มสาระสำเร็จ`,
+            message: `เพิ่ม${role === 'head' ? 'หัวหน้า' : 'สมาชิก'}กลุ่มสาระสำเร็จ`,
             data: newMembership
         });
 
@@ -136,10 +136,10 @@ export async function PUT(request: NextRequest) {
         }
 
         // ตรวจสอบว่า role ถูกต้อง
-        if (!['header', 'member'].includes(role)) {
+        if (!['head', 'member'].includes(role)) {
             return NextResponse.json({
                 status: 400,
-                message: "Role ต้องเป็น header หรือ member เท่านั้น"
+                message: "Role ต้องเป็น head หรือ member เท่านั้น"
             });
         }
 
@@ -163,11 +163,11 @@ export async function PUT(request: NextRequest) {
         }
 
         // ถ้าเป็นการเปลี่ยนเป็นหัวหน้า ต้องตรวจสอบว่ามีหัวหน้าแล้วหรือไม่
-        if (role === 'header' && existingMembership.role !== 'header') {
+        if (role === 'head' && existingMembership.role !== 'head') {
             const existingHeader = await prisma.subjectGroupMembership.findFirst({
                 where: {
                     subject_group_id: parseInt(subject_group_id),
-                    role: 'header',
+                    role: 'head',
                     teacher_id: { not: parseInt(teacher_id) }
                 },
                 include: {
@@ -206,7 +206,7 @@ export async function PUT(request: NextRequest) {
 
         return NextResponse.json({
             status: 200,
-            message: `อัปเดตบทบาทเป็น${role === 'header' ? 'หัวหน้า' : 'สมาชิก'}สำเร็จ`,
+            message: `อัปเดตบทบาทเป็น${role === 'head' ? 'หัวหน้า' : 'สมาชิก'}สำเร็จ`,
             data: updatedMembership
         });
 

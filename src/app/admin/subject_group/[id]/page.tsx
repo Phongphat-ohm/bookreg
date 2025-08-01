@@ -141,7 +141,7 @@ export default function SubjectGroupDetailPage() {
                             <h1 className="text-2xl font-bold text-gray-800">{subjectGroupData.name}</h1>
                             <p className="text-gray-600">
                                 {(() => {
-                                    const header = subjectGroupData.members.find(member => member.role === 'header');
+                                    const header = subjectGroupData.members.find(member => member.role === 'head');
                                     return `หัวหน้ากลุ่มสาระ: ${header ? header.teacher.name : 'ไม่มีหัวหน้า'} • จำนวนวิชา: ${subjectGroupData.subjects.length} วิชา • สมาชิก: ${subjectGroupData.members.length} คน`;
                                 })()}
                             </p>

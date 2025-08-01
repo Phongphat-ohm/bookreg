@@ -28,10 +28,16 @@ export async function GET(
                 role: true,
                 create_at: true,
                 update_at: true,
-                SubjectGroup: {
+                subjectMembership: {
                     select: {
                         id: true,
-                        name: true
+                        role: true,
+                        subject_group: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
                     }
                 },
                 advisingClasses: {
@@ -213,7 +219,7 @@ export async function DELETE(
         const existingTeacher = await prisma.teacher.findUnique({
             where: { id },
             include: {
-                SubjectGroup: true,
+                subjectMembership: true,
                 advisingClasses: true,
                 teachingAssignments: true
             }
@@ -228,14 +234,14 @@ export async function DELETE(
 
         // ตรวจสอบว่ามีข้อมูลที่เกี่ยวข้องหรือไม่
         const relatedDataCount = 
-            existingTeacher.SubjectGroup.length + 
+            (existingTeacher.subjectMembership ? 1 : 0) + 
             existingTeacher.advisingClasses.length + 
             existingTeacher.teachingAssignments.length;
 
         if (relatedDataCount > 0) {
             const details = [];
-            if (existingTeacher.SubjectGroup.length > 0) {
-                details.push(`หัวหน้ากลุ่มสาระ: ${existingTeacher.SubjectGroup.length} กลุ่ม`);
+            if (existingTeacher.subjectMembership) {
+                details.push(`สมาชิกกลุ่มสาระ: 1 กลุ่ม`);
             }
             if (existingTeacher.advisingClasses.length > 0) {
                 details.push(`ครูที่ปรึกษา: ${existingTeacher.advisingClasses.length} ห้อง`);

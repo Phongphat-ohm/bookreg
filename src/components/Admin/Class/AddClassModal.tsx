@@ -21,7 +21,7 @@ interface Teacher {
     id: number;
     name: string;
     username: string;
-    advisingClasses: {
+    advisingClasses?: {
         id: number;
         grade: string;
         name: string;
@@ -56,7 +56,7 @@ export default function AddClassModal({ isOpen, onClose, onSuccess }: AddClassMo
     const fetchTeachers = async () => {
         try {
             setIsLoadingTeachers(true);
-            const response = await axios.get("/api/admin/teachers");
+            const response = await axios.get("/api/admin/teachers?includeStats=true");
             if (response.data.status === 200) {
                 setTeachers(response.data.data);
             }
@@ -230,7 +230,7 @@ export default function AddClassModal({ isOpen, onClose, onSuccess }: AddClassMo
                                 description="สามารถเลือกครูที่ปรึกษาได้หลายคน หรือเว้นไว้เพื่อเพิ่มทีหลัง"
                             >
                                 {teachers.map((teacher) => {
-                                    const hasAdvisingClass = teacher.advisingClasses.length > 0;
+                                    const hasAdvisingClass = teacher.advisingClasses && teacher.advisingClasses.length > 0;
                                     return (
                                         <SelectItem
                                             key={teacher.id.toString()}
@@ -249,7 +249,7 @@ export default function AddClassModal({ isOpen, onClose, onSuccess }: AddClassMo
                                                     </p>
                                                     {hasAdvisingClass ? (
                                                         <p className="text-xs text-red-500">
-                                                            มีห้องที่ปรึกษาแล้ว: {teacher.advisingClasses.map(cls => `ม.${cls.grade}/${cls.name}`).join(', ')}
+                                                            มีห้องที่ปรึกษาแล้ว: {teacher.advisingClasses?.map(cls => `ม.${cls.grade}/${cls.name}`).join(', ')}
                                                         </p>
                                                     ) : (
                                                         <p className="text-xs text-green-600">ว่าง - สามารถเลือกได้</p>

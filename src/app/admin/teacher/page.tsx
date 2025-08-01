@@ -5,9 +5,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { TeacherList } from "@/components/Admin/Teacher";
 
-interface SubjectGroup {
+interface SubjectGroupMembership {
     id: number;
-    name: string;
+    role: string;
+    joined_at: string;
+    subject_group: {
+        id: number;
+        name: string;
+    };
 }
 
 interface AdvisingClass {
@@ -32,7 +37,7 @@ interface Teacher {
     role: string;
     create_at: string;
     update_at: string;
-    SubjectGroup?: SubjectGroup[];
+    subjectMembership?: SubjectGroupMembership;
     advisingClasses?: AdvisingClass[];
     teachingAssignments?: TeachingAssignment[];
 }

@@ -51,7 +51,7 @@ export default function ClassPage() {
         try {
             setIsLoading(true);
             const response = await axios.get("/api/admin/classes");
-            
+
             if (response.data.status === 200) {
                 setClasses(response.data.data);
             } else {
@@ -118,23 +118,23 @@ export default function ClassPage() {
     return (
         <AdminLayout>
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 -m-6 p-6">
-                <ClassHeader 
-                    onRefresh={fetchClasses} 
+                <ClassHeader
+                    onRefresh={fetchClasses}
                     onAddClass={handleAddClass}
-                    isLoading={isLoading} 
+                    isLoading={isLoading}
                 />
-                
+
                 <ClassSearchBar
                     onSearch={handleSearch}
                     totalResults={searchStats.filteredCount}
                     isFiltered={isFiltered}
                     onClearFilters={handleClearFilters}
                 />
-                
+
                 <ClassStats classes={filteredClasses} isFiltered={isFiltered} />
-                
-                <ClassGrid 
-                    classes={filteredClasses} 
+
+                <ClassGrid
+                    classes={filteredClasses}
                     isFiltered={isFiltered}
                     searchTerm={searchFilters.searchTerm}
                     onClassClick={handleClassClick}

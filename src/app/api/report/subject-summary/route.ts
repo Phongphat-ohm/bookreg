@@ -30,7 +30,14 @@ export async function GET(req: Request) {
             include: {
                 SubjectGroup: {
                     include: {
-                        Teacher: true
+                        members: {
+                            where: {
+                                role: "head"
+                            },
+                            include: {
+                                teacher: true
+                            }
+                        }
                     }
                 }
             }
@@ -91,7 +98,7 @@ export async function GET(req: Request) {
                 code: subjectData.code,
                 name: subjectData.name,
                 group_name: subjectData.SubjectGroup?.name || "",
-                group_header: subjectData.SubjectGroup?.Teacher?.name || ""
+                group_header: subjectData.SubjectGroup?.members?.[0]?.teacher?.name || ""
             },
             summary: {
                 total_students: totalStudents,

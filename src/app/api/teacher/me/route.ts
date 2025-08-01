@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@/generated/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 

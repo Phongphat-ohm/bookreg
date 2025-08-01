@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@/generated/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
             return Response.json(check_registered_book)
         }
 
-        const register_book = await prisma.bookRegistration.createManyAndReturn({
+        const register_book = await prisma.bookRegistration.create({
             data: {
                 book_id: get_book.id,
                 student_id: Number(uid),
@@ -83,11 +83,11 @@ export async function POST(req: Request) {
             })
         }
 
-        const create_register_code = `${get_book.subject.code}-${register_book[0].id}/${get_book.AcademicYear.year}`
+        const create_register_code = `${get_book.subject.code}-${register_book.id}/${get_book.AcademicYear.year}`
 
-        const update_register_data = await prisma.bookRegistration.updateManyAndReturn({
+        const update_register_data = await prisma.bookRegistration.update({
             where: {
-                id: register_book[0].id
+                id: register_book.id
             },
             data: {
                 register_code: create_register_code
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
             message: "ลงทะเบียนหนังสือสำเร็จ",
             data: {
                 register_code: create_register_code,
-                register_data: update_register_data[0],
+                register_data: update_register_data,
             },
         })
     } catch (error) {

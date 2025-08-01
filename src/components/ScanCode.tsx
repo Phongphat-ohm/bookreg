@@ -1,6 +1,6 @@
 "use client";
 import { centerText, IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface ScanCodeProps {
     onResult?: (result: string) => void;
@@ -24,7 +24,7 @@ export default function ScanCode({ onResult }: ScanCodeProps) {
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
-            <div className="w-full max-w-sm">
+            <div className="w-full">
                 {!scanned && (
                     <Scanner
                         onScan={handleScan}

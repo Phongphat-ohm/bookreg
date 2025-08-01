@@ -11,3 +11,4 @@ export { default as EditClassModal } from './EditClassModal';
 export { default as EditStudentModal } from './EditStudentModal';
 export { default as AddStudentModal } from './AddStudentModal';
 export { default as ImportStudentsModal } from './ImportStudentsModal';
+export { default as StudentBookRegistrationsModal } from './StudentBookRegistrationsModal';

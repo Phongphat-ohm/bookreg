@@ -246,7 +246,7 @@ export default function SubjectGroupDetail({ subjectGroupData, onUpdate }: Subje
                                     <div>
                                         <p className="text-sm text-gray-600 mb-2">หัวหน้ากลุ่มสาระ</p>
                                         {(() => {
-                                            const header = subjectGroupData.members.find(member => member.role === 'header');
+                                            const header = subjectGroupData.members.find(member => member.role === 'head');
                                             if (header) {
                                                 return (
                                                     <div className="flex items-center gap-2">

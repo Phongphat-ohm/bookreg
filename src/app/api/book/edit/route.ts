@@ -23,17 +23,25 @@ export async function POST(req: Request) {
             });
         }
 
+        // ตรวจสอบว่าปีการศึกษามีอยู่จริง
+        const academicYear = await prisma.academicYear.findFirst({
+            where: { year: academic_year }
+        });
+
+        if (!academicYear) {
+            return Response.json({
+                status: 400,
+                message: "ไม่พบปีการศึกษาที่ระบุ",
+            });
+        }
+
         const editBook = await prisma.book.update({
             where: { id: Number(id) },
             data: {
                 barcode,
                 name,
                 description,
-                AcademicYear: {
-                    connect: {
-                        year: academic_year
-                    }
-                }
+                academic_year_id: academicYear.id
             },
         })
 

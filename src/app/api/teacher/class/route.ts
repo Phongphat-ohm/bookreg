@@ -1,5 +1,5 @@
 import { CheckSignin } from "@/functions/CheckSignin";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -43,9 +43,16 @@ export async function GET(req: Request) {
                         SubjectGroup: {
                             select: {
                                 name: true,
-                                Teacher: {
+                                members: {
+                                    where: {
+                                        role: "head"
+                                    },
                                     select: {
-                                        name: true
+                                        teacher: {
+                                            select: {
+                                                name: true
+                                            }
+                                        }
                                     }
                                 }
                             }

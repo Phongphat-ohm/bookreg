@@ -22,11 +22,18 @@ export async function GET(request: NextRequest) {
                     select: {
                         id: true,
                         name: true,
-                        Teacher: {
+                        members: {
+                            where: {
+                                role: "head"
+                            },
                             select: {
-                                id: true,
-                                name: true,
-                                username: true
+                                teacher: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        username: true
+                                    }
+                                }
                             }
                         }
                     }
@@ -104,11 +111,18 @@ export async function POST(request: NextRequest) {
                     select: {
                         id: true,
                         name: true,
-                        Teacher: {
+                        members: {
+                            where: {
+                                role: "head"
+                            },
                             select: {
-                                id: true,
-                                name: true,
-                                username: true
+                                teacher: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        username: true
+                                    }
+                                }
                             }
                         }
                     }

@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
                 members: {
                     create: {
                         teacher_id: parseInt(header_id),
-                        role: "header"
+                        role: "head"
                     }
                 }
             },

@@ -22,11 +22,12 @@ import {
     addToast
 } from "@heroui/react";
 import { useState, useMemo } from "react";
-import { Users, Search, Plus, MoreVertical, Edit, Trash2, UserPlus, Upload, Download } from "lucide-react";
+import { Users, Search, Plus, MoreVertical, Edit, Trash2, UserPlus, Upload, Download, BookOpen } from "lucide-react";
 import EditStudentModal from "./EditStudentModal";
 import AddStudentModal from "./AddStudentModal";
 import ImportStudentsModal from "./ImportStudentsModal";
 import ExportStudentsModal from "./ExportStudentsModal";
+import StudentBookRegistrationsModal from "./StudentBookRegistrationsModal";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -56,6 +57,8 @@ export default function StudentList({ classId, students, onUpdate, className }: 
     const [isBulkDeleting, setIsBulkDeleting] = useState(false);
     const [isExportModalOpen, setIsExportModalOpen] = useState(false);
     const [exportType, setExportType] = useState<'all' | 'selected'>('all');
+    const [isBookRegistrationsModalOpen, setIsBookRegistrationsModalOpen] = useState(false);
+    const [selectedStudentForBooks, setSelectedStudentForBooks] = useState<Student | null>(null);
 
     const rowsPerPage = 10;
 
@@ -92,6 +95,11 @@ export default function StudentList({ classId, students, onUpdate, className }: 
     const handleEditStudent = (student: Student) => {
         setSelectedStudent(student);
         setIsEditModalOpen(true);
+    };
+
+    const handleViewBookRegistrations = (student: Student) => {
+        setSelectedStudentForBooks(student);
+        setIsBookRegistrationsModalOpen(true);
     };
 
     const handleDeleteStudent = async (student: Student) => {
@@ -553,6 +561,13 @@ export default function StudentList({ classId, students, onUpdate, className }: 
                                                     </DropdownTrigger>
                                                     <DropdownMenu aria-label="Student actions">
                                                         <DropdownItem
+                                                            key="books"
+                                                            startContent={<BookOpen className="w-4 h-4" />}
+                                                            onPress={() => handleViewBookRegistrations(student)}
+                                                        >
+                                                            ดูการลงทะเบียนหนังสือ
+                                                        </DropdownItem>
+                                                        <DropdownItem
                                                             key="edit"
                                                             startContent={<Edit className="w-4 h-4" />}
                                                             onPress={() => handleEditStudent(student)}
@@ -657,6 +672,19 @@ export default function StudentList({ classId, students, onUpdate, className }: 
                 onSuccess={handleAddSuccess}
                 classId={classId}
             />
+
+            {selectedStudentForBooks && (
+                <StudentBookRegistrationsModal
+                    isOpen={isBookRegistrationsModalOpen}
+                    onClose={() => {
+                        setIsBookRegistrationsModalOpen(false);
+                        setSelectedStudentForBooks(null);
+                    }}
+                    onUpdate={onUpdate}
+                    studentId={selectedStudentForBooks.id}
+                    studentName={selectedStudentForBooks.name}
+                />
+            )}
 
             <ImportStudentsModal
                 isOpen={isImportModalOpen}

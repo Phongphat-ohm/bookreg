@@ -253,15 +253,15 @@ export default function ManageSubjectGroupModal({
     };
 
     const getRoleColor = (role: string) => {
-        return role === 'header' ? 'success' : 'primary';
+        return role === 'head' ? 'success' : 'primary';
     };
 
     const getRoleIcon = (role: string) => {
-        return role === 'header' ? <Crown className="w-3 h-3" /> : <User className="w-3 h-3" />;
+        return role === 'head' ? <Crown className="w-3 h-3" /> : <User className="w-3 h-3" />;
     };
 
     const getRoleLabel = (role: string) => {
-        return role === 'header' ? 'หัวหน้า' : 'สมาชิก';
+        return role === 'head' ? 'หัวหน้า' : 'สมาชิก';
     };
 
     return (

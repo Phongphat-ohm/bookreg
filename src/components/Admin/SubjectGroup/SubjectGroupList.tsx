@@ -77,7 +77,7 @@ export default function SubjectGroupList({ subjectGroups, onUpdate }: SubjectGro
         if (!searchTerm) return subjectGroups;
 
         return subjectGroups.filter(group => {
-            const header = group.members.find(member => member.role === 'header');
+            const header = group.members.find(member => member.role === 'head');
             return group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 (header && header.teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
         });
@@ -111,7 +111,7 @@ export default function SubjectGroupList({ subjectGroups, onUpdate }: SubjectGro
     };
 
     const handleDeleteGroup = async (group: SubjectGroup) => {
-        const header = group.members.find(member => member.role === 'header');
+        const header = group.members.find(member => member.role === 'head');
         const headerName = header ? header.teacher.name : 'ไม่มีหัวหน้า';
 
         const result = await Swal.fire({
@@ -286,7 +286,7 @@ export default function SubjectGroupList({ subjectGroups, onUpdate }: SubjectGro
                                             </TableCell>
                                             <TableCell>
                                                 {(() => {
-                                                    const header = group.members.find(member => member.role === 'header');
+                                                    const header = group.members.find(member => member.role === 'head');
                                                     if (header) {
                                                         return (
                                                             <div className="flex items-center gap-3">

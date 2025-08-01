@@ -18,7 +18,14 @@ export async function GET() {
             include: {
                 SubjectGroup: {
                     include: {
-                        Teacher: true
+                        members: {
+                            where: {
+                                role: "head"
+                            },
+                            include: {
+                                teacher: true
+                            }
+                        }
                     }
                 }
             },

@@ -20,13 +20,12 @@ import {
     Pagination,
     Select,
     SelectItem,
-    addToast
 } from "@heroui/react";
 import { useState, useMemo } from "react";
-import { Users, Search, Plus, MoreVertical, Edit, Trash2, UserCheck, Shield, User, BookOpen } from "lucide-react";
+import { Users, Search, Plus, MoreVertical, Edit, Trash2, Shield, User, BookOpen } from "lucide-react";
 import AddTeacherModal from "./AddTeacherModal";
 import EditTeacherModal from "./EditTeacherModal";
-import ManageSubjectGroupModal from "./ManageSubjectGroupModalNew";
+import ManageSubjectGroupModal from "./ManageSubjectGroupModal";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -401,10 +400,10 @@ export default function TeacherList({ teachers, onUpdate }: TeacherListProps) {
                                                         <Chip 
                                                             size="sm" 
                                                             variant="flat" 
-                                                            color={teacher.subjectMembership.role === 'header' ? 'success' : 'primary'}
+                                                            color={teacher.subjectMembership.role === 'head' ? 'success' : 'primary'}
                                                             startContent={<BookOpen className="w-3 h-3" />}
                                                         >
-                                                            {teacher.subjectMembership.role === 'header' ? 'หัวหน้า' : 'สมาชิก'}: {teacher.subjectMembership.subject_group.name}
+                                                            {teacher.subjectMembership.role === 'head' ? 'หัวหน้า' : 'สมาชิก'}: {teacher.subjectMembership.subject_group.name}
                                                         </Chip>
                                                     ) : (
                                                         <Chip 

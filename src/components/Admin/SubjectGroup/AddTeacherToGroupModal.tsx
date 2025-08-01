@@ -101,7 +101,7 @@ export default function AddTeacherToGroupModal({
             setIsLoading(true);
 
             // ลบหัวหน้าเดิม (ถ้ามี)
-            const currentHeader = subjectGroup.members.find(member => member.role === 'header');
+            const currentHeader = subjectGroup.members.find(member => member.role === 'head');
             if (currentHeader) {
                 await axios.delete(`/api/admin/subject-group-members?teacher_id=${currentHeader.teacher.id}&subject_group_id=${subjectGroup.id}`);
             }
@@ -110,7 +110,7 @@ export default function AddTeacherToGroupModal({
             const response = await axios.post('/api/admin/subject-group-members', {
                 teacher_id: parseInt(selectedTeacherId),
                 subject_group_id: subjectGroup.id,
-                role: 'header'
+                role: 'head'
             });
 
             if (response.data.status === 201) {
@@ -173,7 +173,7 @@ export default function AddTeacherToGroupModal({
                             <CardBody>
                                 <h3 className="font-medium text-gray-800 mb-3">หัวหน้ากลุ่มสาระปัจจุบัน</h3>
                                 {(() => {
-                                    const currentHeader = subjectGroup.members.find(member => member.role === 'header');
+                                    const currentHeader = subjectGroup.members.find(member => member.role === 'head');
                                     if (currentHeader) {
                                         return (
                                             <div className="flex items-center gap-3">
