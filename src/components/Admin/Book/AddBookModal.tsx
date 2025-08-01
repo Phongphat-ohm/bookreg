@@ -265,7 +265,6 @@ export default function AddBookModal({
                                     allowsCustomValue={false}
                                     menuTrigger="input"
                                     items={subjects}
-                                    noOptionsText="ไม่พบวิชาที่ค้นหา"
                                 >
                                     {(subject) => (
                                         <AutocompleteItem 

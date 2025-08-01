@@ -5,11 +5,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BookList from "@/components/Admin/Book/BookList";
 
+interface SubjectGroup {
+    id: number;
+    name: string;
+}
+
 interface Subject {
     id: number;
     name: string;
     code: string;
     grade: string;
+    SubjectGroup?: SubjectGroup;
 }
 
 interface AcademicYear {
@@ -17,14 +23,23 @@ interface AcademicYear {
     year: string;
 }
 
+interface Class {
+    id: number;
+    grade: string;
+    name: string;
+}
+
 interface Student {
     id: number;
     name: string;
     stu_code: string;
+    class: Class;
 }
 
 interface Registration {
     id: number;
+    register_code: string;
+    registered_at: string;
     student: Student;
 }
 

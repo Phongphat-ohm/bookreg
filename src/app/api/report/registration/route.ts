@@ -43,7 +43,11 @@ export async function GET(req: Request) {
                                     include: {
                                         SubjectGroup: {
                                             include: {
-                                                Teacher: true
+                                                members: {
+                                                    include: {
+                                                        teacher: true
+                                                    }
+                                                }
                                             }
                                         }
                                     }

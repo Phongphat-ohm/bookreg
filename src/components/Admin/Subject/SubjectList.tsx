@@ -32,10 +32,16 @@ interface Teacher {
     username: string;
 }
 
+interface SubjectGroupMember {
+    id: number;
+    role: string;
+    teacher: Teacher;
+}
+
 interface SubjectGroup {
     id: number;
     name: string;
-    Teacher: Teacher;
+    members?: SubjectGroupMember[];
 }
 
 interface Subject {
