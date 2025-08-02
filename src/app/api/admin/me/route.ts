@@ -25,6 +25,7 @@ export async function GET(req: Request) {
             select: {
                 id: true,
                 name: true,
+                username: true,
                 role: true,
                 create_at: true,
                 update_at: true
