@@ -22,10 +22,10 @@ export default function Navbar() {
         <nav className="p-5 top-0 left-0 sticky z-20 bg-none">
             <div className="flex justify-between items-center w-full bg-red-900 shadow-md p-5 text-white">
                 <div className="text-sm">{dateTime}</div>
-                {/* <Link href={"/admin/settings"} className="hover:text-gray-100 flex gap-2 items-center">
+                <Link href={"/admin/settings"} className="hover:text-gray-100 flex gap-2 items-center transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-red-800">
+                    <FaGears className="w-4 h-4" />
                     ตั้งค่าส่วนบุคคล
-                    <FaGears />
-                </Link> */}
+                </Link>
             </div>
         </nav>
     );
