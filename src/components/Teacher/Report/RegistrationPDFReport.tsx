@@ -168,14 +168,6 @@ const RegistrationPDFReport = ({ reportData, customHeader, selectedBookName }: P
                     {/* แสดงสรุปผลและลายเซ็นเฉพาะหน้าสุดท้าย */}
                     {pageIndex === pages.length - 1 && (
                         <>
-                            {/* สรุปผล */}
-                            <View style={styles.summary}>
-                                <Text style={styles.summaryTitle}>สรุปผลการลงทะเบียน</Text>
-                                <Text style={styles.summaryItem}>จำนวนนักเรียนทั้งหมด: {totalCount} คน</Text>
-                                <Text style={styles.summaryItem}>ลงทะเบียนแล้ว: {registeredCount} คน ({((registeredCount / totalCount) * 100).toFixed(1)}%)</Text>
-                                <Text style={styles.summaryItem}>ยังไม่ลงทะเบียน: {unregisteredCount} คน ({((unregisteredCount / totalCount) * 100).toFixed(1)}%)</Text>
-                            </View>
-
                             {/* ลายเซ็น */}
                             <View style={styles.signature}>
                                 <View style={styles.signatureBox}>
